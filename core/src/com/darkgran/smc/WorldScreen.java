@@ -35,7 +35,7 @@ public class WorldScreen implements Screen {
         camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2,0);
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0, 0), true); //-15
+        world = new World(new Vector2(0, 0), true);
         currentLevel = new Level(this);
     }
 
