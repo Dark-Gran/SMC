@@ -9,21 +9,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.darkgran.smc.play.Level;
 
 public class WorldScreen implements Screen {
     //WorldSettings
     float FPS = 60.0f;
     float STEP_TIME = 1f / FPS;
-    int VELOCITY_ITERATIONS = 15;
-    int POSITION_ITERATIONS = 12;
-    float WORLD_WIDTH = 9.6f;
-    float WORLD_HEIGHT = 4.8f;
+    final int VELOCITY_ITERATIONS = 15;
+    final int POSITION_ITERATIONS = 12;
+    public static final float WORLD_WIDTH = 9.6f;
+    public static final float WORLD_HEIGHT = 4.8f;
 
     private final Box2DDebugRenderer debugRenderer;
-    public final OrthographicCamera camera;
+    private final OrthographicCamera camera;
     private final Viewport viewport;
-    public World world;
+    private World world;
     private float worldTimer = 0;
+    private Level currentLevel;
 
     public WorldScreen() {
         camera = new OrthographicCamera();
@@ -34,21 +36,7 @@ public class WorldScreen implements Screen {
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true); //-15
-    }
-
-    private void addTestBody() { //temp
-        BodyDef myBodyDef = new BodyDef();
-        myBodyDef.type = BodyDef.BodyType.DynamicBody;
-
-        Body dynamicBody = world.createBody(myBodyDef);
-        dynamicBody.setTransform(4.8f, 2.4f, 0f);
-        PolygonShape boxShape = new PolygonShape();
-        boxShape.setAsBox(WORLD_WIDTH/2-0.01f,WORLD_HEIGHT/2-0.01f);
-
-        FixtureDef boxFixtureDef = new FixtureDef();
-        boxFixtureDef.shape = boxShape;
-        boxFixtureDef.density = 1;
-        dynamicBody.createFixture(boxFixtureDef);
+        currentLevel = new Level(this);
     }
 
     @Override
@@ -83,8 +71,13 @@ public class WorldScreen implements Screen {
 
     @Override
     public void dispose() {
+        currentLevel.dispose();
         world.dispose();
         debugRenderer.dispose();
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     @Override
