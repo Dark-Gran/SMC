@@ -10,13 +10,18 @@ public class CircleBody {
 
         Body dynamicBody = world.createBody(myBodyDef);
         dynamicBody.setTransform(4.8f, 2.4f, 0f);
-        PolygonShape boxShape = new PolygonShape();
-        boxShape.setAsBox(2f,2f);
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(0.2f);
 
         FixtureDef boxFixtureDef = new FixtureDef();
-        boxFixtureDef.shape = boxShape;
-        boxFixtureDef.density = 1;
+        boxFixtureDef.shape = circleShape;
+        boxFixtureDef.density = 10f;
+        boxFixtureDef.friction = 0.5f;
+        boxFixtureDef.restitution = 0.5f;
         dynamicBody.createFixture(boxFixtureDef);
+
+        dynamicBody.setFixedRotation(false);
+
     }
 
 }
