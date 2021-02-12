@@ -11,6 +11,7 @@ import static java.lang.Math.sin;
 
 public class ColoredCircle extends Actor {
     private final double DEGREES_TO_RADIANS = Math.PI/180;
+    private final float COMFORT_RADIUS = 0.1f;
     private final CircleBody circleBody;
     private MainColor color;
     private float radius;
@@ -19,10 +20,10 @@ public class ColoredCircle extends Actor {
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, MainColor color) {
         if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
-        this.setBounds(x-radius, y-radius, radius*2, radius*2);
+        this.setBounds(x-(radius+COMFORT_RADIUS), y-(radius+COMFORT_RADIUS), (radius+COMFORT_RADIUS)*2, (radius+COMFORT_RADIUS)*2);
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), x, y, radius);
         this.radius = radius;
-        this.speed = 0f;
+        this.speed = 2f;
         this.angle = (float) (degrees*DEGREES_TO_RADIANS);
     }
 
@@ -51,6 +52,8 @@ public class ColoredCircle extends Actor {
             }
             body.setTransform(newX, newY, body.getAngle());
         }
+        //Actor position
+        refreshActorBounds();
     }
 
     public void drawShapes(ShapeRenderer shapeRenderer) {
@@ -62,10 +65,14 @@ public class ColoredCircle extends Actor {
         shapeRenderer.end();
     }
 
+    private void refreshActorBounds() {
+        this.setBounds(circleBody.getBody().getPosition().x-(radius+COMFORT_RADIUS), circleBody.getBody().getPosition().y-(radius+COMFORT_RADIUS), (radius+COMFORT_RADIUS)*2, (radius+COMFORT_RADIUS)*2);
+    }
+
     public void setRadius(float radius) {
         this.radius = radius;
         if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
-        this.setBounds(circleBody.getBody().getPosition().x-radius, circleBody.getBody().getPosition().y-radius, radius*2, radius*2);
+        refreshActorBounds();
         Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
         shape.setRadius(radius);
     }
