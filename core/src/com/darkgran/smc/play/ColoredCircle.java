@@ -1,5 +1,7 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Math.cos;
@@ -9,13 +11,16 @@ public class ColoredCircle {
     private final double DEGREES_TO_RADIANS = Math.PI/180;
     private final CircleBody circleBody;
     private MainColor color;
+    private float radius;
     private float speed;
     private float angle;
 
     public ColoredCircle(final Level level, float x, float y, float radius, MainColor color) {
         circleBody = new CircleBody(level.getWorldScreen().getWorld(), x, y, radius);
-        speed = 2f;
-        angle = (float) (ThreadLocalRandom.current().nextInt(0, 360)*DEGREES_TO_RADIANS);
+        if (radius < 0.01f) { radius = 0.01f; }
+        this.radius = radius;
+        this.speed = 2f;
+        this.angle = (float) (ThreadLocalRandom.current().nextInt(0, 360)*DEGREES_TO_RADIANS);
     }
 
     public void update() {
@@ -25,6 +30,12 @@ public class ColoredCircle {
             double y = speed * sin(angle);
             circleBody.getDynamicBody().setLinearVelocity((float) x, (float) y);
         }
+    }
+
+    public void drawShapes(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.circle(circleBody.getDynamicBody().getPosition().x, circleBody.getDynamicBody().getPosition().y, radius, Math.round(radius*100));
+        shapeRenderer.end();
     }
 
 }

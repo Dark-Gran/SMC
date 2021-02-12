@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -21,6 +22,7 @@ public class WorldScreen implements Screen {
     public static final float WORLD_HEIGHT = 4.8f;
 
     private final Box2DDebugRenderer debugRenderer;
+    private final ShapeRenderer shapeRenderer;
     private final OrthographicCamera camera;
     private final Viewport viewport;
     private World world;
@@ -33,6 +35,7 @@ public class WorldScreen implements Screen {
         viewport = new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         viewport.apply();
         camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2,0);
+        shapeRenderer = new ShapeRenderer();
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
@@ -44,8 +47,14 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
+        //drawShapes();
         drawBox2DDebug();
         timeWorld(delta);
+    }
+
+    private void drawShapes() {
+        shapeRenderer.setProjectionMatrix(new Matrix4(camera.combined));
+        currentLevel.drawShapes(shapeRenderer);
     }
 
     public void timeWorld(float delta) {

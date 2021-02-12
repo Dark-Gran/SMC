@@ -1,5 +1,6 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.darkgran.smc.WorldScreen;
 import java.util.ArrayList;
 
@@ -21,6 +22,12 @@ public class Level {
     public void update() {
         for (ColoredCircle circle : circles) {
             circle.update();
+        }
+    }
+
+    public void drawShapes(ShapeRenderer shapeRenderer) {
+        for (ColoredCircle circle : circles) {
+            circle.drawShapes(shapeRenderer);
         }
     }
 
