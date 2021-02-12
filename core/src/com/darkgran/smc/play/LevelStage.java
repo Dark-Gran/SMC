@@ -62,11 +62,11 @@ public class LevelStage extends Stage {
             circle.update();
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && lastTouch != null) {
-            attemptCircleSizeChange(lastTouch);
+            distributedSizeChange(lastTouch);
         }
     }
 
-    private void attemptCircleSizeChange(ColoredCircle chosenCircle) {
+    private void distributedSizeChange(ColoredCircle chosenCircle) {
         final float CHANGE_UP = 0.01f;
         final float MIN_CHANGE_DOWN = 0.001f;
         if (circles.size() > 1) {
