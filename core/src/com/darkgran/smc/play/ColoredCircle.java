@@ -23,8 +23,13 @@ public class ColoredCircle extends Actor {
         this.setBounds(x-(radius+COMFORT_RADIUS), y-(radius+COMFORT_RADIUS), (radius+COMFORT_RADIUS)*2, (radius+COMFORT_RADIUS)*2);
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), x, y, radius);
         this.radius = radius;
-        this.speed = 2f;
+        updateSpeed();
         this.angle = (float) (degrees*DEGREES_TO_RADIANS);
+    }
+
+    private void updateSpeed() {
+        speed = 2f-radius*5;
+        if (speed < 0) { speed = 0; }
     }
 
     public void update() {
@@ -75,6 +80,7 @@ public class ColoredCircle extends Actor {
         refreshActorBounds();
         Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
         shape.setRadius(radius);
+        updateSpeed();
     }
 
     public float getRadius() {
