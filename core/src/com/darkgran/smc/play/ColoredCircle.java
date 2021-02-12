@@ -17,16 +17,12 @@ public class ColoredCircle extends Actor {
     private float angle;
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, MainColor color) {
+        if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
         this.setBounds(x, y, radius*2, radius*2);
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), x, y, radius);
-        if (radius < 0.01f) { radius = 0.01f; }
         this.radius = radius;
         this.speed = 0f;
         this.angle = (float) (degrees*DEGREES_TO_RADIANS);
-    }
-
-    public void click() {
-        System.out.println("CLICKED!");
     }
 
     public void update() {
@@ -58,8 +54,18 @@ public class ColoredCircle extends Actor {
 
     public void drawShapes(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, radius, Math.round(radius*100));
+        int segments = Math.round(radius*100);
+        if (segments < 10) { segments = 10; }
+        else if (segments > 100) { segments = 50; }
+        shapeRenderer.circle(circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, radius, segments);
         shapeRenderer.end();
     }
 
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
 }
