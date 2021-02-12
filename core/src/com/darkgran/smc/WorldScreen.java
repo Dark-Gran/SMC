@@ -29,7 +29,8 @@ public class WorldScreen implements Screen {
     private float worldTimer = 0;
     private Level currentLevel;
 
-    public WorldScreen() {
+    public WorldScreen(final SaveMeCircles smc) {
+        Gdx.input.setInputProcessor(smc.getInputMultiplexer());
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -39,7 +40,8 @@ public class WorldScreen implements Screen {
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
-        currentLevel = new Level(this);
+        currentLevel = new Level(this, viewport);
+        smc.getInputMultiplexer().addProcessor(currentLevel);
     }
 
     @Override
@@ -47,8 +49,11 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
+        currentLevel.act(delta);
+
         drawShapes();
         //drawBox2DDebug();
+
         timeWorld(delta);
     }
 
