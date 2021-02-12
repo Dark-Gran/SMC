@@ -12,7 +12,8 @@ import com.darkgran.smc.WorldScreen;
 import java.util.ArrayList;
 
 public class LevelStage extends Stage {
-    public static final float MIN_RADIUS = 0.05f;
+    public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
+    public static final float CHANGE_UP = 0.01f;
     private final WorldScreen worldScreen;
     private final ArrayList<ColoredCircle> circles = new ArrayList<ColoredCircle>();
     private ColoredCircle lastTouch;
@@ -29,12 +30,12 @@ public class LevelStage extends Stage {
         super(viewport);
         this.worldScreen = worldScreen;
         System.out.println("Starting Level.");
-        circles.add(new ColoredCircle(this, 2f, 0f, 0.05f, 0, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 3f, 1f, 0.2f, 45, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 4f, 2f, 0.2f, 200, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 2f, 0f, 0.05f, 30, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 3f, 1f, 0.2f, 70, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 4f, 2f, 0.2f, 210, ColorType.WHITE));
         circles.add(new ColoredCircle(this, 5f, 3f, 0.05f, 45, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 6f, 4f, 0.2f, 200, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 7f, 5f, 0.2f, 0, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 6f, 4f, 0.2f, 180, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 7f, 5f, 0.2f, 10, ColorType.WHITE));
         colorPower = 0.9f;
         setupActors();
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
@@ -59,7 +60,11 @@ public class LevelStage extends Stage {
 
     public void update() {
         for (ColoredCircle circle : circles) {
-            circle.update();
+            if (!circle.isGone()) {
+                circle.update();
+            } else {
+                worldScreen.getCorpses().add(circle);
+            }
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && lastTouch != null) {
             distributedSizeChange(lastTouch);
@@ -67,7 +72,6 @@ public class LevelStage extends Stage {
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) {
-        final float CHANGE_UP = 0.01f;
         final float MIN_CHANGE_DOWN = 0.001f;
         if (circles.size() > 1) {
             float maxRadius = colorPower - (circles.size()-1)*MIN_RADIUS;

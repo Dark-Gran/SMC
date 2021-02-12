@@ -12,12 +12,16 @@ import static java.lang.Math.sin;
 public class ColoredCircle extends Actor {
     private final double DEGREES_TO_RADIANS = Math.PI/180;
     private final float COMFORT_RADIUS = 0.1f;
+    private final float ACTUAL_MIN_RADIUS = 0.001f;
     private final LevelStage levelStage;
     private final CircleBody circleBody;
     private ColorType colorType;
     private float radius;
     private float speed;
     private float angle;
+    private float mergeBuffer = 0f;
+    private boolean mergingAway = false;
+    private boolean gone = false;
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType color) {
         this.levelStage = levelStage;
@@ -29,18 +33,15 @@ public class ColoredCircle extends Actor {
         this.angle = (float) (degrees*DEGREES_TO_RADIANS);
     }
 
-    public void merge(ColoredCircle circle) { //TODO smooth transition
-        setRadius(radius+circle.getRadius());
-        circle.unsign();
+    public void merge(ColoredCircle circle) {
+        if (!circle.mergingAway) {
+            mergeBuffer += circle.getRadius();
+            circle.unsign();
+        }
     }
 
     public void unsign() {
-        levelStage.getCircles().remove(this);
-        if (getListeners().size > 0) {
-            this.removeListener(getListeners().get(0));
-        }
-        remove();
-        levelStage.getWorldScreen().getCorpses().add(this);
+        mergingAway = true;
     }
 
     private void updateSpeed() {
@@ -50,6 +51,25 @@ public class ColoredCircle extends Actor {
 
     public void update() {
         Body body = circleBody.getBody();
+        //Merging
+        if (mergingAway) {
+            if (mergeBuffer > 0f) {
+                mergeBuffer -= LevelStage.CHANGE_UP;
+            } else if (getRadius()-LevelStage.CHANGE_UP >= ACTUAL_MIN_RADIUS) {
+                mergeBuffer = 0f;
+                setRadius(getRadius()-LevelStage.CHANGE_UP);
+            } else {
+                gone = true;
+            }
+        } else if (mergeBuffer > 0f) {
+            if (mergeBuffer <= LevelStage.CHANGE_UP) {
+                setRadius(getRadius()+mergeBuffer);
+                mergeBuffer = 0f;
+            } else {
+                mergeBuffer -= LevelStage.CHANGE_UP;
+                setRadius(getRadius()+LevelStage.CHANGE_UP);
+            }
+        }
         //Speed Cap
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
@@ -91,8 +111,9 @@ public class ColoredCircle extends Actor {
     }
 
     public void setRadius(float radius) {
+        if (radius < LevelStage.MIN_RADIUS && !mergingAway) { radius = LevelStage.MIN_RADIUS; }
+        else if (radius < ACTUAL_MIN_RADIUS) { radius = ACTUAL_MIN_RADIUS; }
         this.radius = radius;
-        if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
         refreshActorBounds();
         Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
         shape.setRadius(radius);
@@ -109,5 +130,9 @@ public class ColoredCircle extends Actor {
 
     public CircleBody getCircleBody() {
         return circleBody;
+    }
+
+    public boolean isGone() {
+        return gone;
     }
 }

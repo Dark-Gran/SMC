@@ -87,7 +87,13 @@ public class WorldScreen implements Screen {
             if (corpses.get(i) != null) {
                 Object corpse = corpses.get(i);
                 if (corpse instanceof ColoredCircle) {
-                    world.destroyBody(((ColoredCircle) corpse).getCircleBody().getBody());
+                    ColoredCircle circle = (ColoredCircle) corpse;
+                    if (circle.getListeners().size > 0) {
+                        circle.removeListener(circle.getListeners().get(0));
+                    }
+                    currentLevelStage.getCircles().remove(circle);
+                    circle.remove();
+                    world.destroyBody(circle.getCircleBody().getBody());
                 }
                 corpses.remove(corpse);
             }
