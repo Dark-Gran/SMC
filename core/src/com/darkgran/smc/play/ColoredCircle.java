@@ -12,7 +12,7 @@ import static java.lang.Math.sin;
 
 public class ColoredCircle extends Actor {
     private final double DEGREES_TO_RADIANS = Math.PI/180;
-    private final float COMFORT_RADIUS = 0.1f;
+    private final float COMFORT_RADIUS = 0.25f;
     private final float ACTUAL_MIN_RADIUS = 0.001f;
     private final LevelStage levelStage;
     private final CircleBody circleBody;
