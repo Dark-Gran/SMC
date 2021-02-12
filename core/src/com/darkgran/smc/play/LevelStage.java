@@ -34,16 +34,6 @@ public class LevelStage extends Stage {
         this.worldScreen = worldScreen;
         System.out.println("Starting Level.");
         ArrayList<ColoredCircle> coloredCircles = new ArrayList<>();
-        coloredCircles.add(new ColoredCircle(this, 2f, 0f, 0.05f, 30, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 3f, 1f, 0.1f, 70, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 4f, 2f, 0.1f, 130, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 5f, 3f, 0.05f, 45, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 6f, 4f, 0.1f, 180, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 7f, 5f, 0.1f, 10, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 6f, 5f, 0.1f, 160, ColorType.WHITE));
-        circles.put(ColorType.WHITE, coloredCircles);
-        colorPowers.put(ColorType.WHITE, 0.6f);
-        coloredCircles = new ArrayList<>();
         coloredCircles.add(new ColoredCircle(this, 1.5f, 5.5f, 0.05f, 70, ColorType.BLUE));
         coloredCircles.add(new ColoredCircle(this, 4.5f, 5f, 0.1f, 30, ColorType.BLUE));
         coloredCircles.add(new ColoredCircle(this, 2.5f, 4f, 0.1f, 45, ColorType.BLUE));
@@ -53,6 +43,16 @@ public class LevelStage extends Stage {
         coloredCircles.add(new ColoredCircle(this, 3.5f, 0f, 0.1f, 320, ColorType.BLUE));
         circles.put(ColorType.BLUE, coloredCircles);
         colorPowers.put(ColorType.BLUE, 0.6f);
+        coloredCircles = new ArrayList<>();
+        coloredCircles.add(new ColoredCircle(this, 2f, 0f, 0.05f, 30, ColorType.WHITE));
+        coloredCircles.add(new ColoredCircle(this, 3f, 1f, 0.1f, 70, ColorType.WHITE));
+        coloredCircles.add(new ColoredCircle(this, 4f, 2f, 0.1f, 130, ColorType.WHITE));
+        coloredCircles.add(new ColoredCircle(this, 5f, 3f, 0.05f, 45, ColorType.WHITE));
+        coloredCircles.add(new ColoredCircle(this, 6f, 4f, 0.1f, 180, ColorType.WHITE));
+        coloredCircles.add(new ColoredCircle(this, 7f, 5f, 0.1f, 10, ColorType.WHITE));
+        coloredCircles.add(new ColoredCircle(this, 6f, 5f, 0.1f, 160, ColorType.WHITE));
+        circles.put(ColorType.WHITE, coloredCircles);
+        colorPowers.put(ColorType.WHITE, 0.6f);
         setupActors();
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
     }
