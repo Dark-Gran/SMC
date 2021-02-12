@@ -31,7 +31,7 @@ public class LevelStage extends Stage {
     private void setupActors() {
         for (ColoredCircle circle :circles) {
             this.addActor(circle);
-            circle.addListener(new ClickListener()
+            circle.addListener(new ClickListener() //TODO DEBUG
             {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
