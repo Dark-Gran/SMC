@@ -28,10 +28,12 @@ public class CollisionListener implements ContactListener {
             contact.setEnabled(false);
             ColoredCircle circleA = (ColoredCircle) contact.getFixtureA().getBody().getUserData();
             ColoredCircle circleB = (ColoredCircle) contact.getFixtureB().getBody().getUserData();
-            if (circleA.getRadius() > circleB.getRadius()) {
-                circleA.merge(circleB);
-            } else {
-                circleB.merge(circleA);
+            if (!circleA.isDisabled() && !circleB.isDisabled()) {
+                if (circleA.getRadius() > circleB.getRadius()) {
+                    circleA.merge(circleB);
+                } else {
+                    circleB.merge(circleA);
+                }
             }
         }
     }

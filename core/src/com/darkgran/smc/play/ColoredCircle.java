@@ -132,7 +132,16 @@ public class ColoredCircle extends Actor {
         return circleBody;
     }
 
+    public boolean isDisabled() {
+        return mergingAway || gone;
+    }
+
     public boolean isGone() {
         return gone;
     }
+
+    public boolean isMergingAway() {
+        return mergingAway;
+    }
+
 }
