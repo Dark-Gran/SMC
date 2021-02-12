@@ -3,14 +3,14 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class CircleBody {
-    private final Body dynamicBody;
+    private final Body body;
 
     public CircleBody(final World world, float x, float y, float radius) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        dynamicBody = world.createBody(myBodyDef);
-        dynamicBody.setTransform(x, y, 0f);
+        body = world.createBody(myBodyDef);
+        body.setTransform(x, y, 0f);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(radius);
 
@@ -20,14 +20,14 @@ public class CircleBody {
         boxFixtureDef.friction = 0f;
         boxFixtureDef.restitution = 0f;
         boxFixtureDef.isSensor = true;
-        dynamicBody.createFixture(boxFixtureDef);
+        body.createFixture(boxFixtureDef);
 
-        dynamicBody.setFixedRotation(false);
+        body.setFixedRotation(false);
 
     }
 
-    public Body getDynamicBody() {
-        return dynamicBody;
+    public Body getBody() {
+        return body;
     }
 
 }
