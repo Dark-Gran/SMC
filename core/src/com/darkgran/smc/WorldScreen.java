@@ -52,6 +52,7 @@ public class WorldScreen implements Screen {
         worldTimer += Math.min(delta, 0.25f);
         if (worldTimer >= STEP_TIME) {
             worldTimer -= STEP_TIME;
+            currentLevel.update();
             world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
         }
     }

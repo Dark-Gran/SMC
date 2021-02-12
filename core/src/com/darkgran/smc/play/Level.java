@@ -10,7 +10,18 @@ public class Level {
     public Level(final WorldScreen worldScreen) {
         this.worldScreen = worldScreen;
         System.out.println("Starting Level.");
-        circles.add(new ColoredCircle(this, 0f, 0f, 0f, 0f, MainColor.WHITE));
+        circles.add(new ColoredCircle(this, 4.8f, 2.4f, 0.2f, MainColor.WHITE));
+        circles.add(new ColoredCircle(this, 4.8f, 2.4f, 0.2f, MainColor.WHITE));
+        circles.add(new ColoredCircle(this, 4.8f, 2.4f, 0.2f, MainColor.WHITE));
+        circles.add(new ColoredCircle(this, 4.8f, 2.4f, 0.2f, MainColor.WHITE));
+        circles.add(new ColoredCircle(this, 4.8f, 2.4f, 0.2f, MainColor.WHITE));
+        circles.add(new ColoredCircle(this, 4.8f, 2.4f, 0.2f, MainColor.WHITE));
+    }
+
+    public void update() {
+        for (ColoredCircle circle : circles) {
+            circle.update();
+        }
     }
 
     public WorldScreen getWorldScreen() {
