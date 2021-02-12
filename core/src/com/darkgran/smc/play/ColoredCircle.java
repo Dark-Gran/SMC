@@ -2,14 +2,13 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.darkgran.smc.WorldScreen;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-public class ColoredCircle {
+public class ColoredCircle extends Actor {
     private final double DEGREES_TO_RADIANS = Math.PI/180;
     private final CircleBody circleBody;
     private MainColor color;
@@ -17,12 +16,17 @@ public class ColoredCircle {
     private float speed;
     private float angle;
 
-    public ColoredCircle(final Level level, float x, float y, float radius, MainColor color) {
-        circleBody = new CircleBody(level.getWorldScreen().getWorld(), x, y, radius);
+    public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, MainColor color) {
+        this.setBounds(x, y, radius*2, radius*2);
+        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), x, y, radius);
         if (radius < 0.01f) { radius = 0.01f; }
         this.radius = radius;
-        this.speed = 2f;
-        this.angle = (float) (ThreadLocalRandom.current().nextInt(0, 360)*DEGREES_TO_RADIANS);
+        this.speed = 0f;
+        this.angle = (float) (degrees*DEGREES_TO_RADIANS);
+    }
+
+    public void click() {
+        System.out.println("CLICKED!");
     }
 
     public void update() {
