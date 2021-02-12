@@ -33,7 +33,7 @@ public class LevelStage extends Stage {
                     if (event.getTarget() instanceof ColoredCircle) {
                         ((ColoredCircle) event.getTarget()).click();
                     }
-                    return false;
+                    return true;
                 }
             });
         }
