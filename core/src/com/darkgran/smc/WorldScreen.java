@@ -53,6 +53,7 @@ public class WorldScreen implements Screen {
         collisionListener = new CollisionListener(levelStage);
         world.setContactListener(collisionListener);
         levelStage.loadLevel(0);
+        Gdx.input.setCursorCatched(false);
     }
 
     @Override
