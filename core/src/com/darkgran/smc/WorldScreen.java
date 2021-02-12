@@ -21,6 +21,7 @@ public class WorldScreen implements Screen {
     public static final float WORLD_WIDTH = 9.6f;
     public static final float WORLD_HEIGHT = 4.8f;
 
+    private final SaveMeCircles smc;
     private final Box2DDebugRenderer debugRenderer;
     private final ShapeRenderer shapeRenderer;
     private final OrthographicCamera camera;
@@ -30,6 +31,7 @@ public class WorldScreen implements Screen {
     private LevelStage currentLevelStage;
 
     public WorldScreen(final SaveMeCircles smc) {
+        this.smc = smc;
         Gdx.input.setInputProcessor(smc.getInputMultiplexer());
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
@@ -106,4 +108,9 @@ public class WorldScreen implements Screen {
 
     @Override
     public void hide() { }
+
+    public SaveMeCircles getSmc() {
+        return smc;
+    }
+
 }
