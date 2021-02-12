@@ -2,6 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.darkgran.smc.WorldScreen;
 
@@ -18,7 +19,7 @@ public class ColoredCircle extends Actor {
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, MainColor color) {
         if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
-        this.setBounds(x, y, radius*2, radius*2);
+        this.setBounds(x-radius, y-radius, radius*2, radius*2);
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), x, y, radius);
         this.radius = radius;
         this.speed = 0f;
@@ -61,11 +62,16 @@ public class ColoredCircle extends Actor {
         shapeRenderer.end();
     }
 
+    public void setRadius(float radius) {
+        this.radius = radius;
+        if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
+        this.setBounds(circleBody.getBody().getPosition().x-radius, circleBody.getBody().getPosition().y-radius, radius*2, radius*2);
+        Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
+        shape.setRadius(radius);
+    }
+
     public float getRadius() {
         return radius;
     }
 
-    public void setRadius(float radius) {
-        this.radius = radius;
-    }
 }

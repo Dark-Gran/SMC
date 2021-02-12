@@ -2,6 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.WorldScreen;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 public class LevelStage extends Stage {
     public static final float MIN_RADIUS = 0.05f;
@@ -17,6 +17,13 @@ public class LevelStage extends Stage {
     private final ArrayList<ColoredCircle> circles = new ArrayList<ColoredCircle>();
     private ColoredCircle lastTouch;
     private final float colorPower;
+    private final InputAdapter generalInputProcessor = new InputAdapter() {
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            lastTouch = null;
+            return false;
+        }
+    };
 
     public LevelStage(final WorldScreen worldScreen, Viewport viewport) {
         super(viewport);
@@ -26,12 +33,13 @@ public class LevelStage extends Stage {
         circles.add(new ColoredCircle(this, 5f, 2f, 0.2f, 45, MainColor.WHITE));
         colorPower = 0.25f;
         setupActors();
+        worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
     }
 
     private void setupActors() {
         for (ColoredCircle circle :circles) {
             this.addActor(circle);
-            circle.addListener(new ClickListener() //TODO DEBUG
+            circle.addListener(new ClickListener() //DEBUG
             {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -39,14 +47,7 @@ public class LevelStage extends Stage {
                     if (event.getTarget() instanceof ColoredCircle) {
                         lastTouch = (ColoredCircle) event.getTarget();
                     }
-                    return false;
-                }
-
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    if (event.getTarget() == lastTouch) {
-                        lastTouch = null;
-                    }
+                    return true;
                 }
             });
         }
@@ -81,9 +82,9 @@ public class LevelStage extends Stage {
                     for (int i = 0; i < eligibles.size(); i++) {
                         ColoredCircle circle = eligibles.get(i);
                         if (circle.getRadius()-changeDown >= LevelStage.MIN_RADIUS) {
-                            circle.setRadius(eligibles.get(i).getRadius()-changeDown);
+                            circle.setRadius(circle.getRadius()-changeDown);
                         } else {
-                            spareChange = changeDown - (eligibles.get(i).getRadius()-LevelStage.MIN_RADIUS);
+                            spareChange = changeDown - (circle.getRadius()-LevelStage.MIN_RADIUS);
                             circle.setRadius(LevelStage.MIN_RADIUS);
                         }
                         if (spareChange > 0) {
