@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.darkgran.smc.play.Level;
+import com.darkgran.smc.play.LevelStage;
 
 public class WorldScreen implements Screen {
     //WorldSettings
@@ -27,7 +27,7 @@ public class WorldScreen implements Screen {
     private final Viewport viewport;
     private World world;
     private float worldTimer = 0;
-    private Level currentLevel;
+    private LevelStage currentLevelStage;
 
     public WorldScreen(final SaveMeCircles smc) {
         Gdx.input.setInputProcessor(smc.getInputMultiplexer());
@@ -40,8 +40,8 @@ public class WorldScreen implements Screen {
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
-        currentLevel = new Level(this, viewport);
-        smc.getInputMultiplexer().addProcessor(currentLevel);
+        currentLevelStage = new LevelStage(this, viewport);
+        smc.getInputMultiplexer().addProcessor(currentLevelStage);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
-        currentLevel.act(delta);
+        currentLevelStage.act(delta);
 
         drawShapes();
         //drawBox2DDebug();
@@ -59,14 +59,14 @@ public class WorldScreen implements Screen {
 
     private void drawShapes() {
         shapeRenderer.setProjectionMatrix(new Matrix4(camera.combined));
-        currentLevel.drawShapes(shapeRenderer);
+        currentLevelStage.drawShapes(shapeRenderer);
     }
 
     public void timeWorld(float delta) {
         worldTimer += Math.min(delta, 0.25f);
         if (worldTimer >= STEP_TIME) {
             worldTimer -= STEP_TIME;
-            currentLevel.update();
+            currentLevelStage.update();
             world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
         }
     }
@@ -86,7 +86,7 @@ public class WorldScreen implements Screen {
 
     @Override
     public void dispose() {
-        currentLevel.dispose();
+        currentLevelStage.dispose();
         world.dispose();
         debugRenderer.dispose();
     }
