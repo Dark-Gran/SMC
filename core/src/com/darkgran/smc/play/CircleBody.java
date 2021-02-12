@@ -19,7 +19,8 @@ public class CircleBody {
         boxFixtureDef.density = 0.1f;
         boxFixtureDef.friction = 0f;
         boxFixtureDef.restitution = 0f;
-        boxFixtureDef.isSensor = true;
+        boxFixtureDef.filter.categoryBits = 1; //"I am a..."
+        boxFixtureDef.filter.maskBits = 1; //"I will collide with..."
         body.createFixture(boxFixtureDef);
 
         body.setFixedRotation(false);

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.darkgran.smc.play.CollisionListener;
 import com.darkgran.smc.play.LevelStage;
 
 public class WorldScreen implements Screen {
@@ -29,6 +30,7 @@ public class WorldScreen implements Screen {
     private World world;
     private float worldTimer = 0;
     private LevelStage currentLevelStage;
+    private final CollisionListener collisionListener;
 
     public WorldScreen(final SaveMeCircles smc) {
         this.smc = smc;
@@ -42,6 +44,8 @@ public class WorldScreen implements Screen {
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
+        collisionListener = new CollisionListener();
+        world.setContactListener(collisionListener);
         currentLevelStage = new LevelStage(this, viewport);
         smc.getInputMultiplexer().addProcessor(currentLevelStage);
     }
