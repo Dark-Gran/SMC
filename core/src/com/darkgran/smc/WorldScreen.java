@@ -62,7 +62,7 @@ public class WorldScreen implements Screen {
         currentLevelStage.act(delta);
 
         drawShapes();
-        drawBox2DDebug();
+        //drawBox2DDebug();
 
         timeWorld(delta);
     }
