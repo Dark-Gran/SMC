@@ -1,5 +1,6 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -23,7 +24,8 @@ public class ColoredCircle extends Actor {
     private boolean mergingAway = false;
     private boolean gone = false;
 
-    public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType color) {
+    public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType colorType) {
+        this.colorType = colorType;
         this.levelStage = levelStage;
         if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
         this.setBounds(x-(radius+COMFORT_RADIUS), y-(radius+COMFORT_RADIUS), (radius+COMFORT_RADIUS)*2, (radius+COMFORT_RADIUS)*2);
@@ -33,11 +35,26 @@ public class ColoredCircle extends Actor {
         this.angle = (float) (degrees*DEGREES_TO_RADIANS);
     }
 
-    public void merge(ColoredCircle circle) {
-        if (!circle.mergingAway) {
-            mergeBuffer += circle.getRadius();
-            circle.unsign();
+    public void interact(ColoredCircle circle) {
+        if (!isDisabled() && !circle.isDisabled()) {
+            switch (getInteractionType(colorType, circle.getColorType())) {
+                case MERGER:
+                    merge(circle);
+                    break;
+            }
         }
+    }
+
+    private InteractionType getInteractionType(ColorType typeA, ColorType typeB) {
+        if (typeA == typeB) {
+            return InteractionType.MERGER;
+        }
+        return InteractionType.NONE;
+    }
+
+    public void merge(ColoredCircle circle) {
+        mergeBuffer += circle.getRadius();
+        circle.unsign();
     }
 
     public void unsign() {
@@ -99,10 +116,13 @@ public class ColoredCircle extends Actor {
 
     public void drawShapes(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        shapeRenderer.setColor(this.colorType.getColor());
         int segments = Math.round(radius*100);
         if (segments < 10) { segments = 10; }
         else if (segments > 100) { segments = 50; }
         shapeRenderer.circle(circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, radius, segments);
+        shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
     }
 

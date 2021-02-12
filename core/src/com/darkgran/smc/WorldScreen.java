@@ -91,7 +91,7 @@ public class WorldScreen implements Screen {
                     if (circle.getListeners().size > 0) {
                         circle.removeListener(circle.getListeners().get(0));
                     }
-                    currentLevelStage.getCircles().remove(circle);
+                    currentLevelStage.removeCircle(circle);
                     circle.remove();
                     world.destroyBody(circle.getCircleBody().getBody());
                 }
