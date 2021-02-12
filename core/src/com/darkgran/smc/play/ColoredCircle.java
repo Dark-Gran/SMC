@@ -13,22 +13,22 @@ public class ColoredCircle extends Actor {
     private final double DEGREES_TO_RADIANS = Math.PI/180;
     private final float COMFORT_RADIUS = 0.1f;
     private final CircleBody circleBody;
-    private MainColor color;
+    private ColorType colorType;
     private float radius;
     private float speed;
     private float angle;
 
-    public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, MainColor color) {
+    public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType color) {
         if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
         this.setBounds(x-(radius+COMFORT_RADIUS), y-(radius+COMFORT_RADIUS), (radius+COMFORT_RADIUS)*2, (radius+COMFORT_RADIUS)*2);
-        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), x, y, radius);
+        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius);
         this.radius = radius;
         updateSpeed();
         this.angle = (float) (degrees*DEGREES_TO_RADIANS);
     }
 
     private void updateSpeed() {
-        speed = 2f-radius*5;
+        speed = 2f-radius*6;
         if (speed < 0) { speed = 0; }
     }
 
@@ -85,6 +85,10 @@ public class ColoredCircle extends Actor {
 
     public float getRadius() {
         return radius;
+    }
+
+    public ColorType getColorType() {
+        return colorType;
     }
 
 }

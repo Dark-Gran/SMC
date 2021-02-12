@@ -29,12 +29,12 @@ public class LevelStage extends Stage {
         super(viewport);
         this.worldScreen = worldScreen;
         System.out.println("Starting Level.");
-        circles.add(new ColoredCircle(this, 2f, 1f, 0.05f, 0, MainColor.WHITE));
-        circles.add(new ColoredCircle(this, 5f, 2f, 0.2f, 45, MainColor.WHITE));
-        circles.add(new ColoredCircle(this, 7f, 3f, 0.2f, 200, MainColor.WHITE));
-        circles.add(new ColoredCircle(this, 2f, 1f, 0.05f, 45, MainColor.WHITE));
-        circles.add(new ColoredCircle(this, 5f, 2f, 0.2f, 200, MainColor.WHITE));
-        circles.add(new ColoredCircle(this, 7f, 3f, 0.2f, 0, MainColor.WHITE));
+        circles.add(new ColoredCircle(this, 2f, 1f, 0.05f, 0, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 5f, 2f, 0.2f, 45, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 7f, 3f, 0.2f, 200, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 2f, 1f, 0.05f, 45, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 5f, 2f, 0.2f, 200, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 7f, 3f, 0.2f, 0, ColorType.WHITE));
         colorPower = 0.9f;
         setupActors();
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);

@@ -19,7 +19,9 @@ public class CollisionListener implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-
+        if (contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle && contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle) {
+            contact.setEnabled(false);
+        }
     }
 
     @Override
