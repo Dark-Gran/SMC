@@ -2,13 +2,16 @@ package com.darkgran.smc;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SaveMeCircles extends Game {
 	private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
+	public SpriteBatch batch;
 
 	@Override
 	public void create () {
-		this.setScreen(new WorldScreen(this));
+		batch = new SpriteBatch();
+		this.setScreen(new IntroScreen(this));
 	}
 
 	@Override
@@ -18,7 +21,7 @@ public class SaveMeCircles extends Game {
 	
 	@Override
 	public void dispose () {
-
+		batch.dispose();
 	}
 
 	public InputMultiplexer getInputMultiplexer() {
