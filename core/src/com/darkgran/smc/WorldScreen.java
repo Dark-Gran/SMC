@@ -32,7 +32,7 @@ public class WorldScreen implements Screen {
     private final Viewport viewport;
     private World world;
     private float worldTimer = 0;
-    private LevelStage currentLevelStage;
+    private LevelStage levelStage;
     private final CollisionListener collisionListener;
     private ArrayList corpses = new ArrayList();
 
@@ -48,10 +48,11 @@ public class WorldScreen implements Screen {
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
-        currentLevelStage = new LevelStage(this, viewport);
-        smc.getInputMultiplexer().addProcessor(currentLevelStage);
-        collisionListener = new CollisionListener(currentLevelStage);
+        levelStage = new LevelStage(this, viewport);
+        smc.getInputMultiplexer().addProcessor(levelStage);
+        collisionListener = new CollisionListener(levelStage);
         world.setContactListener(collisionListener);
+        levelStage.loadLevel(0);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
-        currentLevelStage.act(delta);
+        levelStage.act(delta);
 
         drawShapes();
         //drawBox2DDebug();
@@ -69,14 +70,14 @@ public class WorldScreen implements Screen {
 
     private void drawShapes() {
         shapeRenderer.setProjectionMatrix(new Matrix4(camera.combined));
-        currentLevelStage.drawShapes(shapeRenderer);
+        levelStage.drawShapes(shapeRenderer);
     }
 
     public void timeWorld(float delta) {
         worldTimer += Math.min(delta, 0.25f);
         if (worldTimer >= STEP_TIME) {
             worldTimer -= STEP_TIME;
-            currentLevelStage.update();
+            levelStage.update();
             reapWorld();
             world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
         }
@@ -91,7 +92,7 @@ public class WorldScreen implements Screen {
                     if (circle.getListeners().size > 0) {
                         circle.removeListener(circle.getListeners().get(0));
                     }
-                    currentLevelStage.removeCircle(circle);
+                    levelStage.removeCircle(circle);
                     circle.remove();
                     world.destroyBody(circle.getCircleBody().getBody());
                 }
@@ -115,7 +116,7 @@ public class WorldScreen implements Screen {
 
     @Override
     public void dispose() {
-        currentLevelStage.dispose();
+        levelStage.dispose();
         world.dispose();
         debugRenderer.dispose();
     }
