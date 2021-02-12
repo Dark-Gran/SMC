@@ -29,12 +29,12 @@ public class LevelStage extends Stage {
         super(viewport);
         this.worldScreen = worldScreen;
         System.out.println("Starting Level.");
-        circles.add(new ColoredCircle(this, 2f, 1f, 0.05f, 0, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 5f, 2f, 0.2f, 45, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 7f, 3f, 0.2f, 200, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 2f, 1f, 0.05f, 45, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 5f, 2f, 0.2f, 200, ColorType.WHITE));
-        circles.add(new ColoredCircle(this, 7f, 3f, 0.2f, 0, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 2f, 0f, 0.05f, 0, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 3f, 1f, 0.2f, 45, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 4f, 2f, 0.2f, 200, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 5f, 3f, 0.05f, 45, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 6f, 4f, 0.2f, 200, ColorType.WHITE));
+        circles.add(new ColoredCircle(this, 7f, 5f, 0.2f, 0, ColorType.WHITE));
         colorPower = 0.9f;
         setupActors();
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
@@ -43,7 +43,7 @@ public class LevelStage extends Stage {
     private void setupActors() {
         for (ColoredCircle circle :circles) {
             this.addActor(circle);
-            circle.addListener(new ClickListener() //DEBUG
+            circle.addListener(new ClickListener()
             {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -112,6 +112,10 @@ public class LevelStage extends Stage {
 
     public WorldScreen getWorldScreen() {
         return worldScreen;
+    }
+
+    public ArrayList<ColoredCircle> getCircles() {
+        return circles;
     }
 
     public void dispose() { }

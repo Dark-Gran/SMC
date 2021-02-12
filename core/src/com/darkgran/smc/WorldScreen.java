@@ -11,7 +11,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.play.CollisionListener;
+import com.darkgran.smc.play.ColoredCircle;
 import com.darkgran.smc.play.LevelStage;
+
+import java.util.ArrayList;
 
 public class WorldScreen implements Screen {
     //WorldSettings
@@ -31,6 +34,7 @@ public class WorldScreen implements Screen {
     private float worldTimer = 0;
     private LevelStage currentLevelStage;
     private final CollisionListener collisionListener;
+    private ArrayList corpses = new ArrayList();
 
     public WorldScreen(final SaveMeCircles smc) {
         this.smc = smc;
@@ -44,10 +48,10 @@ public class WorldScreen implements Screen {
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
-        collisionListener = new CollisionListener();
-        world.setContactListener(collisionListener);
         currentLevelStage = new LevelStage(this, viewport);
         smc.getInputMultiplexer().addProcessor(currentLevelStage);
+        collisionListener = new CollisionListener(currentLevelStage);
+        world.setContactListener(collisionListener);
     }
 
     @Override
@@ -58,7 +62,7 @@ public class WorldScreen implements Screen {
         currentLevelStage.act(delta);
 
         drawShapes();
-        //drawBox2DDebug();
+        drawBox2DDebug();
 
         timeWorld(delta);
     }
@@ -73,7 +77,20 @@ public class WorldScreen implements Screen {
         if (worldTimer >= STEP_TIME) {
             worldTimer -= STEP_TIME;
             currentLevelStage.update();
+            reapWorld();
             world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+        }
+    }
+
+    private void reapWorld() {
+        for (int i = 0; i < corpses.size(); i++) {
+            if (corpses.get(i) != null) {
+                Object corpse = corpses.get(i);
+                if (corpse instanceof ColoredCircle) {
+                    world.destroyBody(((ColoredCircle) corpse).getCircleBody().getBody());
+                }
+                corpses.remove(corpse);
+            }
         }
     }
 
@@ -117,4 +134,7 @@ public class WorldScreen implements Screen {
         return smc;
     }
 
+    public ArrayList getCorpses() {
+        return corpses;
+    }
 }
