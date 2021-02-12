@@ -1,5 +1,5 @@
 package com.darkgran.smc.play;
 
-public enum MainColor {
+public enum ColorType {
     WHITE
 }
