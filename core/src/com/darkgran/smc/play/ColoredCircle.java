@@ -62,7 +62,7 @@ public class ColoredCircle extends Actor {
     }
 
     private void updateSpeed() {
-        speed = 2f-radius*6;
+        speed = 0.1f / (mergingAway ? LevelStage.MIN_RADIUS : radius);
         if (speed < 0) { speed = 0; }
     }
 
@@ -118,7 +118,7 @@ public class ColoredCircle extends Actor {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         shapeRenderer.setColor(this.colorType.getColor());
-        int segments = Math.round(radius*100);
+        int segments = Math.round(radius*200);
         if (segments < 10) { segments = 10; }
         else if (segments > 100) { segments = 50; }
         shapeRenderer.circle(circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, radius, segments);
