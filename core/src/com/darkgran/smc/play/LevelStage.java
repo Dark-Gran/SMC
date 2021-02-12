@@ -85,7 +85,11 @@ public class LevelStage extends Stage {
             }
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && lastTouch != null) {
-            distributedSizeChange(lastTouch);
+            if (lastTouch.isDisabled()) {
+                lastTouch = null;
+            } else {
+                distributedSizeChange(lastTouch);
+            }
         }
     }
 
