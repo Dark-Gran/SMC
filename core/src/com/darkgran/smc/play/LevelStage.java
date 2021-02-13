@@ -104,6 +104,7 @@ public class LevelStage extends Stage {
     public void switchLevel(boolean forward) {
         int newID = forward ? currentLevel+1 : currentLevel-1;
         if (LEVEL_LIBRARY.levelExists(newID)) {
+            disableContinue();
             clearLevel();
             loadLevel(newID);
         }
