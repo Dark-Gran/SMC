@@ -17,6 +17,7 @@ import java.util.Map;
 public class LevelStage extends Stage {
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
+    public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
     private final WorldScreen worldScreen;
     private final HashMap<ColorType, ArrayList<ColoredCircle>> circles = new HashMap<>();
     private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
@@ -32,29 +33,39 @@ public class LevelStage extends Stage {
     public LevelStage(final WorldScreen worldScreen, Viewport viewport) {
         super(viewport);
         this.worldScreen = worldScreen;
-        System.out.println("Starting Level.");
-        ArrayList<ColoredCircle> coloredCircles = new ArrayList<>();
-        coloredCircles.add(new ColoredCircle(this, 1.5f, 5.5f, 0.05f, 70, ColorType.BLUE));
-        coloredCircles.add(new ColoredCircle(this, 4.5f, 5f, 0.1f, 30, ColorType.BLUE));
-        coloredCircles.add(new ColoredCircle(this, 2.5f, 4f, 0.1f, 45, ColorType.BLUE));
-        coloredCircles.add(new ColoredCircle(this, 6.5f, 3f, 0.05f, 130, ColorType.BLUE));
-        coloredCircles.add(new ColoredCircle(this, 4.5f, 2f, 0.1f, 10, ColorType.BLUE));
-        coloredCircles.add(new ColoredCircle(this, 8f, 1f, 0.1f, 180, ColorType.BLUE));
-        coloredCircles.add(new ColoredCircle(this, 3.5f, 0f, 0.1f, 320, ColorType.BLUE));
-        circles.put(ColorType.BLUE, coloredCircles);
-        colorPowers.put(ColorType.BLUE, 0.6f);
-        coloredCircles = new ArrayList<>();
-        coloredCircles.add(new ColoredCircle(this, 2f, 0f, 0.05f, 30, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 3f, 1f, 0.1f, 70, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 4f, 2f, 0.1f, 130, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 5f, 3f, 0.05f, 45, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 6f, 4f, 0.1f, 180, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 7f, 5f, 0.1f, 10, ColorType.WHITE));
-        coloredCircles.add(new ColoredCircle(this, 6f, 5f, 0.1f, 160, ColorType.WHITE));
-        circles.put(ColorType.WHITE, coloredCircles);
-        colorPowers.put(ColorType.WHITE, 0.6f);
-        setupActors();
+        LEVEL_LIBRARY.loadLocal("content/levels.json");
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
+    }
+
+    public void loadLevel(int levelNum) {
+        System.out.println("Launching Level: "+2);
+        LevelInfo levelInfo = LEVEL_LIBRARY.getLevel(2);
+        if (levelInfo != null) {
+            ArrayList<ColoredCircle> whites = new ArrayList<>();
+            float whitePower = 0f;
+            ArrayList<ColoredCircle> blues = new ArrayList<>();
+            float bluePower = 0f;
+            for (CircleInfo circleInfo : levelInfo.getCircles()) {
+                if (circleInfo.getType() == ColorType.WHITE) {
+                    whites.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.WHITE));
+                    whitePower += circleInfo.getRadius();
+                } else {
+                    blues.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.BLUE));
+                    bluePower += circleInfo.getRadius();
+                }
+            }
+            if (whitePower > 0f && whites.size() > 0) {
+                circles.put(ColorType.WHITE, whites);
+                colorPowers.put(ColorType.WHITE, whitePower);
+            }
+            if (bluePower > 0f && blues.size() > 0) {
+                circles.put(ColorType.BLUE, blues);
+                colorPowers.put(ColorType.BLUE, bluePower);
+            }
+            setupActors();
+        } else {
+            System.out.println("Level-Loading Error!");
+        }
     }
 
     private void setupActors() {
