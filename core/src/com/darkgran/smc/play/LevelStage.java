@@ -55,7 +55,7 @@ public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3
         this.worldScreen = worldScreen;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
-        continueButton.setBounds(0, 0, 1f, 1f); //TODO 1. change viewport size + render circles using PPM
+        continueButton.setPosition(0, 0);
         this.addActor(continueButton);
     }
 
