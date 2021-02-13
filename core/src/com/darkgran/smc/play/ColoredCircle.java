@@ -136,8 +136,10 @@ public class ColoredCircle extends Actor {
         else if (radius < ACTUAL_MIN_RADIUS) { radius = ACTUAL_MIN_RADIUS; }
         this.radius = radius;
         refreshActorBounds();
-        Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
-        shape.setRadius(radius);
+        if (circleBody.getBody().getFixtureList().size > 0) {
+            Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
+            shape.setRadius(radius);
+        }
         updateSpeed();
     }
 
