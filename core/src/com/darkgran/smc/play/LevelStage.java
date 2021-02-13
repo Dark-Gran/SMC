@@ -14,7 +14,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelStage extends Stage { //TODO END+SWITCH LEVEL
+public class LevelStage extends Stage { //TODO END+SWITCH LEVEL (then: 1st lvl (txt included))
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
