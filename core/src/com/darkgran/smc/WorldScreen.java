@@ -63,7 +63,7 @@ public class WorldScreen implements Screen {
             return true;
         }
     };
-    private final BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/verdana.fnt"));
+    private final BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/bahnschrift.fnt"));
 
     public WorldScreen(final SaveMeCircles smc) {
         this.smc = smc;
