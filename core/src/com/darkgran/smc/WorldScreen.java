@@ -90,17 +90,21 @@ public class WorldScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
 
         camera.update();
 
-        shapeRenderer.setProjectionMatrix(new Matrix4(camera.combined));
+        shapeRenderer.setProjectionMatrix(camera.combined);
         levelStage.drawShapes(shapeRenderer);
 
-        smc.batch.setProjectionMatrix(new Matrix4(camera.combined));
+        smc.batch.setProjectionMatrix(camera.combined);
         smc.batch.begin();
-        smc.batch.setColor(1, 1, 1, 1);
+        smc.batch.setColor(1, 1, 1, 1f);
         levelStage.drawSprites(smc.batch);
         smc.batch.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
         levelStage.act(delta);
         levelStage.draw();

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,7 +22,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelStage extends Stage { //TODO level txt
+public class LevelStage extends Stage {
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
@@ -31,6 +32,8 @@ public class LevelStage extends Stage { //TODO level txt
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
     private boolean completed = false;
+    private int timer = 0;
+    private String introMessage;
 
     private final Texture continueTexture = new Texture("images/continue.png");
     public final ImageButton continueButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(continueTexture)));
@@ -45,6 +48,7 @@ public class LevelStage extends Stage { //TODO level txt
 
     public void loadLevel(int levelNum) {
         if (levelNum >= 0) {
+            timer = 0;
             completed = false;
             lastTouch = null;
             System.out.println("Launching Level: " + levelNum);
@@ -73,6 +77,7 @@ public class LevelStage extends Stage { //TODO level txt
                     colorPowers.put(ColorType.BLUE, bluePower);
                 }
                 setupActors();
+                introMessage = levelInfo.getIntro();
             } else {
                 System.out.println("Level-Loading Error!");
             }
@@ -105,6 +110,7 @@ public class LevelStage extends Stage { //TODO level txt
     }
 
     private void clearLevel() {
+        introMessage = null;
         lastTouch = null;
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
@@ -164,6 +170,7 @@ public class LevelStage extends Stage { //TODO level txt
             completed = true;
             enableContinue();
         }
+        timer++;
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) {
@@ -214,7 +221,21 @@ public class LevelStage extends Stage { //TODO level txt
     }
 
     public void drawSprites(SpriteBatch batch) {
-        drawText(worldScreen.getFont(), batch, "TEST", 30, 30, Color.WHITE);
+        if (timer < 150) { //"Intro"
+            drawLevelIntro(batch, timer);
+        }
+    }
+
+    private void drawLevelIntro(SpriteBatch batch, int time) {
+        if (introMessage != null) {
+            GlyphLayout layout = new GlyphLayout();
+            layout.setText(new BitmapFont(), introMessage);
+            float alpha = 1;
+            if (time > 100) {
+                alpha = (float) ((150 - time) * 2) / 100;
+            }
+            drawText(worldScreen.getFont(), batch, introMessage, Math.round(SaveMeCircles.SW / 2 - layout.width), Math.round(SaveMeCircles.SH / 5 - layout.height), new Color(1, 1, 1, alpha));
+        }
     }
 
     public void drawText(BitmapFont font, SpriteBatch batch, String txt, float x, float y, Color color) {

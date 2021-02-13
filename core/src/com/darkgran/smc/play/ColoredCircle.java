@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.darkgran.smc.SaveMeCircles;
 import com.darkgran.smc.WorldScreen;
 
 import static java.lang.Math.cos;
