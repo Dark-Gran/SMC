@@ -18,7 +18,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2. Level intro txt
+public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3. Level intro txt
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
@@ -55,7 +55,7 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
         this.worldScreen = worldScreen;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
-        continueButton.setBounds(0, 0, 1f, 1f); //TODO
+        continueButton.setBounds(0, 0, 1f, 1f); //TODO 1. change viewport size + render circles using PPM
         this.addActor(continueButton);
     }
 
