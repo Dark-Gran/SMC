@@ -95,17 +95,17 @@ public class ColoredCircle extends Actor {
             body.setLinearVelocity((float) speedX, (float) speedY);
         }
         //Screen Edge
-        if (body.getPosition().x-radius > WorldScreen.WORLD_WIDTH || body.getPosition().x+radius < 0 || body.getPosition().y-radius > WorldScreen.WORLD_HEIGHT || body.getPosition().y+radius < 0) {
+        if (body.getPosition().x-radius >= WorldScreen.WORLD_WIDTH || body.getPosition().x+radius <= 0 || body.getPosition().y-radius >= WorldScreen.WORLD_HEIGHT || body.getPosition().y+radius <= 0) {
             float newX = body.getPosition().x;
             float newY = body.getPosition().y;
-            if (body.getPosition().x > WorldScreen.WORLD_WIDTH) {
+            if (body.getPosition().x-radius >= WorldScreen.WORLD_WIDTH) {
                 newX = 0-radius;
-            } else if (body.getPosition().x < 0) {
+            } else if (body.getPosition().x+radius <= 0) {
                 newX = WorldScreen.WORLD_WIDTH+radius;
             }
-            if (body.getPosition().y > WorldScreen.WORLD_HEIGHT) {
+            if (body.getPosition().y-radius >= WorldScreen.WORLD_HEIGHT) {
                 newY = 0-radius;
-            } else if (body.getPosition().y < 0) {
+            } else if (body.getPosition().y+radius <= 0) {
                 newY = WorldScreen.WORLD_HEIGHT+radius;
             }
             body.setTransform(newX, newY, body.getAngle());
