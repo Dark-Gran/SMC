@@ -14,7 +14,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelStage extends Stage { //TODO END+SWITCH LEVEL (then: 1st lvl (txt included))
+public class LevelStage extends Stage {
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
@@ -27,7 +27,20 @@ public class LevelStage extends Stage { //TODO END+SWITCH LEVEL (then: 1st lvl (
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             lastTouch = null;
-            return false;
+            return true;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            switch (keycode) {
+                case Input.Keys.LEFT:
+                    switchLevel(false);
+                    break;
+                case Input.Keys.RIGHT:
+                    switchLevel(true);
+                    break;
+            }
+            return true;
         }
     };
 
@@ -40,6 +53,7 @@ public class LevelStage extends Stage { //TODO END+SWITCH LEVEL (then: 1st lvl (
 
     public void loadLevel(int levelNum) {
         if (levelNum >= 0) {
+            lastTouch = null;
             System.out.println("Launching Level: " + levelNum);
             currentLevel = levelNum;
             LevelInfo levelInfo = LEVEL_LIBRARY.getLevel(levelNum);
@@ -89,13 +103,32 @@ public class LevelStage extends Stage { //TODO END+SWITCH LEVEL (then: 1st lvl (
         }
     }
 
+    private void switchLevel(boolean forward) {
+        int newID = forward ? currentLevel+1 : currentLevel-1;
+        if (LEVEL_LIBRARY.levelExists(newID)) {
+            clearLevel();
+            loadLevel(newID);
+        }
+    }
+
+    private void clearLevel() {
+        lastTouch = null;
+        for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
+            for (ColoredCircle circle : entry.getValue()) {
+                worldScreen.getWorld().destroyBody(circle.getCircleBody().getBody());
+            }
+        }
+        circles.clear();
+        colorPowers.clear();
+    }
+
     public void update() {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 if (!circle.isGone()) {
                     circle.update();
                 } else {
-                    worldScreen.getCorpses().add(circle); //TODO sync
+                    worldScreen.getCorpses().add(circle);
                 }
             }
         }
@@ -164,9 +197,17 @@ public class LevelStage extends Stage { //TODO END+SWITCH LEVEL (then: 1st lvl (
         }
     }
 
+    public void dispose() { }
+
     public WorldScreen getWorldScreen() {
         return worldScreen;
     }
 
-    public void dispose() { }
+    public ColoredCircle getLastTouch() {
+        return lastTouch;
+    }
+
+    public void setLastTouch(ColoredCircle lastTouch) {
+        this.lastTouch = lastTouch;
+    }
 }

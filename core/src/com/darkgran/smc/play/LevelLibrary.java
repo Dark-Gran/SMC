@@ -23,4 +23,13 @@ public class LevelLibrary {
         return null;
     }
 
+    public boolean levelExists(int id) {
+        for (LevelInfo levelInfo : levels) {
+            if (levelInfo.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
