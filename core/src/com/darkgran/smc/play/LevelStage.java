@@ -2,8 +2,10 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -32,6 +34,7 @@ public class LevelStage extends Stage { //TODO level txt
 
     private final Texture continueTexture = new Texture("images/continue.png");
     public final ImageButton continueButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(continueTexture)));
+
 
     public LevelStage(final WorldScreen worldScreen, Viewport viewport) {
         super(viewport);
@@ -208,6 +211,15 @@ public class LevelStage extends Stage { //TODO level txt
                 circle.drawShapes(shapeRenderer);
             }
         }
+    }
+
+    public void drawSprites(SpriteBatch batch) {
+        drawText(worldScreen.getFont(), batch, "TEST", 30, 30, Color.WHITE);
+    }
+
+    public void drawText(BitmapFont font, SpriteBatch batch, String txt, float x, float y, Color color) {
+        font.setColor(color);
+        font.draw(batch, txt, x, y);
     }
 
     public void removeCircle(ColoredCircle coloredCircle) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -62,6 +63,8 @@ public class WorldScreen implements Screen {
             return true;
         }
     };
+    private final BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/verdana.fnt"));
+
     public WorldScreen(final SaveMeCircles smc) {
         this.smc = smc;
         Gdx.input.setInputProcessor(smc.getInputMultiplexer());
@@ -87,9 +90,17 @@ public class WorldScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         camera.update();
 
-        drawShapes();
+        shapeRenderer.setProjectionMatrix(new Matrix4(camera.combined));
+        levelStage.drawShapes(shapeRenderer);
+
+        smc.batch.setProjectionMatrix(new Matrix4(camera.combined));
+        smc.batch.begin();
+        smc.batch.setColor(1, 1, 1, 1);
+        levelStage.drawSprites(smc.batch);
+        smc.batch.end();
 
         levelStage.act(delta);
         levelStage.draw();
@@ -97,11 +108,6 @@ public class WorldScreen implements Screen {
         //drawBox2DDebug();
 
         timeWorld(delta);
-    }
-
-    private void drawShapes() {
-        shapeRenderer.setProjectionMatrix(new Matrix4(camera.combined));
-        levelStage.drawShapes(shapeRenderer);
     }
 
     public void timeWorld(float delta) {
@@ -178,4 +184,9 @@ public class WorldScreen implements Screen {
     public ArrayList getCorpses() {
         return corpses;
     }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
 }
