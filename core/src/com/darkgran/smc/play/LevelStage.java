@@ -143,7 +143,6 @@ public class LevelStage extends Stage {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                System.out.println("OK");
                 switchLevel(true);
                 disableContinue();
             }
