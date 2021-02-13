@@ -3,10 +3,14 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.WorldScreen;
 import java.util.ArrayList;
@@ -43,12 +47,37 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
             return true;
         }
     };
+    private final Texture continueTexture = new Texture("images/continue.png");
+    public final ImageButton continueButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(continueTexture)));
 
     public LevelStage(final WorldScreen worldScreen, Viewport viewport) {
         super(viewport);
         this.worldScreen = worldScreen;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
+        continueButton.setPosition(0, 0);
+        this.addActor(continueButton);
+    }
+
+    private void enableContinue() {
+        /*
+
+        exitButton.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+
+                if (getGame().getScreen().getClass() == MainScreen.class) {
+                    System.exit(0);
+                } else  {
+                    final TableStage tableMenu =  getGame().getSuperScreen().getTableMenu();
+                    getGame().getScreen().dispose();
+                    getGame().setScreen(new MainScreen(getGame(), tableMenu));
+                }
+
+            }
+        });*/
     }
 
     public void loadLevel(int levelNum) {
@@ -62,7 +91,7 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
                 float whitePower = 0f;
                 ArrayList<ColoredCircle> blues = new ArrayList<>();
                 float bluePower = 0f;
-                for (CircleInfo circleInfo : levelInfo.getCircles()) {
+                for (CircleInfo circleInfo : levelInfo.getCircles()) { //TODO apply PPM to circles
                     if (circleInfo.getType() == ColorType.WHITE) {
                         whites.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.WHITE));
                         whitePower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
@@ -197,7 +226,10 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
         }
     }
 
-    public void dispose() { }
+    public void dispose() {
+        //exitButton.removeListener(exitButton.getClickListener());
+        continueTexture.dispose();
+    }
 
     public WorldScreen getWorldScreen() {
         return worldScreen;

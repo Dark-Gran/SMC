@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.darkgran.smc.SaveMeCircles;
 import com.darkgran.smc.WorldScreen;
 
 import static java.lang.Math.cos;
@@ -62,7 +63,7 @@ public class ColoredCircle extends Actor {
     }
 
     private void updateSpeed() {
-        speed = 0.1f / (mergingAway ? LevelStage.MIN_RADIUS : radius);
+        speed = (0.1f*WorldScreen.PPM) / (mergingAway ? LevelStage.MIN_RADIUS*WorldScreen.PPM : radius*WorldScreen.PPM);
         if (speed < 0) { speed = 0; }
     }
 
@@ -89,24 +90,24 @@ public class ColoredCircle extends Actor {
         }
         //Speed Cap
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
-        if ((float) currentSpeed != speed) {
+        if ((float) currentSpeed != speed*WorldScreen.PPM) {
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
         }
         //Screen Edge
-        if (body.getPosition().x-radius > WorldScreen.WORLD_WIDTH || body.getPosition().x+radius < 0 || body.getPosition().y-radius > WorldScreen.WORLD_HEIGHT || body.getPosition().y+radius < 0) {
+        if (body.getPosition().x-radius > SaveMeCircles.SW || body.getPosition().x+radius < 0 || body.getPosition().y-radius > SaveMeCircles.SH || body.getPosition().y+radius < 0) {
             float newX = body.getPosition().x;
             float newY = body.getPosition().y;
-            if (body.getPosition().x > WorldScreen.WORLD_WIDTH) {
+            if (body.getPosition().x > SaveMeCircles.SW) {
                 newX = 0-radius;
             } else if (body.getPosition().x < 0) {
-                newX = WorldScreen.WORLD_WIDTH+radius;
+                newX = SaveMeCircles.SW+radius;
             }
-            if (body.getPosition().y > WorldScreen.WORLD_HEIGHT) {
+            if (body.getPosition().y > SaveMeCircles.SH) {
                 newY = 0-radius;
             } else if (body.getPosition().y < 0) {
-                newY = WorldScreen.WORLD_HEIGHT+radius;
+                newY = SaveMeCircles.SH+radius;
             }
             body.setTransform(newX, newY, body.getAngle());
         }

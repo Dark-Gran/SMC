@@ -5,6 +5,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SaveMeCircles extends Game {
+	public final static float SW = 1920;
+	public final static float SH = 960;
 	private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
 	public SpriteBatch batch;
 

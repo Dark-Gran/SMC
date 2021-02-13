@@ -11,8 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class IntroScreen implements Screen {
-    private final float SW = 1920;
-    private final float SH = 960;
+
     private final SaveMeCircles game;
     private final OrthographicCamera camera;
     private final Viewport viewport;
@@ -26,10 +25,10 @@ public class IntroScreen implements Screen {
     public IntroScreen(final SaveMeCircles game) { //constructor
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, SW, SH);
-        viewport = new ExtendViewport(SW, SH, camera);
+        camera.setToOrtho(false, SaveMeCircles.SW, SaveMeCircles.SH);
+        viewport = new ExtendViewport(SaveMeCircles.SW, SaveMeCircles.SH, camera);
         viewport.apply();
-        camera.position.set((float) SW /2,(float) SH /2,0);
+        camera.position.set((float) SaveMeCircles.SW /2,(float) SaveMeCircles.SH /2,0);
         Gdx.input.setCursorCatched(true);
         logo = new Texture("images/DGLogo.jpg");
         delayAction(this::activate, 0.5f);
@@ -79,7 +78,7 @@ public class IntroScreen implements Screen {
         game.batch.begin();
         game.batch.setColor(1, 1, 1, (active || !fadeDirection) ? alpha : 0);
 
-        game.batch.draw(logo, (float) (SW / 2 - logo.getWidth() / 2), (float) (SH / 2 - logo.getHeight() / 2));
+        game.batch.draw(logo, (float) (SaveMeCircles.SW / 2 - logo.getWidth() / 2), (float) (SaveMeCircles.SH / 2 - logo.getHeight() / 2));
 
         game.batch.end();
     }
@@ -95,7 +94,7 @@ public class IntroScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        camera.position.set((float) SW/2,(float) SH/2,0);
+        camera.position.set((float) SaveMeCircles.SW/2,(float) SaveMeCircles.SH/2,0);
         camera.update();
     }
 
