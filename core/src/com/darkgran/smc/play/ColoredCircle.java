@@ -88,7 +88,7 @@ public class ColoredCircle extends Actor {
             }
         }
         //Speed Cap
-        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
+        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x/WorldScreen.PPM, 2) + Math.pow(body.getLinearVelocity().y/WorldScreen.PPM, 2));
         if ((float) currentSpeed != speed) {
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
