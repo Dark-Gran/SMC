@@ -1,6 +1,8 @@
 package com.darkgran.smc;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -36,7 +38,30 @@ public class WorldScreen implements Screen {
     private LevelStage levelStage;
     private final CollisionListener collisionListener;
     private ArrayList corpses = new ArrayList();
+    private final InputAdapter generalInputProcessor = new InputAdapter() {
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            if (levelStage != null) {
+                levelStage.setLastTouch(null);
+            }
+            return true;
+        }
 
+        @Override
+        public boolean keyUp(int keycode) {
+            if (levelStage != null) {
+                switch (keycode) {
+                    case Input.Keys.LEFT:
+                        levelStage.switchLevel(false);
+                        break;
+                    case Input.Keys.RIGHT:
+                        levelStage.switchLevel(true);
+                        break;
+                }
+            }
+            return true;
+        }
+    };
     public WorldScreen(final SaveMeCircles smc) {
         this.smc = smc;
         Gdx.input.setInputProcessor(smc.getInputMultiplexer());
@@ -51,6 +76,7 @@ public class WorldScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         levelStage = new LevelStage(this, viewport);
         smc.getInputMultiplexer().addProcessor(levelStage);
+        smc.getInputMultiplexer().addProcessor(generalInputProcessor);
         collisionListener = new CollisionListener(levelStage);
         world.setContactListener(collisionListener);
         levelStage.loadLevel(0);

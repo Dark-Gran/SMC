@@ -18,7 +18,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3. Level intro txt
+public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2. Level intro txt
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
@@ -27,26 +27,8 @@ public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3
     private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
-    private final InputAdapter generalInputProcessor = new InputAdapter() {
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            lastTouch = null;
-            return true;
-        }
+    private boolean completed = false;
 
-        @Override
-        public boolean keyUp(int keycode) {
-            switch (keycode) {
-                case Input.Keys.LEFT:
-                    switchLevel(false);
-                    break;
-                case Input.Keys.RIGHT:
-                    switchLevel(true);
-                    break;
-            }
-            return true;
-        }
-    };
     private final Texture continueTexture = new Texture("images/continue.png");
     public final ImageButton continueButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(continueTexture)));
 
@@ -54,34 +36,14 @@ public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3
         super(viewport);
         this.worldScreen = worldScreen;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
-        worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
+
         continueButton.setPosition(0, 0);
-        this.addActor(continueButton);
-    }
-
-    private void enableContinue() {
-        /*
-
-        exitButton.addListener(new ClickListener()
-        {
-            @Override
-            public void clicked(InputEvent event, float x, float y)
-            {
-
-                if (getGame().getScreen().getClass() == MainScreen.class) {
-                    System.exit(0);
-                } else  {
-                    final TableStage tableMenu =  getGame().getSuperScreen().getTableMenu();
-                    getGame().getScreen().dispose();
-                    getGame().setScreen(new MainScreen(getGame(), tableMenu));
-                }
-
-            }
-        });*/
+        enableContinue();
     }
 
     public void loadLevel(int levelNum) {
         if (levelNum >= 0) {
+            completed = false;
             lastTouch = null;
             System.out.println("Launching Level: " + levelNum);
             currentLevel = levelNum;
@@ -132,7 +94,7 @@ public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3
         }
     }
 
-    private void switchLevel(boolean forward) {
+    public void switchLevel(boolean forward) {
         int newID = forward ? currentLevel+1 : currentLevel-1;
         if (LEVEL_LIBRARY.levelExists(newID)) {
             clearLevel();
@@ -149,6 +111,34 @@ public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3
         }
         circles.clear();
         colorPowers.clear();
+    }
+
+    private boolean checkCompletion() {
+        for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
+            if (entry.getValue().size() > 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void disableContinue() {
+        continueButton.remove();
+        continueButton.removeListener(continueButton.getClickListener());
+    }
+
+    private void enableContinue() {
+        this.addActor(continueButton);
+        continueButton.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                System.out.println("OK");
+                switchLevel(true);
+                disableContinue();
+            }
+        });
     }
 
     public void update() {
@@ -168,6 +158,10 @@ public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3
                 distributedSizeChange(lastTouch);
             }
         }
+        /*if (checkCompletion() && !completed) {
+            completed = true;
+            enableContinue();
+        }*/
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) {
@@ -227,7 +221,7 @@ public class LevelStage extends Stage { //TODO 2. Victory (smooth "nextLevel") 3
     }
 
     public void dispose() {
-        //exitButton.removeListener(exitButton.getClickListener());
+        disableContinue();
         continueTexture.dispose();
     }
 
