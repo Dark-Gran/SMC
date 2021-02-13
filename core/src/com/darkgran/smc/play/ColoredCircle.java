@@ -63,7 +63,7 @@ public class ColoredCircle extends Actor {
     }
 
     private void updateSpeed() {
-        speed = (0.1f*WorldScreen.PPM) / (mergingAway ? LevelStage.MIN_RADIUS*WorldScreen.PPM : radius*WorldScreen.PPM);
+        speed = 0.1f / (mergingAway ? LevelStage.MIN_RADIUS : radius);
         if (speed < 0) { speed = 0; }
     }
 
@@ -90,24 +90,24 @@ public class ColoredCircle extends Actor {
         }
         //Speed Cap
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
-        if ((float) currentSpeed != speed*WorldScreen.PPM) {
+        if ((float) currentSpeed != speed) {
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
         }
         //Screen Edge
-        if (body.getPosition().x-radius > SaveMeCircles.SW || body.getPosition().x+radius < 0 || body.getPosition().y-radius > SaveMeCircles.SH || body.getPosition().y+radius < 0) {
+        if (body.getPosition().x-radius > WorldScreen.WORLD_WIDTH || body.getPosition().x+radius < 0 || body.getPosition().y-radius > WorldScreen.WORLD_HEIGHT || body.getPosition().y+radius < 0) {
             float newX = body.getPosition().x;
             float newY = body.getPosition().y;
-            if (body.getPosition().x > SaveMeCircles.SW) {
+            if (body.getPosition().x > WorldScreen.WORLD_WIDTH) {
                 newX = 0-radius;
             } else if (body.getPosition().x < 0) {
-                newX = SaveMeCircles.SW+radius;
+                newX = WorldScreen.WORLD_WIDTH+radius;
             }
-            if (body.getPosition().y > SaveMeCircles.SH) {
+            if (body.getPosition().y > WorldScreen.WORLD_HEIGHT) {
                 newY = 0-radius;
             } else if (body.getPosition().y < 0) {
-                newY = SaveMeCircles.SH+radius;
+                newY = WorldScreen.WORLD_HEIGHT+radius;
             }
             body.setTransform(newX, newY, body.getAngle());
         }

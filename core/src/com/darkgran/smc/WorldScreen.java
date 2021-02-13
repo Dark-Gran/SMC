@@ -22,7 +22,8 @@ public class WorldScreen implements Screen {
     float STEP_TIME = 1f / FPS;
     final int VELOCITY_ITERATIONS = 15;
     final int POSITION_ITERATIONS = 12;
-    public static final int PPM = 200;
+    public static final float WORLD_WIDTH = 9.6f;
+    public static final float WORLD_HEIGHT = 4.8f;
 
     private final SaveMeCircles smc;
     private final Box2DDebugRenderer debugRenderer;
@@ -39,10 +40,10 @@ public class WorldScreen implements Screen {
         this.smc = smc;
         Gdx.input.setInputProcessor(smc.getInputMultiplexer());
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, SaveMeCircles.SW, SaveMeCircles.SH);
-        viewport = new ExtendViewport(SaveMeCircles.SW, SaveMeCircles.SH, camera);
+        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         viewport.apply();
-        camera.position.set(SaveMeCircles.SW/2, SaveMeCircles.SH/2,0);
+        camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2,0);
         shapeRenderer = new ShapeRenderer();
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();

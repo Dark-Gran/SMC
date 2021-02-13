@@ -55,7 +55,7 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
         this.worldScreen = worldScreen;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
         worldScreen.getSmc().getInputMultiplexer().addProcessor(generalInputProcessor);
-        continueButton.setPosition(0, 0);
+        continueButton.setBounds(0, 0, 1f, 1f); //TODO
         this.addActor(continueButton);
     }
 
@@ -91,7 +91,7 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
                 float whitePower = 0f;
                 ArrayList<ColoredCircle> blues = new ArrayList<>();
                 float bluePower = 0f;
-                for (CircleInfo circleInfo : levelInfo.getCircles()) { //TODO apply PPM to circles
+                for (CircleInfo circleInfo : levelInfo.getCircles()) {
                     if (circleInfo.getType() == ColorType.WHITE) {
                         whites.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.WHITE));
                         whitePower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
