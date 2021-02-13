@@ -31,7 +31,7 @@ public class IntroScreen implements Screen {
         viewport.apply();
         camera.position.set((float) SW /2,(float) SH /2,0);
         Gdx.input.setCursorCatched(true);
-        logo = new Texture("DGLogo.jpg");
+        logo = new Texture("images/DGLogo.jpg");
         delayAction(this::activate, 0.5f);
     }
 
