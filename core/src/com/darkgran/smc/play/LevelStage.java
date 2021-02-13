@@ -14,7 +14,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelStage extends Stage {
+public class LevelStage extends Stage { //TODO END+SWITCH LEVEL
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
@@ -22,6 +22,7 @@ public class LevelStage extends Stage {
     private final HashMap<ColorType, ArrayList<ColoredCircle>> circles = new HashMap<>();
     private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
     private ColoredCircle lastTouch;
+    private int currentLevel = -1;
     private final InputAdapter generalInputProcessor = new InputAdapter() {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -38,33 +39,36 @@ public class LevelStage extends Stage {
     }
 
     public void loadLevel(int levelNum) {
-        System.out.println("Launching Level: "+2);
-        LevelInfo levelInfo = LEVEL_LIBRARY.getLevel(2);
-        if (levelInfo != null) {
-            ArrayList<ColoredCircle> whites = new ArrayList<>();
-            float whitePower = 0f;
-            ArrayList<ColoredCircle> blues = new ArrayList<>();
-            float bluePower = 0f;
-            for (CircleInfo circleInfo : levelInfo.getCircles()) {
-                if (circleInfo.getType() == ColorType.WHITE) {
-                    whites.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.WHITE));
-                    whitePower += circleInfo.getRadius();
-                } else {
-                    blues.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.BLUE));
-                    bluePower += circleInfo.getRadius();
+        if (levelNum >= 0) {
+            System.out.println("Launching Level: " + levelNum);
+            currentLevel = levelNum;
+            LevelInfo levelInfo = LEVEL_LIBRARY.getLevel(levelNum);
+            if (levelInfo != null) {
+                ArrayList<ColoredCircle> whites = new ArrayList<>();
+                float whitePower = 0f;
+                ArrayList<ColoredCircle> blues = new ArrayList<>();
+                float bluePower = 0f;
+                for (CircleInfo circleInfo : levelInfo.getCircles()) {
+                    if (circleInfo.getType() == ColorType.WHITE) {
+                        whites.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.WHITE));
+                        whitePower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
+                    } else {
+                        blues.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.BLUE));
+                        bluePower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
+                    }
                 }
+                if (whitePower > 0f && whites.size() > 0) {
+                    circles.put(ColorType.WHITE, whites);
+                    colorPowers.put(ColorType.WHITE, whitePower);
+                }
+                if (bluePower > 0f && blues.size() > 0) {
+                    circles.put(ColorType.BLUE, blues);
+                    colorPowers.put(ColorType.BLUE, bluePower);
+                }
+                setupActors();
+            } else {
+                System.out.println("Level-Loading Error!");
             }
-            if (whitePower > 0f && whites.size() > 0) {
-                circles.put(ColorType.WHITE, whites);
-                colorPowers.put(ColorType.WHITE, whitePower);
-            }
-            if (bluePower > 0f && blues.size() > 0) {
-                circles.put(ColorType.BLUE, blues);
-                colorPowers.put(ColorType.BLUE, bluePower);
-            }
-            setupActors();
-        } else {
-            System.out.println("Level-Loading Error!");
         }
     }
 
@@ -91,7 +95,7 @@ public class LevelStage extends Stage {
                 if (!circle.isGone()) {
                     circle.update();
                 } else {
-                    worldScreen.getCorpses().add(circle); //TODO sync?
+                    worldScreen.getCorpses().add(circle); //TODO sync
                 }
             }
         }
