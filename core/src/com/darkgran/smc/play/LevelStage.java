@@ -12,13 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.darkgran.smc.SaveMeCircles;
 import com.darkgran.smc.WorldScreen;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2. Level intro txt
+public class LevelStage extends Stage { //TODO level txt
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
@@ -36,9 +37,7 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
         super(viewport);
         this.worldScreen = worldScreen;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
-
-        continueButton.setPosition(0, 0);
-        enableContinue();
+        continueButton.setPosition(Math.round(SaveMeCircles.SW/2-continueButton.getWidth()/2), Math.round(SaveMeCircles.SH/10-continueButton.getHeight()/2));
     }
 
     public void loadLevel(int levelNum) {
@@ -158,10 +157,10 @@ public class LevelStage extends Stage { //TODO 1. Victory (smooth "nextLevel") 2
                 distributedSizeChange(lastTouch);
             }
         }
-        /*if (checkCompletion() && !completed) {
+        if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
-        }*/
+        }
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) {
