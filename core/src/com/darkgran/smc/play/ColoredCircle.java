@@ -10,7 +10,7 @@ import com.darkgran.smc.WorldScreen;
 import static java.lang.Math.*;
 
 public class ColoredCircle extends Actor {
-    private final float COMFORT_RADIUS = 0.25f;
+    private final float COMFORT_RADIUS = 0.0f;
     private final float ACTUAL_MIN_RADIUS = 0.001f;
     private final LevelStage levelStage;
     private final CircleBody circleBody;
@@ -26,8 +26,8 @@ public class ColoredCircle extends Actor {
         this.colorType = colorType;
         this.levelStage = levelStage;
         if (radius < LevelStage.MIN_RADIUS) { radius = LevelStage.MIN_RADIUS; }
-        this.setBounds(x-(radius+COMFORT_RADIUS), y-(radius+COMFORT_RADIUS), (radius+COMFORT_RADIUS)*2, (radius+COMFORT_RADIUS)*2);
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius);
+        refreshActorBounds();
         this.radius = radius;
         this.direction = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
         updateSpeedLimit();

@@ -13,7 +13,15 @@ public class DoorSwitch extends Actor {
         this.levelStage = levelStage;
         chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height);
         chainBody.getBody().setTransform(new Vector2(x, y), angle);
+        chainBody.getBody().getFixtureList().get(0).setSensor(true);
+        this.setBounds(x-width, y-height, width*2, height*2);
         this.doors = doors;
+    }
+
+    public void click() {
+        for (BareDoor door : doors) {
+            door.switchState();
+        }
     }
 
     public ChainBody getChainBody() {

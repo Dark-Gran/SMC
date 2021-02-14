@@ -8,6 +8,7 @@ public class LevelInfo {
     private ArrayList<CircleInfo> circles;
     private ArrayList<WallInfo> walls;
     private ArrayList<BeamInfo> beams;
+    private ArrayList<SwitchInfo> switches;
 
     public LevelInfo() { }
 
@@ -31,4 +32,7 @@ public class LevelInfo {
         return beams;
     }
 
+    public ArrayList<SwitchInfo> getSwitches() {
+        return switches;
+    }
 }

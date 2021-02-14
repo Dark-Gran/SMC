@@ -7,7 +7,8 @@
       { "type": "WHITE", "x": 9.5, "y": 2.4, "radius": 0.5, "angle": 180 }
     ],
     "walls": [],
-    "beams": []
+    "beams": [],
+    "switches": []
   },
   {
     "id": 1,
@@ -22,7 +23,8 @@
       { "type": "WHITE", "x": 6, "y": 5, "radius": 0.2, "angle": 160 }
     ],
     "walls": [],
-    "beams": []
+    "beams": [],
+    "switches": []
   },
   {
     "id": 2,
@@ -51,7 +53,8 @@
       { "x": 8.11, "y": 2.4, "width": 0.49, "height": 2, "angle": 0 },
       { "x": 8.11, "y": 4.4, "width": 0.49, "height": 2, "angle": 0 }
     ],
-    "beams": []
+    "beams": [],
+    "switches": []
   },
   {
     "id": 3,
@@ -83,6 +86,9 @@
     "beams": [
       { "colorType": "WHITE", "active": "true", "x": 1.95, "y": 2.4, "width": 3.8, "height": 0.4, "angle": 0 },
       { "colorType": "WHITE", "active": "false", "x": 7.65, "y": 2.4, "width": 3.8, "height": 0.4, "angle": 0 }
+    ],
+    "switches": [
+      { "x": 1, "y": 1, "width": 1, "height": 1, "angle": 0, "beams": [0, 1] }
     ]
   }
 ]

@@ -87,6 +87,31 @@ public class LevelStage extends Stage {
                 for (BeamInfo beamInfo : levelInfo.getBeams()) {
                     beams.add(new Beam(this, beamInfo.getX(), beamInfo.getY(), beamInfo.getWidth()/2, beamInfo.getHeight()/2, beamInfo.getAngle(), beamInfo.getColorType(), beamInfo.isActive()));
                 }
+                for (SwitchInfo switchInfo : levelInfo.getSwitches()) {
+                    BareDoor[] doors = new BareDoor[switchInfo.getBeams().length];
+                    for (int i = 0; i < doors.length; i++) {
+                        if (beams.get(switchInfo.getBeams()[i]) != null) {
+                            doors[i] = beams.get(switchInfo.getBeams()[i]);
+                        }
+                    }
+                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), doors);
+                    switches.add(doorSwitch);
+                    this.addActor(doorSwitch);
+                    doorSwitch.addListener(new ClickListener() {
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                            System.out.println("OK");
+                            if (event.getTarget() instanceof DoorSwitch) {
+                                ((DoorSwitch) event.getTarget()).click();
+                            }
+                            return true;
+                        }
+                        @Override
+                        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                            lastTouch = null;
+                        }
+                    });
+                }
                 //Finish
                 introMessage = levelInfo.getIntro();
             } else {
@@ -106,6 +131,10 @@ public class LevelStage extends Stage {
                             lastTouch = (ColoredCircle) event.getTarget();
                         }
                         return true;
+                    }
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        lastTouch = null;
                     }
                 });
             }
@@ -150,6 +179,10 @@ public class LevelStage extends Stage {
         }
         beams.clear();
         for (DoorSwitch doorSwitch : switches) {
+            if (doorSwitch.getListeners().size > 0) {
+                doorSwitch.removeListener(doorSwitch.getListeners().get(0));
+            }
+            doorSwitch.remove();
             worldScreen.getWorld().destroyBody(doorSwitch.getChainBody().getBody());
         }
         switches.clear();
