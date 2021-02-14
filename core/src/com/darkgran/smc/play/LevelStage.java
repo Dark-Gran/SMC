@@ -101,7 +101,6 @@ public class LevelStage extends Stage {
                     doorSwitch.addListener(new ClickListener() {
                         @Override
                         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                            System.out.println("OK");
                             if (event.getTarget() instanceof DoorSwitch) {
                                 ((DoorSwitch) event.getTarget()).click();
                             }
