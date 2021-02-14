@@ -92,7 +92,7 @@ public class ColoredCircle extends Actor {
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
             float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
-            if (currentSpeed == 0) { direction += PI; }
+            if (currentSpeed == 0) { angle += PI; }
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
