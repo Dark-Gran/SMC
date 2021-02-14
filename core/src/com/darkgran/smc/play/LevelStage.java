@@ -119,6 +119,10 @@ public class LevelStage extends Stage {
         lastTouch = null;
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
+                if (circle.getListeners().size > 0) {
+                    circle.removeListener(circle.getListeners().get(0));
+                }
+                circle.remove();
                 worldScreen.getWorld().destroyBody(circle.getCircleBody().getBody());
             }
         }
