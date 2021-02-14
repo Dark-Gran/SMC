@@ -111,6 +111,7 @@ public class WorldScreen implements Screen {
 
         //drawBox2DDebug();
 
+        levelStage.tickTock();
         timeWorld(delta);
     }
 

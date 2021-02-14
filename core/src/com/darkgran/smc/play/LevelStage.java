@@ -32,7 +32,9 @@ public class LevelStage extends Stage {
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
     private boolean completed = false;
-    private int timer = 0;
+    private float timer = 0;
+    private float frameCounter = 0;
+    private int seconds = 0;
     private String introMessage;
 
     private final Texture continueTexture = new Texture("images/continue.png");
@@ -49,6 +51,8 @@ public class LevelStage extends Stage {
     public void loadLevel(int levelNum) {
         if (levelNum >= 0) {
             timer = 0;
+            frameCounter = 0;
+            seconds = 0;
             completed = false;
             lastTouch = null;
             System.out.println("Launching Level: " + levelNum);
@@ -170,7 +174,6 @@ public class LevelStage extends Stage {
             completed = true;
             enableContinue();
         }
-        timer++;
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) {
@@ -220,19 +223,31 @@ public class LevelStage extends Stage {
         }
     }
 
-    public void drawSprites(SpriteBatch batch) {
-        if (timer < 150) { //"Intro"
-            drawLevelIntro(batch, timer);
+    public void tickTock() {
+        timer += Gdx.graphics.getRawDeltaTime();
+        frameCounter++;
+        if (timer >= 1 && !completed) {
+            timer -= 1;
+            seconds++;
         }
     }
 
-    private void drawLevelIntro(SpriteBatch batch, int time) {
+    public void drawSprites(SpriteBatch batch) {
+        //Intro
+        if (frameCounter < 150) {
+            drawLevelIntro(batch, frameCounter);
+        }
+        //Timer
+        drawText(worldScreen.getFont(), batch, String.valueOf(seconds), Math.round(SaveMeCircles.SW*9/10), Math.round(SaveMeCircles.SH/20), Color.WHITE);
+    }
+
+    private void drawLevelIntro(SpriteBatch batch, float time) {
         if (introMessage != null) {
             GlyphLayout layout = new GlyphLayout();
             layout.setText(new BitmapFont(), introMessage);
             float alpha = 1;
             if (time > 100) {
-                alpha = (float) ((150 - time) * 2) / 100;
+                alpha = ((150 - time) * 2) / 100;
             }
             drawText(worldScreen.getFont(), batch, introMessage, Math.round(SaveMeCircles.SW / 2 - layout.width), Math.round(SaveMeCircles.SH / 5 - layout.height), new Color(1, 1, 1, alpha));
         }
