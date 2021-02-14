@@ -37,7 +37,8 @@ public class LevelStage extends Stage {
     private float frameCounter = 0;
     private int seconds = 0;
     private String introMessage;
-    private final Texture wallTexture = new Texture("images/wall.png");
+    private final Texture wallTex = new Texture("images/wall.png");
+    private final Texture soTex = new Texture("images/switch_over.png");
 
     public LevelStage(final WorldScreen worldScreen, final Stage UIStage, Viewport viewport) {
         super(viewport);
@@ -82,7 +83,7 @@ public class LevelStage extends Stage {
                 setupActors();
                 //Obstacles
                 for (WallInfo wallInfo : levelInfo.getWalls()) {
-                    walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), wallTexture));
+                    walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), wallTex));
                 }
                 for (BeamInfo beamInfo : levelInfo.getBeams()) {
                     beams.add(new Beam(this, beamInfo.getX(), beamInfo.getY(), beamInfo.getWidth()/2, beamInfo.getHeight()/2, beamInfo.getAngle(), beamInfo.getColorType(), beamInfo.isActive()));
@@ -94,7 +95,7 @@ public class LevelStage extends Stage {
                             doors[i] = beams.get(switchInfo.getBeams()[i]);
                         }
                     }
-                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), doors);
+                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), doors, soTex); //TODO
                     switches.add(doorSwitch);
                     this.addActor(doorSwitch);
                     doorSwitch.addListener(new ClickListener() {
@@ -239,6 +240,9 @@ public class LevelStage extends Stage {
         for (Wall wall : walls) {
             wall.updateSprite();
         }
+        for (DoorSwitch doorSwitch : switches) {
+            doorSwitch.updateSprite();
+        }
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) {
@@ -313,6 +317,9 @@ public class LevelStage extends Stage {
         for (Wall wall : walls) {
             wall.getSprite().draw(batch);
         }
+        for (DoorSwitch doorSwitch :switches) {
+            doorSwitch.getSprite().draw(batch);
+        }
     }
 
     private void drawLevelIntro(SpriteBatch batch, float time) {
@@ -343,7 +350,8 @@ public class LevelStage extends Stage {
 
     public void dispose() {
         disableContinue();
-        wallTexture.dispose();
+        wallTex.dispose();
+        soTex.dispose();
     }
 
     public WorldScreen getWorldScreen() {
