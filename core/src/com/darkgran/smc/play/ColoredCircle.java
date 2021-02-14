@@ -17,8 +17,8 @@ public class ColoredCircle extends Actor {
     private final CircleBody circleBody;
     private ColorType colorType;
     private float radius;
+    private float direction;
     private float speed;
-    private float angle;
     private float mergeBuffer = 0f;
     private boolean mergingAway = false;
     private boolean gone = false;
@@ -30,8 +30,11 @@ public class ColoredCircle extends Actor {
         this.setBounds(x-(radius+COMFORT_RADIUS), y-(radius+COMFORT_RADIUS), (radius+COMFORT_RADIUS)*2, (radius+COMFORT_RADIUS)*2);
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius);
         this.radius = radius;
-        updateSpeed();
-        this.angle = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
+        this.direction = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
+        updateSpeedLimit();
+        double speedX = speed * cos(direction);
+        double speedY = speed * sin(direction);
+        circleBody.getBody().setLinearVelocity((float) speedX, (float) speedY);
     }
 
     public void interact(ColoredCircle circle) {
@@ -60,7 +63,7 @@ public class ColoredCircle extends Actor {
         mergingAway = true;
     }
 
-    private void updateSpeed() {
+    private void updateSpeedLimit() {
         speed = 0.1f / (mergingAway ? LevelStage.MIN_RADIUS : radius);
         if (speed < 0) { speed = 0; }
     }
@@ -88,6 +91,7 @@ public class ColoredCircle extends Actor {
         }
         //Speed Cap
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
+        float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
         if ((float) currentSpeed != speed) {
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
@@ -133,12 +137,12 @@ public class ColoredCircle extends Actor {
         if (radius < LevelStage.MIN_RADIUS && !mergingAway) { radius = LevelStage.MIN_RADIUS; }
         else if (radius < ACTUAL_MIN_RADIUS) { radius = ACTUAL_MIN_RADIUS; }
         this.radius = radius;
-        refreshActorBounds();
         if (circleBody.getBody().getFixtureList().size > 0) {
             Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
             shape.setRadius(radius);
         }
-        updateSpeed();
+        refreshActorBounds();
+        updateSpeedLimit();
     }
 
     public float getRadius() {
