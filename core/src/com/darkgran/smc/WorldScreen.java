@@ -6,11 +6,16 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.play.CollisionListener;
@@ -27,7 +32,10 @@ public class WorldScreen implements Screen {
     final int POSITION_ITERATIONS = 12;
     public static final float WORLD_WIDTH = 9.6f;
     public static final float WORLD_HEIGHT = 4.8f;
-    public static final int PPM = 200;
+    public static final float PPM = 200;
+    public static float getMMP() { //reverse PPM
+        return WorldScreen.WORLD_WIDTH / SaveMeCircles.SW;
+    }
 
     private final SaveMeCircles smc;
     private final Box2DDebugRenderer debugRenderer;
@@ -37,6 +45,7 @@ public class WorldScreen implements Screen {
     private World world;
     private float worldTimer = 0;
     private LevelStage levelStage;
+    private Stage UIStage;
     private final CollisionListener collisionListener;
     private ArrayList corpses = new ArrayList();
     private final InputAdapter generalInputProcessor = new InputAdapter() {
@@ -64,26 +73,35 @@ public class WorldScreen implements Screen {
         }
     };
     private final BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/bahnschrift.fnt"));
+    private final Texture continueTexture = new Texture("images/continue.png");
+    private final ImageButton continueButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(continueTexture)));
 
     public WorldScreen(final SaveMeCircles smc) {
         this.smc = smc;
         Gdx.input.setInputProcessor(smc.getInputMultiplexer());
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, SaveMeCircles.SW, SaveMeCircles.SH);
-        viewport = new ExtendViewport(SaveMeCircles.SW, SaveMeCircles.SH, camera);
+        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         viewport.apply();
-        camera.position.set(SaveMeCircles.SW/2, SaveMeCircles.SH/2,0);
+        camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2,0);
         shapeRenderer = new ShapeRenderer();
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
-        levelStage = new LevelStage(this, viewport);
+        setupUIStage();
+        levelStage = new LevelStage(this, UIStage, viewport);
+        smc.getInputMultiplexer().addProcessor(UIStage);
         smc.getInputMultiplexer().addProcessor(levelStage);
         smc.getInputMultiplexer().addProcessor(generalInputProcessor);
         collisionListener = new CollisionListener(levelStage);
         world.setContactListener(collisionListener);
         levelStage.loadLevel(0);
         Gdx.input.setCursorCatched(false);
+    }
+
+    private void setupUIStage() {
+        UIStage = new Stage(new ExtendViewport(SaveMeCircles.SW, SaveMeCircles.SH));
+        continueButton.setPosition(Math.round(SaveMeCircles.SW/2-continueButton.getWidth()/2), Math.round(SaveMeCircles.SW/15-continueButton.getHeight()/2));
     }
 
     @Override
@@ -106,10 +124,12 @@ public class WorldScreen implements Screen {
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
+        UIStage.act(delta);
+        UIStage.draw();
         levelStage.act(delta);
         levelStage.draw();
 
-        //drawBox2DDebug();
+        drawBox2DDebug();
 
         levelStage.tickTock();
         timeWorld(delta);
@@ -164,6 +184,7 @@ public class WorldScreen implements Screen {
         levelStage.dispose();
         world.dispose();
         debugRenderer.dispose();
+        continueTexture.dispose();
     }
 
     public World getWorld() {
@@ -193,5 +214,7 @@ public class WorldScreen implements Screen {
     public BitmapFont getFont() {
         return font;
     }
+
+    public ImageButton getContinueButton() { return continueButton; }
 
 }

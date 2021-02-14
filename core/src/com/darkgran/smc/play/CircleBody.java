@@ -25,6 +25,7 @@ public class CircleBody {
 
         body.setFixedRotation(false);
 
+        circleShape.dispose();
     }
 
     public Body getBody() {

@@ -88,7 +88,7 @@ public class ColoredCircle extends Actor {
             }
         }
         //Speed Cap
-        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x/WorldScreen.PPM, 2) + Math.pow(body.getLinearVelocity().y/WorldScreen.PPM, 2));
+        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
@@ -121,13 +121,13 @@ public class ColoredCircle extends Actor {
         int segments = Math.round(radius*200);
         if (segments < 10) { segments = 10; }
         else if (segments > 100) { segments = 50; }
-        shapeRenderer.circle(circleBody.getBody().getPosition().x*WorldScreen.PPM, circleBody.getBody().getPosition().y*WorldScreen.PPM, radius*WorldScreen.PPM, segments);
+        shapeRenderer.circle(circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, radius, segments);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
     }
 
     private void refreshActorBounds() {
-        this.setBounds((circleBody.getBody().getPosition().x-(radius+COMFORT_RADIUS))*WorldScreen.PPM, (circleBody.getBody().getPosition().y-(radius+COMFORT_RADIUS))*WorldScreen.PPM, ((radius+COMFORT_RADIUS)*2)*WorldScreen.PPM, ((radius+COMFORT_RADIUS)*2)*WorldScreen.PPM);
+        this.setBounds((circleBody.getBody().getPosition().x-(radius+COMFORT_RADIUS)), (circleBody.getBody().getPosition().y-(radius+COMFORT_RADIUS)), ((radius+COMFORT_RADIUS)*2), ((radius+COMFORT_RADIUS)*2));
     }
 
     public void setRadius(float radius) {

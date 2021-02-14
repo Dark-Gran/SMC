@@ -3,17 +3,14 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.SaveMeCircles;
 import com.darkgran.smc.WorldScreen;
@@ -27,8 +24,10 @@ public class LevelStage extends Stage {
     public static final float CHANGE_UP = 0.01f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
     private final WorldScreen worldScreen;
+    private final Stage UIStage;
     private final HashMap<ColorType, ArrayList<ColoredCircle>> circles = new HashMap<>();
     private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
+    private final ArrayList<Wall> walls = new ArrayList<>();
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
     private boolean completed = false;
@@ -37,15 +36,12 @@ public class LevelStage extends Stage {
     private int seconds = 0;
     private String introMessage;
 
-    private final Texture continueTexture = new Texture("images/continue.png");
-    public final ImageButton continueButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(continueTexture)));
-
-
-    public LevelStage(final WorldScreen worldScreen, Viewport viewport) {
+    public LevelStage(final WorldScreen worldScreen, final Stage UIStage, Viewport viewport) {
         super(viewport);
         this.worldScreen = worldScreen;
+        this.UIStage = UIStage;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
-        continueButton.setPosition(Math.round(SaveMeCircles.SW/2-continueButton.getWidth()/2), Math.round(SaveMeCircles.SH/10-continueButton.getHeight()/2));
+        enableContinue();
     }
 
     public void loadLevel(int levelNum) {
@@ -124,6 +120,7 @@ public class LevelStage extends Stage {
         }
         circles.clear();
         colorPowers.clear();
+        walls.clear();
     }
 
     private boolean checkCompletion() {
@@ -136,13 +133,13 @@ public class LevelStage extends Stage {
     }
 
     private void disableContinue() {
-        continueButton.remove();
-        continueButton.removeListener(continueButton.getClickListener());
+        worldScreen.getContinueButton().remove();
+        worldScreen.getContinueButton().removeListener(worldScreen.getContinueButton().getClickListener());
     }
 
     private void enableContinue() {
-        this.addActor(continueButton);
-        continueButton.addListener(new ClickListener()
+        UIStage.addActor(worldScreen.getContinueButton());
+        worldScreen.getContinueButton().addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -239,7 +236,7 @@ public class LevelStage extends Stage {
         }
         //Timer
         if (currentLevel != 0) {
-            drawText(worldScreen.getFont(), batch, String.valueOf(seconds), Math.round(SaveMeCircles.SW * 9 / 10), Math.round(SaveMeCircles.SH / 20), Color.WHITE);
+            drawText(worldScreen.getFont(), batch, String.valueOf(seconds), SaveMeCircles.SW * 9 / 10, SaveMeCircles.SH / 10, Color.WHITE);
         }
     }
 
@@ -251,13 +248,16 @@ public class LevelStage extends Stage {
             if (time > 100) {
                 alpha = ((150 - time) * 2) / 100;
             }
-            drawText(worldScreen.getFont(), batch, introMessage, Math.round(SaveMeCircles.SW / 2 - layout.width), Math.round(SaveMeCircles.SH / 5 - layout.height), new Color(1, 1, 1, alpha));
+            drawText(worldScreen.getFont(), batch, introMessage, SaveMeCircles.SW/2-layout.width, (SaveMeCircles.SH / 5), new Color(1, 1, 1, alpha));
         }
     }
 
     public void drawText(BitmapFont font, SpriteBatch batch, String txt, float x, float y, Color color) {
         font.setColor(color);
+        Matrix4 originalMatrix = batch.getProjectionMatrix().cpy();
+        batch.setProjectionMatrix(originalMatrix.cpy().scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
         font.draw(batch, txt, x, y);
+        batch.setProjectionMatrix(originalMatrix);
     }
 
     public void removeCircle(ColoredCircle coloredCircle) {
@@ -271,7 +271,6 @@ public class LevelStage extends Stage {
 
     public void dispose() {
         disableContinue();
-        continueTexture.dispose();
     }
 
     public WorldScreen getWorldScreen() {
