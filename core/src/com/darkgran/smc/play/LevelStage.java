@@ -29,6 +29,7 @@ public class LevelStage extends Stage {
     private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
     private final ArrayList<Wall> walls = new ArrayList<>();
     private final ArrayList<Beam> beams = new ArrayList<>();
+    private final ArrayList<DoorSwitch> switches = new ArrayList<>();
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
     private boolean completed = false;
@@ -148,6 +149,10 @@ public class LevelStage extends Stage {
             worldScreen.getWorld().destroyBody(beam.getChainBody().getBody());
         }
         beams.clear();
+        for (DoorSwitch doorSwitch : switches) {
+            worldScreen.getWorld().destroyBody(doorSwitch.getChainBody().getBody());
+        }
+        switches.clear();
     }
 
     private boolean checkCompletion() {
