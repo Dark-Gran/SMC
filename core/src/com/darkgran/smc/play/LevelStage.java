@@ -28,6 +28,7 @@ public class LevelStage extends Stage {
     private final HashMap<ColorType, ArrayList<ColoredCircle>> circles = new HashMap<>();
     private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
     private final ArrayList<Wall> walls = new ArrayList<>();
+    private final ArrayList<Beam> beams = new ArrayList<>();
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
     private boolean completed = false;
@@ -81,6 +82,9 @@ public class LevelStage extends Stage {
                 //Obstacles
                 for (WallInfo wallInfo : levelInfo.getWalls()) {
                     walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), wallTexture));
+                }
+                for (BeamInfo beamInfo : levelInfo.getBeams()) {
+                    beams.add(new Beam(this, beamInfo.getX(), beamInfo.getY(), beamInfo.getWidth()/2, beamInfo.getHeight()/2, beamInfo.getAngle(), beamInfo.getColorType(), beamInfo.isActive()));
                 }
                 //Finish
                 introMessage = levelInfo.getIntro();
@@ -137,9 +141,13 @@ public class LevelStage extends Stage {
         circles.clear();
         colorPowers.clear();
         for (Wall wall : walls) {
-            worldScreen.getWorld().destroyBody(wall.getWallBody().getBody());
+            worldScreen.getWorld().destroyBody(wall.getChainBody().getBody());
         }
         walls.clear();
+        for (Beam beam : beams) {
+            worldScreen.getWorld().destroyBody(beam.getChainBody().getBody());
+        }
+        beams.clear();
     }
 
     private boolean checkCompletion() {
@@ -239,6 +247,9 @@ public class LevelStage extends Stage {
             for (ColoredCircle circle : entry.getValue()) {
                 circle.drawShapes(shapeRenderer);
             }
+        }
+        for (Beam beam : beams) {
+            beam.draw(shapeRenderer);
         }
     }
 

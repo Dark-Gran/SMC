@@ -2,17 +2,16 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.darkgran.smc.WorldScreen;
 
-public class WallBody {
+public class ChainBody {
     private final Body body;
 
-    public WallBody(final World world, final Wall wall, float width, float height) {
+    public ChainBody(final World world, final Object object, float width, float height) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.StaticBody;
 
         body = world.createBody(myBodyDef);
-        body.setUserData(wall);
+        body.setUserData(object);
 
         ChainShape shape = new ChainShape();
         Vector2[] vertices = new Vector2[4];
