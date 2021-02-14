@@ -258,12 +258,12 @@ public class LevelStage extends Stage {
     private void drawLevelIntro(SpriteBatch batch, float time) {
         if (introMessage != null) {
             GlyphLayout layout = new GlyphLayout();
-            layout.setText(new BitmapFont(), introMessage);
+            layout.setText(worldScreen.getFont(), introMessage);
             float alpha = 1;
             if (time > 100) {
                 alpha = ((150 - time) * 2) / 100;
             }
-            drawText(worldScreen.getFont(), batch, introMessage, SaveMeCircles.SW/2-layout.width, (SaveMeCircles.SH / 5), new Color(1, 1, 1, alpha));
+            drawText(worldScreen.getFont(), batch, introMessage, SaveMeCircles.SW/2-layout.width/2, (SaveMeCircles.SH / 5), new Color(1, 1, 1, alpha));
         }
     }
 
