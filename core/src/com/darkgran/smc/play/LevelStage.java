@@ -54,6 +54,7 @@ public class LevelStage extends Stage {
             currentLevel = levelNum;
             LevelInfo levelInfo = LEVEL_LIBRARY.getLevel(levelNum);
             if (levelInfo != null) {
+                //Circles
                 ArrayList<ColoredCircle> whites = new ArrayList<>();
                 float whitePower = 0f;
                 ArrayList<ColoredCircle> blues = new ArrayList<>();
@@ -76,6 +77,9 @@ public class LevelStage extends Stage {
                     colorPowers.put(ColorType.BLUE, bluePower);
                 }
                 setupActors();
+                //Obstacles
+                walls.add(new Wall(this, 4.8f, 2.4f, 0.5f, 2f));
+                //Finish
                 introMessage = levelInfo.getIntro();
             } else {
                 System.out.println("Level-Loading Error!");
