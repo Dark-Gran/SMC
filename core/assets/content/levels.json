@@ -64,31 +64,33 @@
       { "type": "WHITE", "x": 3, "y": 3, "radius": 0.1, "angle": 250 }
     ],
     "walls": [
-      { "x": -0.15, "y": 0.4, "width": 0.49, "height": 2, "angle": 0 },
-      { "x": -0.15, "y": 2.4, "width": 0.49, "height": 2, "angle": 0 },
-      { "x": -0.15, "y": 4.4, "width": 0.49, "height": 2, "angle": 0 },
-      { "x": 9.75, "y": 0.4, "width": 0.49, "height": 2, "angle": 0 },
-      { "x": 9.75, "y": 2.4, "width": 0.49, "height": 2, "angle": 0 },
-      { "x": 9.75, "y": 4.4, "width": 0.49, "height": 2, "angle": 0 },
-      { "x": 1, "y": 4.95, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 3, "y": 4.95, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 5, "y": 4.95, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 7, "y": 4.95, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 9, "y": 4.95, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 1, "y": -0.15, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 3, "y": -0.15, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 5, "y": -0.15, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 7, "y": -0.15, "width": 0.49, "height": 2, "angle": 90 },
-      { "x": 9, "y": -0.15, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 0, "y": 0.4, "width": 0.49, "height": 2, "angle": 0 },
+      { "x": 0, "y": 2.4, "width": 0.49, "height": 2, "angle": 0 },
+      { "x": 0, "y": 4.4, "width": 0.49, "height": 2, "angle": 0 },
+      { "x": 9.6, "y": 0.4, "width": 0.49, "height": 2, "angle": 0 },
+      { "x": 9.6, "y": 2.4, "width": 0.49, "height": 2, "angle": 0 },
+      { "x": 9.6, "y": 4.4, "width": 0.49, "height": 2, "angle": 0 },
+      { "x": 0.95, "y": 4.8, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 2.95, "y": 4.8, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 4.95, "y": 4.8, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 6.95, "y": 4.8, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 8.95, "y": 4.8, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 0.65, "y": 0, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 2.65, "y": 0, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 4.65, "y": 0, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 6.65, "y": 0, "width": 0.49, "height": 2, "angle": 90 },
+      { "x": 8.65, "y": 0, "width": 0.49, "height": 2, "angle": 90 },
       { "x": 4.8, "y": 2.4, "width": 0.49, "height": 2, "angle": 0 },
       { "x": 4.8, "y": 2.4, "width": 0.49, "height": 2, "angle": 90 }
     ],
     "beams": [
-      { "colorType": "WHITE", "active": "true", "x": 1.95, "y": 2.4, "width": 3.8, "height": 0.4, "angle": 0 },
-      { "colorType": "WHITE", "active": "false", "x": 7.65, "y": 2.4, "width": 3.8, "height": 0.4, "angle": 0 }
+      { "colorType": "WHITE", "active": "true", "x": 2, "y": 2.4, "width": 3.65, "height": 0.4, "angle": 0 },
+      { "colorType": "WHITE", "active": "true", "x": 7.6, "y": 2.4, "width": 3.65, "height": 0.4, "angle": 0 },
+      { "colorType": "WHITE", "active": "false", "x": 4.8, "y": 0.8, "width": 0.4, "height": 1.25, "angle": 0 },
+      { "colorType": "WHITE", "active": "false", "x": 4.8, "y": 4, "width": 0.4, "height": 1.25, "angle": 0 }
     ],
     "switches": [
-      { "x": 1, "y": 1, "width": 1, "height": 1, "angle": 0, "beams": [0, 1] }
+      { "x": 1, "y": 1, "width": 1, "height": 1, "angle": 0, "beams": [0, 1, 2, 3] }
     ]
   }
 ]
