@@ -21,9 +21,13 @@ public class CircleBody {
         boxFixtureDef.density = 0.1f;
         boxFixtureDef.friction = 0f;
         boxFixtureDef.restitution = 1f;
+
         body.createFixture(boxFixtureDef);
 
         body.setFixedRotation(false);
+        //body.setGravityScale(1f);
+        //body.setLinearDamping(1f);
+        //body.setAngularDamping(1f);
 
         circleShape.dispose();
     }
