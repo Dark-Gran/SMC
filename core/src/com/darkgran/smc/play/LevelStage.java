@@ -238,7 +238,9 @@ public class LevelStage extends Stage {
             drawLevelIntro(batch, frameCounter);
         }
         //Timer
-        drawText(worldScreen.getFont(), batch, String.valueOf(seconds), Math.round(SaveMeCircles.SW*9/10), Math.round(SaveMeCircles.SH/20), Color.WHITE);
+        if (currentLevel != 0) {
+            drawText(worldScreen.getFont(), batch, String.valueOf(seconds), Math.round(SaveMeCircles.SW * 9 / 10), Math.round(SaveMeCircles.SH / 20), Color.WHITE);
+        }
     }
 
     private void drawLevelIntro(SpriteBatch batch, float time) {

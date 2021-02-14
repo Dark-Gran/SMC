@@ -1,23 +1,31 @@
 [
   {
     "id": 0,
-    "intro": "INTRO TEXT",
+    "intro": "Focus Hastens Destiny.",
     "circles": [
-      { "type": "WHITE", "x": 2, "y": 0, "radius": 0.05, "angle": 30 },
-      { "type": "WHITE", "x": 3, "y": 1, "radius": 0.1, "angle": 70 }
+      { "type": "WHITE", "x": 0.1, "y": 2.4, "radius": 0.5, "angle": 0 },
+      { "type": "WHITE", "x": 9.55, "y": 2.4, "radius": 0.5, "angle": 180 }
     ]
   },
   {
     "id": 1,
-    "intro": "TXT",
+    "intro": "In Boundless Peace, Infinity Becomes One.",
     "circles": [
-      { "type": "WHITE", "x": 2, "y": 0, "radius": 0.05, "angle": 30 },
+      { "type": "WHITE", "x": 2, "y": 0, "radius": 0.2, "angle": 30 },
       { "type": "WHITE", "x": 3, "y": 1, "radius": 0.1, "angle": 70 },
       { "type": "WHITE", "x": 4, "y": 2, "radius": 0.1, "angle": 130 },
-      { "type": "WHITE", "x": 5, "y": 3, "radius": 0.05, "angle": 45 },
-      { "type": "WHITE", "x": 6, "y": 4, "radius": 0.1, "angle": 180 },
+      { "type": "WHITE", "x": 5, "y": 3, "radius": 0.2, "angle": 45 },
+      { "type": "WHITE", "x": 6, "y": 4, "radius": 0.05, "angle": 180 },
       { "type": "WHITE", "x": 7, "y": 5, "radius": 0.1, "angle": 10 },
-      { "type": "WHITE", "x": 6, "y": 5, "radius": 0.1, "angle": 160 }
+      { "type": "WHITE", "x": 6, "y": 5, "radius": 0.2, "angle": 160 }
+    ]
+  },
+  {
+    "id": 2,
+    "intro": "...",
+    "circles": [
+      { "type": "WHITE", "x": 2, "y": 0, "radius": 0.2, "angle": 30 },
+      { "type": "WHITE", "x": 3, "y": 1, "radius": 0.1, "angle": 70 }
     ]
   }
 ]
