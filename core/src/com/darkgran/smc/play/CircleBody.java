@@ -25,9 +25,9 @@ public class CircleBody {
         body.createFixture(boxFixtureDef);
 
         body.setFixedRotation(false);
-        //body.setGravityScale(1f);
-        //body.setLinearDamping(1f);
-        //body.setAngularDamping(1f);
+        body.setGravityScale(0f);
+        body.setLinearDamping(0f);
+        body.setAngularDamping(0f);
 
         circleShape.dispose();
     }

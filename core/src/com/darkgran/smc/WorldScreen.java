@@ -89,6 +89,7 @@ public class WorldScreen implements Screen {
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
+        world.setVelocityThreshold(0.1f);
         setupUIStage();
         levelStage = new LevelStage(this, UIStage, viewport);
         smc.getInputMultiplexer().addProcessor(UIStage);
@@ -96,7 +97,7 @@ public class WorldScreen implements Screen {
         smc.getInputMultiplexer().addProcessor(generalInputProcessor);
         collisionListener = new CollisionListener(levelStage);
         world.setContactListener(collisionListener);
-        levelStage.loadLevel(0);
+        levelStage.loadLevel(3);
         Gdx.input.setCursorCatched(false);
     }
 
