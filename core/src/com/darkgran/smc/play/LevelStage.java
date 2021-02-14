@@ -116,6 +116,12 @@ public class LevelStage extends Stage {
         }
     }
 
+    public void reloadLevel() {
+        disableContinue();
+        clearLevel();
+        loadLevel(currentLevel);
+    }
+
     private void clearLevel() {
         introMessage = null;
         lastTouch = null;

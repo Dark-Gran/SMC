@@ -68,6 +68,9 @@ public class WorldScreen implements Screen {
                     case Input.Keys.RIGHT:
                         levelStage.switchLevel(true);
                         break;
+                    case Input.Keys.R:
+                        levelStage.reloadLevel();
+                        break;
                 }
             }
             return true;
