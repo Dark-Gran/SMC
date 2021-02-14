@@ -41,7 +41,6 @@ public class LevelStage extends Stage {
         this.worldScreen = worldScreen;
         this.UIStage = UIStage;
         LEVEL_LIBRARY.loadLocal("content/levels.json");
-        enableContinue();
     }
 
     public void loadLevel(int levelNum) {
