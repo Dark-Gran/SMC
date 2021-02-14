@@ -117,7 +117,8 @@ public class WorldScreen implements Screen {
         shapeRenderer.setProjectionMatrix(camera.combined);
         levelStage.drawShapes(shapeRenderer);
 
-        smc.batch.setProjectionMatrix(camera.combined);
+        smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
+
         smc.batch.begin();
         smc.batch.setColor(1, 1, 1, 1f);
         levelStage.drawSprites(smc.batch);

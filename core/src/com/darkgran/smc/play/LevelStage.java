@@ -3,11 +3,11 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -35,6 +35,7 @@ public class LevelStage extends Stage {
     private float frameCounter = 0;
     private int seconds = 0;
     private String introMessage;
+    private final Texture wallTexture = new Texture("images/wall.png");
 
     public LevelStage(final WorldScreen worldScreen, final Stage UIStage, Viewport viewport) {
         super(viewport);
@@ -78,7 +79,7 @@ public class LevelStage extends Stage {
                 }
                 setupActors();
                 //Obstacles
-                walls.add(new Wall(this, 4.8f, 2.4f, 2f, 0.5f));
+                walls.add(new Wall(this, 4.8f, 2.4f, 2f, 0.5f, wallTexture));
                 //Finish
                 introMessage = levelInfo.getIntro();
             } else {
@@ -241,6 +242,10 @@ public class LevelStage extends Stage {
         if (currentLevel != 0) {
             drawText(worldScreen.getFont(), batch, String.valueOf(seconds), SaveMeCircles.SW * 9 / 10, SaveMeCircles.SH / 10, Color.WHITE);
         }
+        //Obstacles
+        for (Wall wall : walls) {
+            batch.draw(wall.getSprite(), wall.getWallBody().getBody().getPosition().x*WorldScreen.PPM, wall.getWallBody().getBody().getPosition().y*WorldScreen.PPM);
+        }
     }
 
     private void drawLevelIntro(SpriteBatch batch, float time) {
@@ -257,10 +262,7 @@ public class LevelStage extends Stage {
 
     public void drawText(BitmapFont font, SpriteBatch batch, String txt, float x, float y, Color color) {
         font.setColor(color);
-        Matrix4 originalMatrix = batch.getProjectionMatrix().cpy();
-        batch.setProjectionMatrix(originalMatrix.cpy().scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
         font.draw(batch, txt, x, y);
-        batch.setProjectionMatrix(originalMatrix);
     }
 
     public void removeCircle(ColoredCircle coloredCircle) {
@@ -274,6 +276,7 @@ public class LevelStage extends Stage {
 
     public void dispose() {
         disableContinue();
+        wallTexture.dispose();
     }
 
     public WorldScreen getWorldScreen() {
