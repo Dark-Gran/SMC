@@ -20,7 +20,7 @@ public class CircleBody {
         boxFixtureDef.shape = circleShape;
         boxFixtureDef.density = 0.1f;
         boxFixtureDef.friction = 0f;
-        boxFixtureDef.restitution = 1f;
+        boxFixtureDef.restitution = 0f;
 
         body.createFixture(boxFixtureDef);
 
