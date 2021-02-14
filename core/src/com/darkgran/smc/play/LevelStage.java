@@ -79,7 +79,9 @@ public class LevelStage extends Stage {
                 }
                 setupActors();
                 //Obstacles
-                walls.add(new Wall(this, 4.8f, 2.4f, 98*WorldScreen.getMMP()/2, 400*WorldScreen.getMMP()/2, wallTexture));
+                for (WallInfo wallInfo : levelInfo.getWalls()) {
+                    walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), wallTexture));
+                }
                 //Finish
                 introMessage = levelInfo.getIntro();
             } else {
@@ -128,6 +130,9 @@ public class LevelStage extends Stage {
         }
         circles.clear();
         colorPowers.clear();
+        for (Wall wall : walls) {
+            worldScreen.getWorld().destroyBody(wall.getWallBody().getBody());
+        }
         walls.clear();
     }
 

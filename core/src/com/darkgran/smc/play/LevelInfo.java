@@ -6,6 +6,7 @@ public class LevelInfo {
     private byte id;
     private String intro;
     private ArrayList<CircleInfo> circles;
+    private ArrayList<WallInfo> walls;
 
     public LevelInfo() { }
 
@@ -21,4 +22,7 @@ public class LevelInfo {
         return circles;
     }
 
+    public ArrayList<WallInfo> getWalls() {
+        return walls;
+    }
 }

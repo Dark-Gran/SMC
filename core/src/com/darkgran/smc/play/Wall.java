@@ -9,10 +9,10 @@ public class Wall {
     private final WallBody wallBody;
     private final Sprite sprite;
 
-    public Wall(LevelStage levelStage, float x, float y, float width, float height, Texture texture) {
+    public Wall(LevelStage levelStage, float x, float y, float width, float height, float angle, Texture texture) {
         this.levelStage = levelStage;
         wallBody = new WallBody(levelStage.getWorldScreen().getWorld(), this, x, y, width, height);
-        wallBody.getBody().setTransform(wallBody.getBody().getPosition(), (float) Math.PI/2);
+        wallBody.getBody().setTransform(wallBody.getBody().getPosition(), angle);
         sprite = new Sprite(texture);
         updateSprite();
     }

@@ -5,7 +5,8 @@
     "circles": [
       { "type": "WHITE", "x": 0.1, "y": 2.4, "radius": 0.5, "angle": 0 },
       { "type": "WHITE", "x": 9.5, "y": 2.4, "radius": 0.5, "angle": 180 }
-    ]
+    ],
+    "walls": []
   },
   {
     "id": 1,
@@ -18,7 +19,8 @@
       { "type": "WHITE", "x": 6, "y": 4, "radius": 0.05, "angle": 180 },
       { "type": "WHITE", "x": 7, "y": 5, "radius": 0.1, "angle": 10 },
       { "type": "WHITE", "x": 6, "y": 5, "radius": 0.2, "angle": 160 }
-    ]
+    ],
+    "walls": []
   },
   {
     "id": 2,
@@ -26,6 +28,9 @@
     "circles": [
       { "type": "WHITE", "x": 2, "y": 0, "radius": 0.2, "angle": 30 },
       { "type": "WHITE", "x": 3, "y": 1, "radius": 0.1, "angle": 70 }
+    ],
+    "walls": [
+      { "x": 4.8, "y": 2.4, "width": 0.49, "height": 2, "angle": 90 }
     ]
   }
 ]
