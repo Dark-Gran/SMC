@@ -27,7 +27,7 @@ public class WallBody {
         boxFixtureDef.shape = shape;
         boxFixtureDef.density = 0.1f;
         boxFixtureDef.friction = 0.1f;
-        boxFixtureDef.restitution = 1f;
+        boxFixtureDef.restitution = 0f;
         body.createFixture(boxFixtureDef);
 
         body.setFixedRotation(false);
