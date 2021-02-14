@@ -252,7 +252,7 @@ public class LevelStage extends Stage {
         }
         //Timer
         if (currentLevel != 0) {
-            drawText(worldScreen.getFont(), batch, String.valueOf(seconds), SaveMeCircles.SW * 9 / 10, SaveMeCircles.SH / 10, Color.WHITE);
+            drawText(worldScreen.getFont(), batch, String.valueOf(seconds), SaveMeCircles.SW * 9 / 10, SaveMeCircles.SH / 7.5f, Color.WHITE);
         }
         //Obstacles
         for (Wall wall : walls) {
