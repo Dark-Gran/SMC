@@ -11,7 +11,6 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class ColoredCircle extends Actor {
-    private final double DEGREES_TO_RADIANS = Math.PI/180;
     private final float COMFORT_RADIUS = 0.25f;
     private final float ACTUAL_MIN_RADIUS = 0.001f;
     private final LevelStage levelStage;
@@ -32,7 +31,7 @@ public class ColoredCircle extends Actor {
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius);
         this.radius = radius;
         updateSpeed();
-        this.angle = (float) (degrees*DEGREES_TO_RADIANS);
+        this.angle = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
     }
 
     public void interact(ColoredCircle circle) {

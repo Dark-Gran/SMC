@@ -25,6 +25,7 @@ import com.darkgran.smc.play.LevelStage;
 import java.util.ArrayList;
 
 public class WorldScreen implements Screen {
+    public final static double DEGREES_TO_RADIANS = Math.PI/180;
     //WorldSettings
     float FPS = 60.0f;
     float STEP_TIME = 1f / FPS;
