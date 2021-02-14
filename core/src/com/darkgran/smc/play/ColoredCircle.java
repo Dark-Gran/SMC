@@ -91,8 +91,8 @@ public class ColoredCircle extends Actor {
         }
         //Speed Cap
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
-        float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
         if ((float) currentSpeed != speed) {
+            float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
