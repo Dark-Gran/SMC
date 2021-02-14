@@ -2,6 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.darkgran.smc.WorldScreen;
 
 public class Wall {
@@ -11,8 +12,8 @@ public class Wall {
 
     public Wall(LevelStage levelStage, float x, float y, float width, float height, float angle, Texture texture) {
         this.levelStage = levelStage;
-        wallBody = new WallBody(levelStage.getWorldScreen().getWorld(), this, x, y, width, height);
-        wallBody.getBody().setTransform(wallBody.getBody().getPosition(), angle);
+        wallBody = new WallBody(levelStage.getWorldScreen().getWorld(), this, width, height);
+        wallBody.getBody().setTransform(new Vector2(x, y), angle);
         sprite = new Sprite(texture);
         updateSprite();
     }
