@@ -7,8 +7,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.darkgran.smc.WorldScreen;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static java.lang.Math.*;
 
 public class ColoredCircle extends Actor {
     private final float COMFORT_RADIUS = 0.25f;
@@ -93,8 +92,10 @@ public class ColoredCircle extends Actor {
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
             float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
-            double speedX = speed * cos(angle);
-            double speedY = speed * sin(angle);
+            if (angle != 0) { direction = angle; }
+            if (currentSpeed == 0) { direction += PI; }
+            double speedX = speed * cos(direction);
+            double speedY = speed * sin(direction);
             body.setLinearVelocity((float) speedX, (float) speedY);
         }
         //Screen Edge
