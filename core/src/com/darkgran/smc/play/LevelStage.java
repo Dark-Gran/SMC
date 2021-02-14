@@ -78,7 +78,7 @@ public class LevelStage extends Stage {
                 }
                 setupActors();
                 //Obstacles
-                walls.add(new Wall(this, 4.8f, 2.4f, 0.5f, 2f));
+                walls.add(new Wall(this, 4.8f, 2.4f, 2f, 0.5f));
                 //Finish
                 introMessage = levelInfo.getIntro();
             } else {
