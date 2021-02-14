@@ -79,7 +79,7 @@ public class LevelStage extends Stage {
                 }
                 setupActors();
                 //Obstacles
-                walls.add(new Wall(this, 4.8f, 2.4f, 2f, 0.5f, wallTexture));
+                walls.add(new Wall(this, 4.8f, 2.4f, 98*WorldScreen.getMMP()/2, 400*WorldScreen.getMMP()/2, wallTexture));
                 //Finish
                 introMessage = levelInfo.getIntro();
             } else {
@@ -159,6 +159,17 @@ public class LevelStage extends Stage {
     }
 
     public void update() {
+        if (checkCompletion() && !completed) {
+            completed = true;
+            enableContinue();
+        }
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && lastTouch != null && !completed) {
+            if (lastTouch.isDisabled()) {
+                lastTouch = null;
+            } else {
+                distributedSizeChange(lastTouch);
+            }
+        }
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 if (!circle.isGone()) {
@@ -168,16 +179,8 @@ public class LevelStage extends Stage {
                 }
             }
         }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && lastTouch != null) {
-            if (lastTouch.isDisabled()) {
-                lastTouch = null;
-            } else {
-                distributedSizeChange(lastTouch);
-            }
-        }
-        if (checkCompletion() && !completed) {
-            completed = true;
-            enableContinue();
+        for (Wall wall : walls) {
+            wall.updateSprite();
         }
     }
 
@@ -248,7 +251,7 @@ public class LevelStage extends Stage {
         }
         //Obstacles
         for (Wall wall : walls) {
-            batch.draw(wall.getSprite(), wall.getWallBody().getBody().getPosition().x*WorldScreen.PPM, wall.getWallBody().getBody().getPosition().y*WorldScreen.PPM);
+            wall.getSprite().draw(batch);
         }
     }
 
