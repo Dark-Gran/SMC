@@ -189,8 +189,8 @@ public class WorldScreen implements Screen {
         }
     }
 
-    public void destroyBody(Body body) {
-        if (body.isActive()) {
+    public void destroyBody(Body body) { //probably still needs debug
+        if (body != null) {
             world.destroyBody(body);
         }
     }
