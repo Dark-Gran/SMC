@@ -258,7 +258,8 @@
       { "type": "BLUE", "x": 5.5, "y": 3.5, "radius": 0.1, "angle": 100 },
       { "type": "BLUE", "x": 6, "y": 1.2, "radius": 0.1, "angle": 320 },
       { "type": "GREEN", "x": 7, "y": 1.2, "radius": 0.2, "angle": 110 },
-      { "type": "RED", "x": 5.5, "y": 1, "radius": 0.11, "angle": 110 }
+      { "type": "RED", "x": 5.5, "y": 1, "radius": 0.11, "angle": 110 },
+      { "type": "RED", "x": 1, "y": 2.5, "radius": 0.11, "angle": 350 }
     ],
     "walls": [],
     "beams": [],

@@ -162,6 +162,7 @@ public class LevelStage extends Stage {
     public void addCircle(CircleInfo circleInfo, boolean additive) {
         if (circleInfo.getRadius() >= ACTUAL_MIN_RADIUS) {
             ColoredCircle circle = new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), ACTUAL_MIN_RADIUS, circleInfo.getAngle(), circleInfo.getType());
+            circle.setFreshShard(true);
             circle.addToGrow(circleInfo.getRadius()-ACTUAL_MIN_RADIUS);
             circle.setLockedFromInteractions(true);
             circle.setUnbreakable(true);
@@ -284,6 +285,7 @@ public class LevelStage extends Stage {
     }
 
     public void update() {
+        System.out.println(colorPowers);
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
