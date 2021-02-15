@@ -47,7 +47,7 @@ public class CollisionListener implements ContactListener {
                 }
             }
             if (circleA != null && circleB != null) {
-                switch (getCollisionType(circleA.getColorType(), circleB.getColorType(), circleA.getRadius()>circleB.getRadius())) {
+                switch (getCollisionType(circleA.getColorType(), circleB.getColorType(), circleA.getRadius()>=circleB.getRadius())) {
                     case IGNORED:
                         contact.setEnabled(false);
                         break;
@@ -81,10 +81,10 @@ public class CollisionListener implements ContactListener {
             }
         }
         if (typeA == ColorType.BLUE || typeB == ColorType.BLUE) {
-            other = typeA == ColorType.WHITE ? typeB : typeA;
+            other = typeA == ColorType.BLUE ? typeB : typeA;
             switch (other) {
                 case GREEN:
-                    return AIsBigger ? CollisionType.SOFT : CollisionType.STANDARD;
+                    return ((other == typeB && AIsBigger) || (other == typeA && !AIsBigger)) ? CollisionType.SOFT : CollisionType.STANDARD;
             }
         }
         return CollisionType.STANDARD;
