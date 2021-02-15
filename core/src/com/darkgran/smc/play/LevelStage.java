@@ -38,6 +38,8 @@ public class LevelStage extends Stage {
     private int seconds = 0;
     private String introMessage;
     private final Texture wallTex = new Texture("images/wall.png");
+    private final Texture wallTexB = new Texture("images/wallB.png");
+    private final Texture wallTexG = new Texture("images/wallG.png");
     private final Texture soTex = new Texture("images/switch_over.png");
 
     public LevelStage(final WorldScreen worldScreen, final Stage UIStage, Viewport viewport) {
@@ -96,7 +98,13 @@ public class LevelStage extends Stage {
                 setupActors();
                 //Obstacles
                 for (WallInfo wallInfo : levelInfo.getWalls()) {
-                    walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), ColorType.WHITE, wallTex));
+                    Texture tex = wallTex;
+                    if (wallInfo.getType() == ColorType.BLUE) {
+                        tex = wallTexB;
+                    } else if (wallInfo.getType() == ColorType.GREEN) {
+                        tex = wallTexG;
+                    }
+                    walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), wallInfo.getType(), tex));
                 }
                 for (BeamInfo beamInfo : levelInfo.getBeams()) {
                     beams.add(new Beam(this, beamInfo.getX(), beamInfo.getY(), beamInfo.getWidth()/2, beamInfo.getHeight()/2, beamInfo.getAngle(), beamInfo.getColorType(), beamInfo.isActive()));
