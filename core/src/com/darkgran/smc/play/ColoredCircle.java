@@ -21,6 +21,8 @@ public class ColoredCircle extends Actor {
     private float mergeBuffer = 0f;
     private boolean mergingAway = false;
     private boolean gone = false;
+    private boolean unbreakable = false;
+    private int breakTimer = 0;
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType colorType) {
         this.colorType = colorType;
@@ -62,16 +64,29 @@ public class ColoredCircle extends Actor {
 
     private void splitInHalf() {
         if (canSplit()) {
-            //TODO
+            unbreakable = true;
+            float newRadius = radius/2;
+            setRadius(newRadius);
+            CircleInfo newCircle = new CircleInfo(colorType, circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, newRadius, (float) (circleBody.getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS));
+            levelStage.freshCircle(newCircle, false);
         }
     }
 
     public boolean canSplit() {
-        return radius >= LevelStage.MIN_RADIUS;
+        return !unbreakable && radius >= LevelStage.MIN_RADIUS*2;
     }
 
     public void update() {
         Body body = circleBody.getBody();
+        //Breaking
+        if (unbreakable) {
+            if (breakTimer >= 0) {
+                unbreakable = false;
+                breakTimer = 0;
+            } else {
+                breakTimer++;
+            }
+        }
         //Merging
         if (mergingAway) {
             if (mergeBuffer > 0f) {
@@ -125,18 +140,6 @@ public class ColoredCircle extends Actor {
         if (speed < 0) { speed = 0; }
     }
 
-    public void drawShapes(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        shapeRenderer.setColor(this.colorType.getColor());
-        int segments = Math.round(radius*200);
-        if (segments < 10) { segments = 10; }
-        else if (segments > 100) { segments = 50; }
-        shapeRenderer.circle(circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, radius, segments);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.end();
-    }
-
     private void refreshActorBounds() {
         this.setBounds((circleBody.getBody().getPosition().x-(radius+COMFORT_RADIUS)), (circleBody.getBody().getPosition().y-(radius+COMFORT_RADIUS)), ((radius+COMFORT_RADIUS)*2), ((radius+COMFORT_RADIUS)*2));
     }
@@ -151,6 +154,18 @@ public class ColoredCircle extends Actor {
         }
         refreshActorBounds();
         updateSpeedLimit();
+    }
+
+    public void drawShapes(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        shapeRenderer.setColor(this.colorType.getColor());
+        int segments = Math.round(radius*200);
+        if (segments < 10) { segments = 10; }
+        else if (segments > 100) { segments = 50; }
+        shapeRenderer.circle(circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, radius, segments);
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.end();
     }
 
     public float getRadius() {

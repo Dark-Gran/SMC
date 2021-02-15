@@ -26,6 +26,7 @@ public class LevelStage extends Stage {
     private final WorldScreen worldScreen;
     private final Stage UIStage;
     private final HashMap<ColorType, ArrayList<ColoredCircle>> circles = new HashMap<>();
+    private final HashMap<CircleInfo, Boolean> circlesToAdd = new HashMap<>();
     private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
     private final ArrayList<Wall> walls = new ArrayList<>();
     private final ArrayList<Beam> beams = new ArrayList<>();
@@ -151,25 +152,41 @@ public class LevelStage extends Stage {
         }
     }
 
+    public void freshCircle(CircleInfo circleInfo, boolean additive) {
+        circlesToAdd.put(circleInfo, additive);
+    }
+
+    public void addCircle(CircleInfo circleInfo, boolean additive) {
+        ColoredCircle circle = new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), circleInfo.getType());
+        circles.get(circle.getColorType()).add(circle);
+        if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+circle.getRadius()); }
+        addActor(circle);
+        addCircleClicks(circle);
+    }
+
     private void setupActors() {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 this.addActor(circle);
-                circle.addListener(new ClickListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        if (event.getTarget() instanceof ColoredCircle) {
-                            lastTouch = (ColoredCircle) event.getTarget();
-                        }
-                        return true;
-                    }
-                    @Override
-                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                        lastTouch = null;
-                    }
-                });
+                addCircleClicks(circle);
             }
         }
+    }
+
+    private void addCircleClicks(ColoredCircle circle) {
+        circle.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (event.getTarget() instanceof ColoredCircle) {
+                    lastTouch = (ColoredCircle) event.getTarget();
+                }
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                lastTouch = null;
+            }
+        });
     }
 
     public void switchLevel(boolean forward) {
@@ -219,6 +236,15 @@ public class LevelStage extends Stage {
         switches.clear();
     }
 
+    public void removeCircle(ColoredCircle coloredCircle) {
+        for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
+            if (entry.getValue().contains(coloredCircle)) {
+                entry.getValue().remove(coloredCircle);
+                break;
+            }
+        }
+    }
+
     private boolean checkCompletion() {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             if (entry.getValue().size() > 1) {
@@ -251,6 +277,7 @@ public class LevelStage extends Stage {
             completed = true;
             enableContinue();
         }
+        //Circle Input
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && lastTouch != null && !completed) {
             if (lastTouch.isDisabled()) {
                 lastTouch = null;
@@ -258,6 +285,7 @@ public class LevelStage extends Stage {
                 distributedSizeChange(lastTouch);
             }
         }
+        //Updates
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 if (!circle.isGone()) {
@@ -272,6 +300,13 @@ public class LevelStage extends Stage {
         }
         for (DoorSwitch doorSwitch : switches) {
             doorSwitch.updateSprite();
+        }
+        //New Circles
+        if (circlesToAdd.size() > 0) {
+            for (Map.Entry<CircleInfo, Boolean> entry : circlesToAdd.entrySet()) {
+                addCircle(entry.getKey(), entry.getValue());
+            }
+            circlesToAdd.clear();
         }
     }
 
@@ -367,15 +402,6 @@ public class LevelStage extends Stage {
     public void drawText(BitmapFont font, SpriteBatch batch, String txt, float x, float y, Color color) {
         font.setColor(color);
         font.draw(batch, txt, x, y);
-    }
-
-    public void removeCircle(ColoredCircle coloredCircle) {
-        for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
-            if (entry.getValue().contains(coloredCircle)) {
-                entry.getValue().remove(coloredCircle);
-                break;
-            }
-        }
     }
 
     public void dispose() {
