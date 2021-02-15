@@ -1,11 +1,11 @@
 package com.darkgran.smc.play;
 
 public class BeamInfo extends WallInfo {
-    private ColorType colorType;
+    private ColorType type;
     private boolean active;
 
     public ColorType getColorType() {
-        return colorType;
+        return type;
     }
 
     public boolean isActive() {

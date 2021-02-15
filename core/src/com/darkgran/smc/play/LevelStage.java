@@ -83,7 +83,7 @@ public class LevelStage extends Stage {
                 setupActors();
                 //Obstacles
                 for (WallInfo wallInfo : levelInfo.getWalls()) {
-                    walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), wallTex));
+                    walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), ColorType.WHITE, wallTex));
                 }
                 for (BeamInfo beamInfo : levelInfo.getBeams()) {
                     beams.add(new Beam(this, beamInfo.getX(), beamInfo.getY(), beamInfo.getWidth()/2, beamInfo.getHeight()/2, beamInfo.getAngle(), beamInfo.getColorType(), beamInfo.isActive()));
@@ -95,7 +95,7 @@ public class LevelStage extends Stage {
                             doors[i] = beams.get(switchInfo.getBeams()[i]);
                         }
                     }
-                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), doors, soTex); //TODO
+                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), doors, soTex);
                     switches.add(doorSwitch);
                     this.addActor(doorSwitch);
                     doorSwitch.addListener(new ClickListener() {

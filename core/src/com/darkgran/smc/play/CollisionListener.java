@@ -24,15 +24,36 @@ public class CollisionListener implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        if (contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle && contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle) {
-            contact.setEnabled(false);
-            ColoredCircle circleA = (ColoredCircle) contact.getFixtureA().getBody().getUserData();
-            ColoredCircle circleB = (ColoredCircle) contact.getFixtureB().getBody().getUserData();
-            if (!circleA.isDisabled() && !circleB.isDisabled()) {
-                if (circleA.getRadius() > circleB.getRadius()) {
-                    circleA.interact(circleB);
-                } else {
-                    circleB.interact(circleA);
+        ColoredCircle circleA = null;
+        ColoredCircle circleB = null;
+        if (contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle) {
+            circleA = (ColoredCircle) contact.getFixtureA().getBody().getUserData();
+        }
+        if (contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle) {
+            circleB = (ColoredCircle) contact.getFixtureB().getBody().getUserData();
+        }
+        if (circleA != null || circleB != null) {
+            Object other = circleA != null ? contact.getFixtureB().getBody().getUserData() : contact.getFixtureA().getBody().getUserData();
+            if (other instanceof Beam) {
+                ColoredCircle circle = circleA != null ? circleA : circleB;
+                if (((Beam) other).getColorType() != circle.getColorType()) {
+                    contact.setEnabled(false);
+                }
+            }
+            if (other instanceof Wall) {
+                ColoredCircle circle = circleA != null ? circleA : circleB;
+                if (((Wall) other).getColorType() == circle.getColorType()) {
+                    contact.setRestitution(0f);
+                }
+            }
+            if (circleA != null && circleB != null) {
+                contact.setEnabled(false);
+                if (!circleA.isDisabled() && !circleB.isDisabled()) {
+                    if (circleA.getRadius() > circleB.getRadius()) {
+                        circleA.interact(circleB);
+                    } else {
+                        circleB.interact(circleA);
+                    }
                 }
             }
         }
