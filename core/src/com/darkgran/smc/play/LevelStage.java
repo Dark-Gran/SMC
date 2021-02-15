@@ -282,7 +282,39 @@ public class LevelStage extends Stage {
         });
     }
 
+    private void debugCP() {
+        System.out.println(colorPowers);
+    }
+
+    private void debugCR() {
+        float whitePower = 0f;
+        float bluePower = 0f;
+        float greenPower = 0f;
+        float redPower = 0f;
+        for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
+            for (ColoredCircle circle : entry.getValue()) {
+                switch (circle.getColorType()) {
+                    case WHITE:
+                        whitePower += circle.getRadius();
+                        break;
+                    case BLUE:
+                        bluePower += circle.getRadius();
+                        break;
+                    case GREEN:
+                        greenPower += circle.getRadius();
+                        break;
+                    case RED:
+                        redPower += circle.getRadius();
+                        break;
+                }
+            }
+        }
+        System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
+    }
+
     public void update() {
+        debugCP();
+        debugCR();
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
