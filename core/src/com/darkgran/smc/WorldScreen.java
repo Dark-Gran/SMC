@@ -52,7 +52,7 @@ public class WorldScreen implements Screen {
     private final CollisionListener collisionListener;
     private ArrayList corpses = new ArrayList();
     private boolean reload = false;
-    private int currentLevelID = 8;
+    private int currentLevelID = 0;
     private final InputAdapter generalInputProcessor = new InputAdapter() {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
