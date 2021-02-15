@@ -100,7 +100,7 @@ public class WorldScreen implements Screen {
         smc.getInputMultiplexer().addProcessor(generalInputProcessor);
         collisionListener = new CollisionListener(levelStage);
         world.setContactListener(collisionListener);
-        levelStage.loadLevel(5);
+        levelStage.loadLevel(6);
         Gdx.input.setCursorCatched(false);
     }
 
