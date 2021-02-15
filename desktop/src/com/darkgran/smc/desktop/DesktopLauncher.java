@@ -6,7 +6,7 @@ import com.darkgran.smc.SaveMeCircles;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+		//System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "SMC";
 		config.width = 1920; //1600
