@@ -228,6 +228,7 @@ public class LevelStage extends Stage {
         }
         circles.clear();
         colorPowers.clear();
+        circlesToAdd.clear();
         for (Wall wall : walls) {
             worldScreen.getWorld().destroyBody(wall.getChainBody().getBody());
         }

@@ -68,7 +68,7 @@ public class CollisionListener implements ContactListener {
     }
 
     private InteractionType getInteractionType(ColoredCircle circleA, ColoredCircle circleB) {
-        if ((circleA.isUnbreakable() && circleB.getColorType() == ColorType.RED) || (circleA.isUnbreakable() && circleB.getColorType() == ColorType.RED)) {
+        if ((circleA.isUnbreakable() && circleB.getColorType() == ColorType.RED) || (circleB.isUnbreakable() && circleA.getColorType() == ColorType.RED)) {
             return InteractionType.PASS;
         }
         if (circleA.isLockedFromInteractions() || circleB.isLockedFromInteractions()) {
@@ -84,7 +84,7 @@ public class CollisionListener implements ContactListener {
     }
 
     private CollisionType getCollisionType(ColorType typeA, ColorType typeB, InteractionType interactionType) {
-        if (interactionType == InteractionType.MERGER || interactionType == InteractionType.PASS) {
+        if (interactionType == InteractionType.MERGER || interactionType == InteractionType.PASS || interactionType == InteractionType.BREAKER) {
             return CollisionType.IGNORED;
         }
         ColorType other;
@@ -94,27 +94,26 @@ public class CollisionListener implements ContactListener {
                 case BLUE:
                     return CollisionType.SOFT;
                 case GREEN:
-                    return CollisionType.STANDARD;
                 case RED:
-                    return interactionType == InteractionType.BREAKER ? CollisionType.IGNORED : CollisionType.STANDARD;
+                    return CollisionType.STANDARD;
             }
         }
         if (typeA == ColorType.BLUE || typeB == ColorType.BLUE) {
             other = typeA == ColorType.BLUE ? typeB : typeA;
             switch (other) {
                 case GREEN:
-                    return interactionType == InteractionType.BREAKER ? CollisionType.SOFT : CollisionType.STANDARD;
+                    return CollisionType.STANDARD;
                 case RED:
-                    return interactionType == InteractionType.BREAKER ? CollisionType.IGNORED : CollisionType.SOFT;
+                    return CollisionType.SOFT;
             }
         }
-        if (typeA == ColorType.GREEN || typeB == ColorType.GREEN) {
+        /*if (typeA == ColorType.GREEN || typeB == ColorType.GREEN) {
             other = typeA == ColorType.GREEN ? typeB : typeA;
             switch (other) {
                 case RED:
-                    return interactionType == InteractionType.BREAKER ? CollisionType.IGNORED : CollisionType.STANDARD;
+                    return CollisionType.STANDARD;
             }
-        }
+        }*/
         return CollisionType.STANDARD;
     }
 
