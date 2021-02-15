@@ -23,7 +23,7 @@ public class ColoredCircle extends Actor {
     private boolean mergingAway = false;
     private boolean gone = false;
     private SimpleCounter interactionLock = new SimpleCounter(false, 20, 0);
-    private SimpleCounter breakLock = new SimpleCounter(false, 360, 0);
+    private SimpleCounter breakLock = new SimpleCounter(false, 60, 0);
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType colorType) {
         this.colorType = colorType;
@@ -65,7 +65,7 @@ public class ColoredCircle extends Actor {
 
     private void splitInHalf(Vector2 breakPoint) {
         if (canSplit()) {
-            interactionLock.setEnabled(true);
+            setLockedFromInteractions(true);
             float newRadius = radius/2;
             setRadius(newRadius);
             breakLock.setEnabled(true);
