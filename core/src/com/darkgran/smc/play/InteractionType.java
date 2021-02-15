@@ -1,5 +1,5 @@
 package com.darkgran.smc.play;
 
 public enum InteractionType {
-    NONE, MERGER
+    NONE, MERGER, BREAKER
 }

@@ -36,23 +36,19 @@ public class ColoredCircle extends Actor {
         circleBody.getBody().setLinearVelocity((float) speedX, (float) speedY);
     }
 
-    public void interact(ColoredCircle circle) {
+    public void interact(ColoredCircle circle, InteractionType interactionType) {
         if (!isDisabled() && !circle.isDisabled()) {
-            switch (getInteractionType(colorType, circle.getColorType())) {
+            switch (interactionType) {
                 case NONE:
                     break;
                 case MERGER:
                     merge(circle);
                     break;
+                case BREAKER:
+                    splitInHalf();
+                    break;
             }
         }
-    }
-
-    private InteractionType getInteractionType(ColorType typeA, ColorType typeB) {
-        if (typeA == typeB) {
-            return InteractionType.MERGER;
-        }
-        return InteractionType.NONE;
     }
 
     public void merge(ColoredCircle circle) {
@@ -64,9 +60,14 @@ public class ColoredCircle extends Actor {
         mergingAway = true;
     }
 
-    private void updateSpeedLimit() {
-        speed = colorType.getSpeed() / (mergingAway ? LevelStage.MIN_RADIUS : radius);
-        if (speed < 0) { speed = 0; }
+    private void splitInHalf() {
+        if (canSplit()) {
+            //TODO
+        }
+    }
+
+    public boolean canSplit() {
+        return radius >= LevelStage.MIN_RADIUS;
     }
 
     public void update() {
@@ -117,6 +118,11 @@ public class ColoredCircle extends Actor {
         }
         //Actor position
         refreshActorBounds();
+    }
+
+    private void updateSpeedLimit() {
+        speed = colorType.getSpeed() / (mergingAway ? LevelStage.MIN_RADIUS : radius);
+        if (speed < 0) { speed = 0; }
     }
 
     public void drawShapes(ShapeRenderer shapeRenderer) {

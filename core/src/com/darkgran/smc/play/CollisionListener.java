@@ -47,7 +47,8 @@ public class CollisionListener implements ContactListener {
                 }
             }
             if (circleA != null && circleB != null) {
-                switch (getCollisionType(circleA.getColorType(), circleB.getColorType(), circleA.getRadius()>=circleB.getRadius())) {
+                InteractionType interactionType = getInteractionType(circleA, circleB);
+                switch (getCollisionType(circleA.getColorType(), circleB.getColorType(), interactionType)) {
                     case IGNORED:
                         contact.setEnabled(false);
                         break;
@@ -57,17 +58,27 @@ public class CollisionListener implements ContactListener {
                 }
                 if (!circleA.isDisabled() && !circleB.isDisabled()) {
                     if (circleA.getRadius() > circleB.getRadius()) {
-                        circleA.interact(circleB);
+                        circleA.interact(circleB, interactionType);
                     } else {
-                        circleB.interact(circleA);
+                        circleB.interact(circleA, interactionType);
                     }
                 }
             }
         }
     }
 
-    private CollisionType getCollisionType(ColorType typeA, ColorType typeB, boolean AIsBigger) {
-        if (typeA == typeB) {
+    private InteractionType getInteractionType(ColoredCircle circleA, ColoredCircle circleB) {
+        if (circleA.getColorType() == circleB.getColorType()) {
+            return InteractionType.MERGER;
+        }
+        if ((circleA.getColorType() == ColorType.RED && circleA.getRadius() < circleB.getRadius() && circleB.canSplit()) || (circleB.getColorType() == ColorType.RED && circleB.getRadius() < circleA.getRadius() && circleA.canSplit())) {
+            return InteractionType.BREAKER;
+        }
+        return InteractionType.NONE;
+    }
+
+    private CollisionType getCollisionType(ColorType typeA, ColorType typeB, InteractionType interactionType) {
+        if (interactionType == InteractionType.MERGER) {
             return CollisionType.IGNORED;
         }
         ColorType other;
@@ -78,13 +89,24 @@ public class CollisionListener implements ContactListener {
                     return CollisionType.SOFT;
                 case GREEN:
                     return CollisionType.STANDARD;
+                case RED:
+                    return interactionType == InteractionType.BREAKER ? CollisionType.IGNORED : CollisionType.STANDARD;
             }
         }
         if (typeA == ColorType.BLUE || typeB == ColorType.BLUE) {
             other = typeA == ColorType.BLUE ? typeB : typeA;
             switch (other) {
                 case GREEN:
-                    return ((other == typeB && AIsBigger) || (other == typeA && !AIsBigger)) ? CollisionType.SOFT : CollisionType.STANDARD;
+                    return interactionType == InteractionType.BREAKER ? CollisionType.SOFT : CollisionType.STANDARD;
+                case RED:
+                    return interactionType == InteractionType.BREAKER ? CollisionType.IGNORED : CollisionType.SOFT;
+            }
+        }
+        if (typeA == ColorType.GREEN || typeB == ColorType.GREEN) {
+            other = typeA == ColorType.GREEN ? typeB : typeA;
+            switch (other) {
+                case RED:
+                    return interactionType == InteractionType.BREAKER ? CollisionType.IGNORED : CollisionType.STANDARD;
             }
         }
         return CollisionType.STANDARD;
