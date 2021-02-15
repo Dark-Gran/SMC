@@ -286,7 +286,7 @@ public class LevelStage extends Stage {
         System.out.println(colorPowers);
     }
 
-    private void debugCR() {
+    private float getCR(ColorType colorType) { //in-future fix the changes in color power (ie. debug distributedSizeChange() + grow section in update())
         float whitePower = 0f;
         float bluePower = 0f;
         float greenPower = 0f;
@@ -310,11 +310,21 @@ public class LevelStage extends Stage {
             }
         }
         System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
+        switch (colorType) {
+            default:
+                return whitePower;
+            case BLUE:
+                return bluePower;
+            case GREEN:
+                return greenPower;
+            case RED:
+                return redPower;
+        }
     }
 
     public void update() {
         debugCP();
-        debugCR();
+        getCR(ColorType.WHITE);
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
@@ -352,11 +362,12 @@ public class LevelStage extends Stage {
         }
     }
 
-    private void distributedSizeChange(ColoredCircle chosenCircle) {
+    private void distributedSizeChange(ColoredCircle chosenCircle) { //in-future: rework (see debugCR())
         if (circles.get(chosenCircle.getColorType()) != null) {
             ArrayList<ColoredCircle> coloredCircles = circles.get(chosenCircle.getColorType());
             if (coloredCircles.size() > 1) {
-                float maxRadius = colorPowers.get(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
+                //float maxRadius = colorPowers.get(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
+                float maxRadius = getCR(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
                 if (chosenCircle.getRadius() + RADIUS_CHANGE <= maxRadius) {
                     ArrayList<ColoredCircle> eligibles = new ArrayList<>();
                     float changeSpace = 0f;
