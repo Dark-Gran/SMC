@@ -67,6 +67,8 @@ public class LevelStage extends Stage {
                 float bluePower = 0f;
                 ArrayList<ColoredCircle> greens = new ArrayList<>();
                 float greenPower = 0f;
+                ArrayList<ColoredCircle> reds = new ArrayList<>();
+                float redPower = 0f;
                 for (CircleInfo circleInfo : levelInfo.getCircles()) {
                     switch (circleInfo.getType()) {
                         case WHITE:
@@ -81,6 +83,10 @@ public class LevelStage extends Stage {
                             greens.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.GREEN));
                             greenPower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
                             break;
+                        case RED:
+                            reds.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.RED));
+                            redPower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
+                            break;
                     }
                 }
                 if (whitePower > 0f && whites.size() > 0) {
@@ -94,6 +100,10 @@ public class LevelStage extends Stage {
                 if (greenPower > 0f && greens.size() > 0) {
                     circles.put(ColorType.GREEN, greens);
                     colorPowers.put(ColorType.GREEN, greenPower);
+                }
+                if (redPower > 0f && reds.size() > 0) {
+                    circles.put(ColorType.RED, reds);
+                    colorPowers.put(ColorType.RED, redPower);
                 }
                 setupActors();
                 //Obstacles
