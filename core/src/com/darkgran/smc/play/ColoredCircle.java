@@ -65,7 +65,7 @@ public class ColoredCircle extends Actor {
     }
 
     private void updateSpeedLimit() {
-        speed = 0.1f / (mergingAway ? LevelStage.MIN_RADIUS : radius);
+        speed = colorType.getSpeed() / (mergingAway ? LevelStage.MIN_RADIUS : radius);
         if (speed < 0) { speed = 0; }
     }
 
