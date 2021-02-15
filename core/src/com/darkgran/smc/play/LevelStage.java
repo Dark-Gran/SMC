@@ -204,19 +204,12 @@ public class LevelStage extends Stage {
         });
     }
 
-    public void switchLevel(boolean forward) {
-        int newID = forward ? currentLevel+1 : currentLevel-1;
-        if (LEVEL_LIBRARY.levelExists(newID)) {
+    public void switchLevel(int currentLevelID) {
+        if (LEVEL_LIBRARY.levelExists(currentLevelID)) {
             disableContinue();
             clearLevel();
-            loadLevel(newID);
+            loadLevel(currentLevelID);
         }
-    }
-
-    public void reloadLevel() {
-        disableContinue();
-        clearLevel();
-        loadLevel(currentLevel);
     }
 
     private void clearLevel() {
@@ -282,7 +275,7 @@ public class LevelStage extends Stage {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                switchLevel(true);
+                switchLevel(currentLevel+1);
                 disableContinue();
             }
         });
