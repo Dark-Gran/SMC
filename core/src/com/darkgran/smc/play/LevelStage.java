@@ -208,6 +208,7 @@ public class LevelStage extends Stage {
         if (LEVEL_LIBRARY.levelExists(currentLevelID)) {
             disableContinue();
             clearLevel();
+            worldScreen.setCurrentLevelID(currentLevelID);
             loadLevel(currentLevelID);
         }
     }

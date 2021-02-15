@@ -24,6 +24,8 @@ import com.darkgran.smc.play.LevelStage;
 
 import java.util.ArrayList;
 
+import static com.darkgran.smc.play.LevelStage.LEVEL_LIBRARY;
+
 public class WorldScreen implements Screen {
     public final static double DEGREES_TO_RADIANS = Math.PI/180;
     //WorldSettings
@@ -65,12 +67,16 @@ public class WorldScreen implements Screen {
             if (levelStage != null) {
                 switch (keycode) {
                     case Input.Keys.LEFT:
-                        reload = true;
-                        currentLevelID -= 1;
+                        if (LEVEL_LIBRARY.levelExists(currentLevelID-1)) {
+                            reload = true;
+                            currentLevelID -= 1;
+                        }
                         break;
                     case Input.Keys.RIGHT:
-                        reload = true;
-                        currentLevelID += 1;
+                        if (LEVEL_LIBRARY.levelExists(currentLevelID+1)) {
+                            reload = true;
+                            currentLevelID += 1;
+                        }
                         break;
                     case Input.Keys.R:
                         reload = true;
@@ -234,4 +240,11 @@ public class WorldScreen implements Screen {
 
     public ImageButton getContinueButton() { return continueButton; }
 
+    public int getCurrentLevelID() {
+        return currentLevelID;
+    }
+
+    public void setCurrentLevelID(int currentLevelID) {
+        this.currentLevelID = currentLevelID;
+    }
 }
