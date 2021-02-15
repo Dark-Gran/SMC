@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -55,11 +56,11 @@ public class LevelStage extends Stage {
 
     public void loadLevel(int levelNum) {
         if (levelNum >= 0) {
+            clearLevel();
             timer = 0;
             frameCounter = 0;
             seconds = 0;
             completed = false;
-            lastTouch = null;
             System.out.println("Launching Level: " + levelNum);
             currentLevel = levelNum;
             LevelInfo levelInfo = LEVEL_LIBRARY.getLevel(levelNum);
@@ -166,6 +167,9 @@ public class LevelStage extends Stage {
             circle.addToGrow(circleInfo.getRadius()-ACTUAL_MIN_RADIUS);
             circle.setLockedFromInteractions(true);
             circle.setUnbreakable(true);
+            MassData md = new MassData();
+            md.mass = 0.1f;
+            circle.getCircleBody().getBody().setMassData(md);
             circles.get(circle.getColorType()).add(circle);
             if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+circle.getRadius()); }
             addActor(circle);

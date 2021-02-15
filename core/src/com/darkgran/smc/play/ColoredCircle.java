@@ -64,11 +64,11 @@ public class ColoredCircle extends Actor {
     private void splitInHalf(Vector2 breakPoint) {
         if (canSplit()) {
             setLockedFromInteractions(true);
+            setUnbreakable(true);
             float newRadius = radius/2;
             addToGrow(-newRadius);
-            breakLock.setEnabled(true);
-            float newX = circleBody.getBody().getPosition().x + (breakPoint.x < circleBody.getBody().getPosition().x ? -0.1f : 0.1f);
-            float newY = circleBody.getBody().getPosition().y + (breakPoint.y < circleBody.getBody().getPosition().y ? -0.1f : 0.1f);
+            float newX = circleBody.getBody().getPosition().x + (breakPoint.x < circleBody.getBody().getPosition().x ? -newRadius : newRadius);
+            float newY = circleBody.getBody().getPosition().y + (breakPoint.y < circleBody.getBody().getPosition().y ? -newRadius : newRadius);
             CircleInfo newCircle = new CircleInfo(newX, newY, (float) (circleBody.getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS), newRadius, colorType);
             levelStage.freshCircle(newCircle, false);
         }
@@ -100,6 +100,7 @@ public class ColoredCircle extends Actor {
             } else {
                 setRadius(getRadius()+growBuffer);
                 growBuffer = 0f;
+                freshShard = false;
             }
         } else if (growBuffer < 0f) {
             if (Math.abs(growBuffer) > LevelStage.RADIUS_CHANGE) {
@@ -207,7 +208,7 @@ public class ColoredCircle extends Actor {
     }
 
     public boolean isDisabled() {
-        return mergingAway || gone;
+        return isLockedFromInteractions() || mergingAway || gone;
     }
 
     public boolean isGone() {

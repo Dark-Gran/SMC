@@ -22,6 +22,12 @@ public class CircleBody {
         boxFixtureDef.friction = 0f;
         boxFixtureDef.restitution = 1f;
 
+        MassData md = new MassData();
+        md.mass = 0.1f;
+        body.setMassData(md);
+        //md.I = 1;
+        //md.center = body.getLocalCenter();
+
         body.createFixture(boxFixtureDef);
 
         body.setFixedRotation(false);
