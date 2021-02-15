@@ -222,18 +222,18 @@ public class LevelStage extends Stage {
                     circle.removeListener(circle.getListeners().get(0));
                 }
                 circle.remove();
-                worldScreen.getWorld().destroyBody(circle.getCircleBody().getBody());
+                worldScreen.destroyBody(circle.getCircleBody().getBody());
             }
         }
         circles.clear();
         colorPowers.clear();
         circlesToAdd.clear();
         for (Wall wall : walls) {
-            worldScreen.getWorld().destroyBody(wall.getChainBody().getBody());
+            worldScreen.destroyBody(wall.getChainBody().getBody());
         }
         walls.clear();
         for (Beam beam : beams) {
-            worldScreen.getWorld().destroyBody(beam.getChainBody().getBody());
+            worldScreen.destroyBody(beam.getChainBody().getBody());
         }
         beams.clear();
         for (DoorSwitch doorSwitch : switches) {
@@ -241,7 +241,7 @@ public class LevelStage extends Stage {
                 doorSwitch.removeListener(doorSwitch.getListeners().get(0));
             }
             doorSwitch.remove();
-            worldScreen.getWorld().destroyBody(doorSwitch.getChainBody().getBody());
+            worldScreen.destroyBody(doorSwitch.getChainBody().getBody());
         }
         switches.clear();
     }

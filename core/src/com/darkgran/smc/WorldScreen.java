@@ -182,10 +182,16 @@ public class WorldScreen implements Screen {
                         levelStage.setLastTouch(null);
                     }
                     circle.remove();
-                    world.destroyBody(circle.getCircleBody().getBody());
+                    destroyBody(circle.getCircleBody().getBody());
                 }
                 corpses.remove(corpse);
             }
+        }
+    }
+
+    public void destroyBody(Body body) {
+        if (body.isActive()) {
+            world.destroyBody(body);
         }
     }
 
