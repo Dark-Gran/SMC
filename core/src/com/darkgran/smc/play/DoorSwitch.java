@@ -15,7 +15,7 @@ public class DoorSwitch extends Actor {
 
     public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, BareDoor[] doors, Texture texture) {
         this.levelStage = levelStage;
-        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height);
+        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height, 0f);
         chainBody.getBody().setTransform(new Vector2(x, y), angle);
         chainBody.getBody().getFixtureList().get(0).setSensor(true);
         this.setBounds(x-width, y-height, width*2, height*2);

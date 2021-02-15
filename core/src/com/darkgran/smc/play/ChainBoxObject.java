@@ -6,9 +6,9 @@ public class ChainBoxObject {
     private final LevelStage levelStage;
     private final ChainBody chainBody;
 
-    public ChainBoxObject(LevelStage levelStage, float x, float y, float width, float height, float angle) {
+    public ChainBoxObject(LevelStage levelStage, float x, float y, float width, float height, float angle, float restitution) {
         this.levelStage = levelStage;
-        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height);
+        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height, restitution);
         chainBody.getBody().setTransform(new Vector2(x, y), angle);
     }
 

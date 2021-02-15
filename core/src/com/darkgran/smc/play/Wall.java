@@ -8,7 +8,7 @@ public class Wall extends ChainBoxObject {
     private final Sprite sprite;
 
     public Wall(LevelStage levelStage, float x, float y, float width, float height, float angle, Texture texture) {
-        super(levelStage, x, y, width, height, angle);
+        super(levelStage, x, y, width, height, angle, 0f);
         sprite = new Sprite(texture);
         updateSprite();
     }

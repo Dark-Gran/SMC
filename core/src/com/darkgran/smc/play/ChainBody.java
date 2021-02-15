@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class ChainBody {
     private final Body body;
 
-    public ChainBody(final World world, final Object object, float width, float height) {
+    public ChainBody(final World world, final Object object, float width, float height, float restitution) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.StaticBody;
 
@@ -26,7 +26,7 @@ public class ChainBody {
         boxFixtureDef.shape = shape;
         boxFixtureDef.density = 0.1f;
         boxFixtureDef.friction = 0.1f;
-        boxFixtureDef.restitution = 0f;
+        boxFixtureDef.restitution = restitution;
         body.createFixture(boxFixtureDef);
 
         body.setFixedRotation(false);

@@ -9,7 +9,7 @@ public class Beam extends BareDoor {
     private float height;
 
     public Beam(LevelStage levelStage, float x, float y, float width, float height, float angle, ColorType colorType, boolean state) {
-        super(levelStage, x, y, width, height, angle, state);
+        super(levelStage, x, y, width, height, angle, state, 1f);
         this.colorType = colorType;
         this.width = width;
         this.height = height;

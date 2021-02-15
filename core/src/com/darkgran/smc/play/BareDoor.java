@@ -3,8 +3,8 @@ package com.darkgran.smc.play;
 public class BareDoor extends ChainBoxObject {
     private boolean closed;
 
-    public BareDoor(LevelStage levelStage, float x, float y, float width, float height, float angle, boolean state) {
-        super(levelStage, x, y, width, height, angle);
+    public BareDoor(LevelStage levelStage, float x, float y, float width, float height, float angle, boolean state, float restitution) {
+        super(levelStage, x, y, width, height, angle, restitution);
         changeState(state);
     }
 
