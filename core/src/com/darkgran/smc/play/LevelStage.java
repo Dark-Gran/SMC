@@ -323,8 +323,8 @@ public class LevelStage extends Stage {
     }
 
     public void update() {
-        debugCP();
-        getCR(ColorType.WHITE);
+        //debugCP();
+        //getCR(ColorType.WHITE);
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
