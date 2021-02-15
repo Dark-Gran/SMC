@@ -177,22 +177,21 @@ public class WorldScreen implements Screen {
                     if (circle.getListeners().size > 0) {
                         circle.removeListener(circle.getListeners().get(0));
                     }
+                    circle.remove();
+                    destroyBody(circle.getCircleBody().getBody());
+                    circle.setCircleBody(null);
                     levelStage.removeCircle(circle);
                     if (circle == levelStage.getLastTouch()) {
                         levelStage.setLastTouch(null);
                     }
-                    circle.remove();
-                    destroyBody(circle.getCircleBody().getBody());
                 }
                 corpses.remove(corpse);
             }
         }
     }
 
-    public void destroyBody(Body body) { //probably still needs debug
-        if (body != null) {
-            world.destroyBody(body);
-        }
+    public void destroyBody(Body body) {
+        world.destroyBody(body);
     }
 
     private void drawBox2DDebug() {

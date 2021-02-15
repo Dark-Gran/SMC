@@ -13,7 +13,7 @@ import static java.lang.Math.*;
 
 public class ColoredCircle extends Actor {
     private final LevelStage levelStage;
-    private final CircleBody circleBody;
+    private CircleBody circleBody;
     private ColorType colorType;
     private float radius;
     private float direction;
@@ -230,5 +230,9 @@ public class ColoredCircle extends Actor {
 
     public void setFreshShard(boolean freshShard) {
         this.freshShard = freshShard;
+    }
+
+    public void setCircleBody(CircleBody circleBody) {
+        this.circleBody = circleBody;
     }
 }
