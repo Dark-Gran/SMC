@@ -67,7 +67,7 @@ public class ColoredCircle extends Actor {
             setLockedFromInteractions(true);
             setUnbreakable(true);
             float newRadius = radius/2;
-            addToGrow(-newRadius);
+            addToGrow(-(getRadius()-newRadius));
             float newX = circleBody.getBody().getPosition().x + (breakPoint.x < circleBody.getBody().getPosition().x ? -newRadius*1.5f : newRadius*1.5f);
             float newY = circleBody.getBody().getPosition().y + (breakPoint.y < circleBody.getBody().getPosition().y ? -newRadius*1.5f : newRadius*1.5f);
             CircleInfo newCircle = new CircleInfo(newX, newY, (float) (circleBody.getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS), newRadius, colorType);
