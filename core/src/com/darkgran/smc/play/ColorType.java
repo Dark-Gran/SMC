@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 
 public enum ColorType {
     WHITE(Color.WHITE),
-    BLUE(Color.BLUE);
+    BLUE(Color.BLUE),
+    GREEN(Color.GREEN);
 
     private final Color color;
 

@@ -39,6 +39,8 @@ public class ColoredCircle extends Actor {
     public void interact(ColoredCircle circle) {
         if (!isDisabled() && !circle.isDisabled()) {
             switch (getInteractionType(colorType, circle.getColorType())) {
+                case NONE:
+                    break;
                 case MERGER:
                     merge(circle);
                     break;
