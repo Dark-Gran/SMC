@@ -94,6 +94,7 @@ public class ColoredCircle extends Actor {
             } else {
                 gone = true;
             }
+        //TODO DEBUG
         } else if (growBuffer > 0f) {
             if (growBuffer > LevelStage.RADIUS_CHANGE) {
                 growBuffer -= LevelStage.RADIUS_CHANGE;
