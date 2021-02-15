@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.darkgran.smc.WorldScreen;
@@ -67,8 +68,8 @@ public class ColoredCircle extends Actor {
             setUnbreakable(true);
             float newRadius = radius/2;
             addToGrow(-newRadius);
-            float newX = circleBody.getBody().getPosition().x + (breakPoint.x < circleBody.getBody().getPosition().x ? -newRadius : newRadius);
-            float newY = circleBody.getBody().getPosition().y + (breakPoint.y < circleBody.getBody().getPosition().y ? -newRadius : newRadius);
+            float newX = circleBody.getBody().getPosition().x + (breakPoint.x < circleBody.getBody().getPosition().x ? -newRadius*1.5f : newRadius*1.5f);
+            float newY = circleBody.getBody().getPosition().y + (breakPoint.y < circleBody.getBody().getPosition().y ? -newRadius*1.5f : newRadius*1.5f);
             CircleInfo newCircle = new CircleInfo(newX, newY, (float) (circleBody.getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS), newRadius, colorType);
             levelStage.freshCircle(newCircle, false);
         }
@@ -160,6 +161,9 @@ public class ColoredCircle extends Actor {
             Shape shape = circleBody.getBody().getFixtureList().get(0).getShape();
             shape.setRadius(radius);
         }
+        MassData md = new MassData();
+        md.mass = 0.1f*radius;
+        circleBody.getBody().setMassData(md);
         refreshActorBounds();
         updateSpeedLimit();
     }

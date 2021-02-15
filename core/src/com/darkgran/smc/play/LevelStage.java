@@ -168,7 +168,7 @@ public class LevelStage extends Stage {
             circle.setLockedFromInteractions(true);
             circle.setUnbreakable(true);
             MassData md = new MassData();
-            md.mass = 0.1f;
+            md.mass = 0.1f*ACTUAL_MIN_RADIUS;
             circle.getCircleBody().getBody().setMassData(md);
             circles.get(circle.getColorType()).add(circle);
             if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+circle.getRadius()); }

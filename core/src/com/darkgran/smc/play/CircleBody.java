@@ -23,7 +23,7 @@ public class CircleBody {
         boxFixtureDef.restitution = 1f;
 
         MassData md = new MassData();
-        md.mass = 0.1f;
+        md.mass = 0.1f*radius;
         body.setMassData(md);
         //md.I = 1;
         //md.center = body.getLocalCenter();
