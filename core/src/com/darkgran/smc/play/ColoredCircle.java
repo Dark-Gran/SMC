@@ -22,8 +22,8 @@ public class ColoredCircle extends Actor {
     private float mergeBuffer = 0f;
     private boolean mergingAway = false;
     private boolean gone = false;
-    private boolean lockedFromInteractions = false;
-    private int ILockTimer = 0;
+    private SimpleCounter interactionLock = new SimpleCounter(false, 20, 0);
+    private SimpleCounter breakLock = new SimpleCounter(false, 360, 0);
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType colorType) {
         this.colorType = colorType;
@@ -65,9 +65,10 @@ public class ColoredCircle extends Actor {
 
     private void splitInHalf(Vector2 breakPoint) {
         if (canSplit()) {
-            lockedFromInteractions = true;
+            interactionLock.setEnabled(true);
             float newRadius = radius/2;
             setRadius(newRadius);
+            breakLock.setEnabled(true);
             float newX = circleBody.getBody().getPosition().x + (breakPoint.x < circleBody.getBody().getPosition().x ? newRadius/4 : -newRadius/4);
             float newY = circleBody.getBody().getPosition().y + (breakPoint.y < circleBody.getBody().getPosition().y ? newRadius/4 : -newRadius/4);
             CircleInfo newCircle = new CircleInfo(newX, newY, (float) (circleBody.getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS), newRadius, colorType);
@@ -76,20 +77,14 @@ public class ColoredCircle extends Actor {
     }
 
     public boolean canSplit() {
-        return !lockedFromInteractions && radius >= LevelStage.MIN_RADIUS*2;
+        return !interactionLock.isEnabled() && radius >= LevelStage.MIN_RADIUS*2;
     }
 
     public void update() {
         Body body = circleBody.getBody();
-        //Breaking
-        if (lockedFromInteractions) {
-            if (ILockTimer >= 10) {
-                lockedFromInteractions = false;
-                ILockTimer = 0;
-            } else {
-                ILockTimer++;
-            }
-        }
+        //Locks against interactions etc.
+        interactionLock.update();
+        breakLock.update();
         //Merging
         if (mergingAway) {
             if (mergeBuffer > 0f) {
@@ -196,10 +191,19 @@ public class ColoredCircle extends Actor {
     }
 
     public boolean isLockedFromInteractions() {
-        return lockedFromInteractions;
+        return interactionLock.isEnabled();
     }
 
     public void setLockedFromInteractions(boolean lockedFromInteractions) {
-        this.lockedFromInteractions = lockedFromInteractions;
+        this.interactionLock.setEnabled(lockedFromInteractions);
     }
+
+    public boolean isUnbreakable() {
+        return breakLock.isEnabled();
+    }
+
+    public void setUnbreakable(boolean unbreakable) {
+        breakLock.setEnabled(unbreakable);
+    }
+
 }

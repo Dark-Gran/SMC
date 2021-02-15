@@ -68,6 +68,9 @@ public class CollisionListener implements ContactListener {
     }
 
     private InteractionType getInteractionType(ColoredCircle circleA, ColoredCircle circleB) {
+        if ((circleA.isUnbreakable() && circleB.getColorType() == ColorType.RED) || (circleA.isUnbreakable() && circleB.getColorType() == ColorType.RED)) {
+            return InteractionType.PASS;
+        }
         if (circleA.isLockedFromInteractions() || circleB.isLockedFromInteractions()) {
             return InteractionType.NONE;
         }
@@ -81,7 +84,7 @@ public class CollisionListener implements ContactListener {
     }
 
     private CollisionType getCollisionType(ColorType typeA, ColorType typeB, InteractionType interactionType) {
-        if (interactionType == InteractionType.MERGER) {
+        if (interactionType == InteractionType.MERGER || interactionType == InteractionType.PASS) {
             return CollisionType.IGNORED;
         }
         ColorType other;

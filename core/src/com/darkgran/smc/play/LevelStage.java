@@ -159,6 +159,7 @@ public class LevelStage extends Stage {
     public void addCircle(CircleInfo circleInfo, boolean additive) {
         ColoredCircle circle = new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), circleInfo.getType());
         circle.setLockedFromInteractions(true);
+        circle.setUnbreakable(true);
         circles.get(circle.getColorType()).add(circle);
         if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+circle.getRadius()); }
         addActor(circle);
