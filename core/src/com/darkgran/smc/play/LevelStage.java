@@ -21,7 +21,10 @@ import java.util.Map;
 
 public class LevelStage extends Stage {
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
-    public static final float CHANGE_UP = 0.01f;
+    public static final float COMFORT_RADIUS = 0.25f;
+    public static final float ACTUAL_MIN_RADIUS = 0.001f;
+    public static final float RADIUS_CHANGE = 0.01f;
+    public static final float MIN_RADIUS_CHANGE = 0.001f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
     private final WorldScreen worldScreen;
     private final Stage UIStage;
@@ -157,13 +160,18 @@ public class LevelStage extends Stage {
     }
 
     public void addCircle(CircleInfo circleInfo, boolean additive) {
-        ColoredCircle circle = new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), circleInfo.getType());
-        circle.setLockedFromInteractions(true);
-        circle.setUnbreakable(true);
-        circles.get(circle.getColorType()).add(circle);
-        if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+circle.getRadius()); }
-        addActor(circle);
-        addCircleClicks(circle);
+        if (circleInfo.getRadius() >= ACTUAL_MIN_RADIUS) {
+            ColoredCircle circle = new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), ACTUAL_MIN_RADIUS, circleInfo.getAngle(), circleInfo.getType());
+            circle.addToGrow(circleInfo.getRadius()-ACTUAL_MIN_RADIUS);
+            circle.setLockedFromInteractions(true);
+            circle.setUnbreakable(true);
+            circles.get(circle.getColorType()).add(circle);
+            if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+circle.getRadius()); }
+            addActor(circle);
+            addCircleClicks(circle);
+        } else {
+            System.out.println("Circle Spawn Error: Radius < Minimum!");
+        }
     }
 
     private void setupActors() {
@@ -314,21 +322,20 @@ public class LevelStage extends Stage {
 
     private void distributedSizeChange(ColoredCircle chosenCircle) {
         if (circles.get(chosenCircle.getColorType()) != null) {
-            final float MIN_CHANGE_DOWN = 0.001f;
             ArrayList<ColoredCircle> coloredCircles = circles.get(chosenCircle.getColorType());
             if (coloredCircles.size() > 1) {
                 float maxRadius = colorPowers.get(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
-                if (chosenCircle.getRadius() + CHANGE_UP <= maxRadius) {
+                if (chosenCircle.getRadius() + RADIUS_CHANGE <= maxRadius) {
                     ArrayList<ColoredCircle> eligibles = new ArrayList<>();
                     float changeSpace = 0f;
                     for (ColoredCircle circle : coloredCircles) {
-                        if (circle != chosenCircle && circle.getColorType() == chosenCircle.getColorType() && circle.getRadius() - MIN_CHANGE_DOWN >= LevelStage.MIN_RADIUS) {
+                        if (circle != chosenCircle && circle.getColorType() == chosenCircle.getColorType() && circle.getRadius() - MIN_RADIUS_CHANGE >= LevelStage.MIN_RADIUS) {
                             eligibles.add(circle);
                             changeSpace += circle.getRadius() - LevelStage.MIN_RADIUS;
                         }
                     }
-                    if (changeSpace >= CHANGE_UP && eligibles.size() > 0) {
-                        float changeDown = CHANGE_UP / eligibles.size();
+                    if (changeSpace >= RADIUS_CHANGE && eligibles.size() > 0) {
+                        float changeDown = RADIUS_CHANGE / eligibles.size();
                         float spareChange = 0f;
                         for (int i = 0; i < eligibles.size(); i++) {
                             ColoredCircle circle = eligibles.get(i);
@@ -344,7 +351,7 @@ public class LevelStage extends Stage {
                                 spareChange = 0;
                             }
                         }
-                        chosenCircle.setRadius(chosenCircle.getRadius() + CHANGE_UP);
+                        chosenCircle.setRadius(chosenCircle.getRadius() + RADIUS_CHANGE);
                     }
                 }
             }
