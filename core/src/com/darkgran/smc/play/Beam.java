@@ -15,10 +15,24 @@ public class Beam extends BareDoor {
         this.height = height;
     }
 
+    public void switchColor() {
+        switch (type) {
+            case WHITE:
+                setType(ColorType.BLUE);
+                break;
+            case BLUE:
+                setType(ColorType.GREEN);
+                break;
+            case GREEN:
+                setType(ColorType.WHITE);
+                break;
+        }
+    }
+
     public void draw(ShapeRenderer shapeRenderer) {
         if (isClosed()) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(type.getColor());
+            shapeRenderer.setColor(type.getColor().r, type.getColor().g, type.getColor().b, 0.7f);
             shapeRenderer.rect(getChainBody().getBody().getPosition().x - width, getChainBody().getBody().getPosition().y - height, width * 2, height * 2);
             shapeRenderer.setColor(Color.WHITE);
             shapeRenderer.end();
@@ -27,5 +41,9 @@ public class Beam extends BareDoor {
 
     public ColorType getColorType() {
         return type;
+    }
+
+    public void setType(ColorType type) {
+        this.type = type;
     }
 }

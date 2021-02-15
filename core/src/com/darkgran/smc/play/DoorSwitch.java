@@ -11,10 +11,12 @@ public class DoorSwitch extends Actor {
     private final LevelStage levelStage;
     private final ChainBody chainBody;
     private final BareDoor[] doors;
+    private SwitchType switchType;
     private final Sprite sprite;
 
-    public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, BareDoor[] doors, Texture texture) {
+    public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, BareDoor[] doors, SwitchType switchType, Texture texture) {
         this.levelStage = levelStage;
+        this.switchType = switchType;
         chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height, 0f);
         chainBody.getBody().setTransform(new Vector2(x, y), angle);
         chainBody.getBody().getFixtureList().get(0).setSensor(true);
@@ -31,7 +33,16 @@ public class DoorSwitch extends Actor {
 
     public void click() {
         for (BareDoor door : doors) {
-            door.switchState();
+            switch (switchType) {
+                case ACTIVATOR:
+                    door.switchState();
+                    break;
+                case COLORER:
+                    if (door instanceof Beam) {
+                        ((Beam) door).switchColor();
+                    }
+                    break;
+            }
         }
     }
 
