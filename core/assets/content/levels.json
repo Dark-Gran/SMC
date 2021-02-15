@@ -260,7 +260,7 @@
       { "type": "BLUE", "x": 6, "y": 1.2, "radius": 0.25, "angle": 320 },
       { "type": "RED", "x": 5.5, "y": 1, "radius": 0.11, "angle": 110 },
       { "type": "RED", "x": 1, "y": 2.5, "radius": 0.11, "angle": 350 },
-      { "type": "RED", "x": 4, "y": 4, "radius": 0.2, "angle": 220 }
+      { "type": "RED", "x": 4, "y": 4, "radius": 0.2, "angle": 190 }
     ],
     "walls": [],
     "beams": [],
