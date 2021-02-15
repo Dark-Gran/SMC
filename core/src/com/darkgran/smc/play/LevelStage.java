@@ -285,7 +285,6 @@ public class LevelStage extends Stage {
     }
 
     public void update() {
-        System.out.println(colorPowers);
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
