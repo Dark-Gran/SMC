@@ -2,6 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -21,8 +22,8 @@ public class ColoredCircle extends Actor {
     private float mergeBuffer = 0f;
     private boolean mergingAway = false;
     private boolean gone = false;
-    private boolean unbreakable = false;
-    private int breakTimer = 0;
+    private boolean lockedFromInteractions = false;
+    private int ILockTimer = 0;
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType colorType) {
         this.colorType = colorType;
@@ -47,7 +48,7 @@ public class ColoredCircle extends Actor {
                     merge(circle);
                     break;
                 case BREAKER:
-                    splitInHalf();
+                    splitInHalf(new Vector2(circle.getCircleBody().getBody().getPosition().x, circle.getCircleBody().getBody().getPosition().y));
                     break;
             }
         }
@@ -62,29 +63,31 @@ public class ColoredCircle extends Actor {
         mergingAway = true;
     }
 
-    private void splitInHalf() {
+    private void splitInHalf(Vector2 breakPoint) {
         if (canSplit()) {
-            unbreakable = true;
+            lockedFromInteractions = true;
             float newRadius = radius/2;
             setRadius(newRadius);
-            CircleInfo newCircle = new CircleInfo(colorType, circleBody.getBody().getPosition().x, circleBody.getBody().getPosition().y, newRadius, (float) (circleBody.getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS));
+            float newX = circleBody.getBody().getPosition().x + (breakPoint.x < circleBody.getBody().getPosition().x ? newRadius/4 : -newRadius/4);
+            float newY = circleBody.getBody().getPosition().y + (breakPoint.y < circleBody.getBody().getPosition().y ? newRadius/4 : -newRadius/4);
+            CircleInfo newCircle = new CircleInfo(newX, newY, (float) (circleBody.getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS), newRadius, colorType);
             levelStage.freshCircle(newCircle, false);
         }
     }
 
     public boolean canSplit() {
-        return !unbreakable && radius >= LevelStage.MIN_RADIUS*2;
+        return !lockedFromInteractions && radius >= LevelStage.MIN_RADIUS*2;
     }
 
     public void update() {
         Body body = circleBody.getBody();
         //Breaking
-        if (unbreakable) {
-            if (breakTimer >= 0) {
-                unbreakable = false;
-                breakTimer = 0;
+        if (lockedFromInteractions) {
+            if (ILockTimer >= 10) {
+                lockedFromInteractions = false;
+                ILockTimer = 0;
             } else {
-                breakTimer++;
+                ILockTimer++;
             }
         }
         //Merging
@@ -192,4 +195,11 @@ public class ColoredCircle extends Actor {
         return mergingAway;
     }
 
+    public boolean isLockedFromInteractions() {
+        return lockedFromInteractions;
+    }
+
+    public void setLockedFromInteractions(boolean lockedFromInteractions) {
+        this.lockedFromInteractions = lockedFromInteractions;
+    }
 }

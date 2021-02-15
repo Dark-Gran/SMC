@@ -8,7 +8,7 @@ public class CircleInfo extends PositionInfo {
 
     public CircleInfo() { }
 
-    public CircleInfo(ColorType type, float x, float y, float radius, float angle) {
+    public CircleInfo(float x, float y, float angle, float radius, ColorType type) {
         this.type = type;
         this.radius = radius;
         this.angle = angle;

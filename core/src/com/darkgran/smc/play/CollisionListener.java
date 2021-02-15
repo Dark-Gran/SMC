@@ -68,6 +68,9 @@ public class CollisionListener implements ContactListener {
     }
 
     private InteractionType getInteractionType(ColoredCircle circleA, ColoredCircle circleB) {
+        if (circleA.isLockedFromInteractions() || circleB.isLockedFromInteractions()) {
+            return InteractionType.NONE;
+        }
         if (circleA.getColorType() == circleB.getColorType()) {
             return InteractionType.MERGER;
         }
