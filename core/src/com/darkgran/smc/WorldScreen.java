@@ -49,6 +49,7 @@ public class WorldScreen implements Screen {
     private Stage UIStage;
     private final CollisionListener collisionListener;
     private ArrayList corpses = new ArrayList();
+    private boolean reload = false;
     private final InputAdapter generalInputProcessor = new InputAdapter() {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -69,7 +70,7 @@ public class WorldScreen implements Screen {
                         levelStage.switchLevel(true);
                         break;
                     case Input.Keys.R:
-                        levelStage.reloadLevel();
+                        reload = true;
                         break;
                 }
             }
@@ -116,29 +117,36 @@ public class WorldScreen implements Screen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glEnable(GL20.GL_BLEND);
 
-        camera.update();
+        if (!reload) {
 
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        levelStage.drawShapes(shapeRenderer);
+            camera.update();
 
-        smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            levelStage.drawShapes(shapeRenderer);
 
-        smc.batch.begin();
-        smc.batch.setColor(1, 1, 1, 1f);
-        levelStage.drawSprites(smc.batch);
-        smc.batch.end();
+            smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
 
-        Gdx.gl.glDisable(GL20.GL_BLEND);
+            smc.batch.begin();
+            smc.batch.setColor(1, 1, 1, 1f);
+            levelStage.drawSprites(smc.batch);
+            smc.batch.end();
 
-        UIStage.act(delta);
-        UIStage.draw();
-        levelStage.act(delta);
-        levelStage.draw();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        //drawBox2DDebug();
+            UIStage.act(delta);
+            UIStage.draw();
+            levelStage.act(delta);
+            levelStage.draw();
 
-        levelStage.tickTock();
-        timeWorld(delta);
+            drawBox2DDebug();
+
+            levelStage.tickTock();
+            timeWorld(delta);
+
+        } else {
+            reload = false;
+            levelStage.reloadLevel();
+        }
     }
 
     public void timeWorld(float delta) {
