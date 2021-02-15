@@ -309,7 +309,7 @@ public class LevelStage extends Stage {
                 }
             }
         }
-        System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
+        //System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
         switch (colorType) {
             default:
                 return whitePower;
