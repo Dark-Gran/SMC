@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class LevelStage extends Stage {
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
-    public static final float COMFORT_RADIUS = 0.25f;
+    public static final float COMFORT_RADIUS = 0.2f;
     public static final float ACTUAL_MIN_RADIUS = 0.001f;
     public static final float RADIUS_CHANGE = 0.01f;
     public static final float MIN_RADIUS_CHANGE = 0.001f;
