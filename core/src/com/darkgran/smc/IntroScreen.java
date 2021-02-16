@@ -29,7 +29,7 @@ public class IntroScreen implements Screen {
         viewport = new ExtendViewport(SaveMeCircles.SW, SaveMeCircles.SH, camera);
         viewport.apply();
         camera.position.set((float) SaveMeCircles.SW /2,(float) SaveMeCircles.SH /2,0);
-        Gdx.input.setCursorCatched(true);
+        //Gdx.input.setCursorCatched(true);
         logo = new Texture("images/DGLogo.jpg");
         delayAction(this::activate, 0.5f);
     }
