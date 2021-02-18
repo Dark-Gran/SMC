@@ -2,9 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.darkgran.smc.WorldScreen;
-import com.sun.org.apache.xerces.internal.impl.xs.XSElementDeclHelper;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -14,12 +12,14 @@ public class GhostCircle {
     private final float size;
     private boolean active = false;
     private float ghostTimer = 0;
+    private final int spawnTime;
     private final SimpleCounter lock;
 
-    public GhostCircle(LevelStage levelStage, float size, int timerCap) {
+    public GhostCircle(LevelStage levelStage, float size, int lockTime, int spawnTime) {
+        this.spawnTime = spawnTime;
         this.levelStage = levelStage;
         this.size = size;
-        lock = new SimpleCounter(false, timerCap, 0);
+        lock = new SimpleCounter(false, lockTime, 0);
     }
 
     public void update(boolean buttonDown, boolean allowed) {
@@ -27,7 +27,7 @@ public class GhostCircle {
             lock.update();
         } else if (buttonDown && allowed) {
             active = true;
-            if (ghostTimer > 20000) {
+            if (ghostTimer > spawnTime) {
                 ghostTimer = 0;
                 active = false;
                 levelStage.spawnPlayerCircle(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y);
@@ -38,17 +38,17 @@ public class GhostCircle {
     }
 
     public void draw(ShapeRenderer shapeRenderer) {
-
         Gdx.gl.glLineWidth(3);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        final int segments = 40;
 
         float midX = levelStage.getWorldScreen().getMouseInWorld2D().x;
         float midY = levelStage.getWorldScreen().getMouseInWorld2D().y;
 
-        float angle = 0;
-        int segments = 40;
+        int maxSegment = Math.round(segments / (spawnTime / ghostTimer));
         float degreeStep = 360 / segments;
-        for (int i = 0; i <= segments; i++) {
+        float angle = 0;
+        for (int i = 0; i <= maxSegment; i++) {
             float x = midX + (float) (size * sin(angle));
             float y = midY + (float) (size * cos(angle));
             angle += degreeStep*WorldScreen.DEGREES_TO_RADIANS;

@@ -44,7 +44,7 @@ public class LevelStage extends Stage {
     private int seconds = 0;
     private String introMessage;
     private PlayerCircle playerCircle = null;
-    private GhostCircle ghostCircle = new GhostCircle(this, PC_SIZE, 3);
+    private GhostCircle ghostCircle = new GhostCircle(this, PC_SIZE, 3, 40);
     private final Texture wallTex = new Texture("images/wall.png"); //in-future: move to atlas
     private final Texture wallTexB = new Texture("images/wallB.png");
     private final Texture wallTexG = new Texture("images/wallG.png");
