@@ -2,6 +2,12 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
+import com.darkgran.smc.WorldScreen;
+import com.sun.org.apache.xerces.internal.impl.xs.XSElementDeclHelper;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public class GhostCircle {
     private final LevelStage levelStage;
@@ -21,7 +27,7 @@ public class GhostCircle {
             lock.update();
         } else if (buttonDown && allowed) {
             active = true;
-            if (ghostTimer > 20) {
+            if (ghostTimer > 20000) {
                 ghostTimer = 0;
                 active = false;
                 levelStage.spawnPlayerCircle(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y);
@@ -36,20 +42,20 @@ public class GhostCircle {
         Gdx.gl.glLineWidth(3);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-        /*float x = worldScreen.getMouseInWorld2D().x;
-        float y = worldScreen.getMouseInWorld2D().y;
+        float midX = levelStage.getWorldScreen().getMouseInWorld2D().x;
+        float midY = levelStage.getWorldScreen().getMouseInWorld2D().y;
 
-        float angle = 2 * MathUtils.PI / segments;
-        float cos = MathUtils.cos(angle);
-        float sin = MathUtils.sin(angle);
-        float cx = radius, cy = 0;
-
-        for (int i = 0; i < 40; i++) {
-
-        }*/
-
-        shapeRenderer.circle(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y, size, 40);
-
+        float angle = 0;
+        int segments = 40;
+        float degreeStep = 360 / segments;
+        for (int i = 0; i <= segments; i++) {
+            float x = midX + (float) (size * sin(angle));
+            float y = midY + (float) (size * cos(angle));
+            angle += degreeStep*WorldScreen.DEGREES_TO_RADIANS;
+            float x2 = midX + (float) (size * sin(angle));
+            float y2 = midY + (float) (size * cos(angle));
+            shapeRenderer.line(x, y, 0, x2, y2, 0);
+        }
 
         shapeRenderer.end();
         Gdx.gl.glLineWidth(1);
