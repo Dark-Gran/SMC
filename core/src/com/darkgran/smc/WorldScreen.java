@@ -69,6 +69,7 @@ public class WorldScreen implements Screen {
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             if (levelStage != null) {
                 levelStage.setLastTouch(null);
+                levelStage.setGhostActive(false);
             }
             return true;
         }
@@ -131,7 +132,7 @@ public class WorldScreen implements Screen {
         continueButton.setPosition(Math.round(SaveMeCircles.SW/2-continueButton.getWidth()/2), Math.round(SaveMeCircles.SW/15-continueButton.getHeight()/2));
     }
 
-    private void refreshMouse() {
+    public void refreshMouse() {
         mouseInWorld3D.x = Gdx.input.getX();
         mouseInWorld3D.y = Gdx.input.getY();
         mouseInWorld3D.z = 0;
@@ -282,5 +283,9 @@ public class WorldScreen implements Screen {
 
     public void setCurrentLevelID(int currentLevelID) {
         this.currentLevelID = currentLevelID;
+    }
+
+    public Vector2 getMouseInWorld2D() {
+        return mouseInWorld2D;
     }
 }

@@ -26,6 +26,7 @@ public class LevelStage extends Stage {
     public static final float ACTUAL_MIN_RADIUS = 0.001f;
     public static final float RADIUS_CHANGE = 0.01f;
     public static final float MIN_RADIUS_CHANGE = 0.001f;
+    public static final float PC_SIZE = 0.2f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
     private final WorldScreen worldScreen;
     private final Stage UIStage;
@@ -209,7 +210,7 @@ public class LevelStage extends Stage {
 
     public void spawnPlayerCircle(float x, float y) {
         if (playerCircle == null) {
-            playerCircle = new PlayerCircle(this, x, y, 0.2f);
+            playerCircle = new PlayerCircle(this, x, y, PC_SIZE);
             addActor(playerCircle);
             playerCircle.addListener(new ClickListener() {
                 @Override
@@ -431,11 +432,24 @@ public class LevelStage extends Stage {
         }
     }
 
+    private void drawGhost() {
+
+    }
+
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 circle.drawCircleShape(shapeRenderer, circle.getColorType().getColor());
             }
+        }
+        if (ghostActive) {
+            worldScreen.refreshMouse();
+            int segments = Math.round(PC_SIZE*200);
+            if (segments < 10) { segments = 10; }
+            else if (segments > 100) { segments = 50; }
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.circle(worldScreen.getMouseInWorld2D().x, worldScreen.getMouseInWorld2D().y, PC_SIZE, segments);
+            shapeRenderer.end();
         }
         if (playerCircle != null) {
             playerCircle.drawCircleShape(shapeRenderer, Color.WHITE);
@@ -513,5 +527,13 @@ public class LevelStage extends Stage {
 
     public void setPlayerCircle(PlayerCircle playerCircle) {
         this.playerCircle = playerCircle;
+    }
+
+    public boolean isGhostActive() {
+        return ghostActive;
+    }
+
+    public void setGhostActive(boolean ghostActive) {
+        this.ghostActive = ghostActive;
     }
 }
