@@ -1,35 +1,23 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class PlayerCircle extends Actor {
-    private final LevelStage levelStage;
-    private CircleBody body;
-    private float radius;
+public class PlayerCircle extends CircleActor {
 
     public PlayerCircle(LevelStage levelStage, float x, float y, float radius) {
-        this.levelStage = levelStage;
-        body = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius, BodyDef.BodyType.StaticBody);
-        refreshActorBounds();
-        this.radius = radius;
+        super(levelStage, x, y, radius, BodyDef.BodyType.StaticBody);
     }
 
-    public void drawShapes(ShapeRenderer shapeRenderer) {
+    @Override
+    public void drawShapes(ShapeRenderer shapeRenderer, Color color) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        int segments = Math.round(radius*200);
+        int segments = Math.round(getRadius()*200);
         if (segments < 10) { segments = 10; }
         else if (segments > 100) { segments = 50; }
-        shapeRenderer.circle(body.getBody().getPosition().x, body.getBody().getPosition().y, radius, segments);
+        shapeRenderer.circle(getCircleBody().getBody().getPosition().x, getCircleBody().getBody().getPosition().y, getRadius(), segments);
         shapeRenderer.end();
     }
 
-    private void refreshActorBounds() {
-        this.setBounds(body.getBody().getPosition().x-radius, body.getBody().getPosition().y-radius, radius*2, radius*2);
-    }
-
-    public CircleBody getBody() {
-        return body;
-    }
 }

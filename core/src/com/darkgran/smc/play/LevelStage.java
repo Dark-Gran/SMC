@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class LevelStage extends Stage {
     public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
-    public static final float COMFORT_RADIUS = 0.2f;
+    public static final float COMFORT_RADIUS = 0.1f;
     public static final float ACTUAL_MIN_RADIUS = 0.001f;
     public static final float RADIUS_CHANGE = 0.01f;
     public static final float MIN_RADIUS_CHANGE = 0.001f;
@@ -206,6 +206,25 @@ public class LevelStage extends Stage {
         });
     }
 
+    public void spawnPlayerCircle(float x, float y) {
+        if (playerCircle == null) {
+            playerCircle = new PlayerCircle(this, x, y, 0.2f);
+            addActor(playerCircle);
+            playerCircle.addListener(new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    lastTouch = null;
+                    worldScreen.getCorpses().add(playerCircle);
+                    return true;
+                }
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    lastTouch = null;
+                }
+            });
+        }
+    }
+
     public void switchLevel(int currentLevelID) {
         if (LEVEL_LIBRARY.levelExists(currentLevelID)) {
             disableContinue();
@@ -247,7 +266,7 @@ public class LevelStage extends Stage {
         }
         switches.clear();
         if (playerCircle != null) {
-            worldScreen.destroyBody(playerCircle.getBody().getBody());
+            worldScreen.destroyBody(playerCircle.getCircleBody().getBody());
             playerCircle = null;
         }
     }
@@ -407,20 +426,14 @@ public class LevelStage extends Stage {
         }
     }
 
-    public void spawnPlayerCircle(float x, float y) {
-        if (playerCircle == null) {
-            playerCircle = new PlayerCircle(this, x, y, 0.5f);
-        }
-    }
-
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
-                circle.drawShapes(shapeRenderer);
+                circle.drawShapes(shapeRenderer, circle.getColorType().getColor());
             }
         }
         if (playerCircle != null) {
-            playerCircle.drawShapes(shapeRenderer);
+            playerCircle.drawShapes(shapeRenderer, Color.WHITE);
         }
         for (Beam beam : beams) {
             beam.draw(shapeRenderer);
@@ -487,5 +500,13 @@ public class LevelStage extends Stage {
 
     public void setLastTouch(ColoredCircle lastTouch) {
         this.lastTouch = lastTouch;
+    }
+
+    public PlayerCircle getPlayerCircle() {
+        return playerCircle;
+    }
+
+    public void setPlayerCircle(PlayerCircle playerCircle) {
+        this.playerCircle = playerCircle;
     }
 }

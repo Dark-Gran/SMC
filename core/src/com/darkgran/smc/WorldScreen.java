@@ -14,14 +14,13 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.darkgran.smc.play.CollisionListener;
-import com.darkgran.smc.play.ColoredCircle;
-import com.darkgran.smc.play.LevelStage;
+import com.darkgran.smc.play.*;
 
 import java.util.ArrayList;
 
@@ -194,20 +193,28 @@ public class WorldScreen implements Screen {
         for (int i = 0; i < corpses.size(); i++) {
             if (corpses.get(i) != null) {
                 Object corpse = corpses.get(i);
+                if (corpse instanceof Actor) {
+                    Actor actor = (Actor) corpse;
+                    if (actor.getListeners().size > 0) {
+                        actor.removeListener(actor.getListeners().get(0));
+                    }
+                    actor.remove();
+                }
+                if (corpse instanceof CircleActor) {
+                    CircleActor ca = (CircleActor) corpse;
+                    if (ca.getCircleBody() != null) {
+                        destroyBody(ca.getCircleBody().getBody());
+                    }
+                    ca.setCircleBody(null);
+                }
                 if (corpse instanceof ColoredCircle) {
                     ColoredCircle circle = (ColoredCircle) corpse;
-                    if (circle.getListeners().size > 0) {
-                        circle.removeListener(circle.getListeners().get(0));
-                    }
-                    circle.remove();
-                    if (circle.getCircleBody() != null) {
-                        destroyBody(circle.getCircleBody().getBody());
-                    }
-                    circle.setCircleBody(null);
                     levelStage.removeCircle(circle);
                     if (circle == levelStage.getLastTouch()) {
                         levelStage.setLastTouch(null);
                     }
+                } else if (corpse instanceof PlayerCircle) {
+                    levelStage.setPlayerCircle(null);
                 }
                 corpses.remove(corpse);
             }
