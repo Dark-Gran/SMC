@@ -49,7 +49,7 @@ public class LevelStage extends Stage {
     private final Texture wallTexB = new Texture("images/wallB.png");
     private final Texture wallTexG = new Texture("images/wallG.png");
     private final Texture soTex = new Texture("images/switch_over.png");
-
+    private final Texture pcTex = new Texture("images/circle.png");
 
     public LevelStage(final WorldScreen worldScreen, final Stage UIStage, Viewport viewport) {
         super(viewport);
@@ -211,7 +211,7 @@ public class LevelStage extends Stage {
 
     public void spawnPlayerCircle(float x, float y) {
         if (playerCircle == null) {
-            playerCircle = new PlayerCircle(this, x, y, PC_SIZE);
+            playerCircle = new PlayerCircle(this, x, y, PC_SIZE, pcTex);
             addActor(playerCircle);
             playerCircle.addListener(new ClickListener() {
                 @Override
@@ -443,14 +443,11 @@ public class LevelStage extends Stage {
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
-                circle.drawCircleShape(shapeRenderer, circle.getColorType().getColor());
+                circle.drawShape(shapeRenderer, circle.getColorType().getColor());
             }
         }
         if (ghostCircle.isActive()) {
             ghostCircle.draw(shapeRenderer);
-        }
-        if (playerCircle != null) {
-            playerCircle.drawCircleShape(shapeRenderer, Color.WHITE);
         }
         for (Beam beam : beams) {
             beam.draw(shapeRenderer);
@@ -482,6 +479,10 @@ public class LevelStage extends Stage {
         for (DoorSwitch doorSwitch :switches) {
             doorSwitch.getSprite().draw(batch);
         }
+        //PlayerCircle
+        if (playerCircle != null) {
+            playerCircle.getSprite().draw(batch);
+        }
     }
 
     private void drawLevelIntro(SpriteBatch batch, float time) {
@@ -504,7 +505,10 @@ public class LevelStage extends Stage {
     public void dispose() {
         disableContinue();
         wallTex.dispose();
+        wallTexB.dispose();
+        wallTexG.dispose();
         soTex.dispose();
+        pcTex.dispose();
     }
 
     public WorldScreen getWorldScreen() {
