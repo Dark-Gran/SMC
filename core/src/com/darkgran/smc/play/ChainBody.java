@@ -6,9 +6,9 @@ import com.badlogic.gdx.physics.box2d.*;
 public class ChainBody {
     private final Body body;
 
-    public ChainBody(final World world, final Object object, float width, float height, float restitution) {
+    public ChainBody(final World world, final Object object, float width, float height, float restitution, BodyDef.BodyType bodyType) {
         BodyDef myBodyDef = new BodyDef();
-        myBodyDef.type = BodyDef.BodyType.StaticBody;
+        myBodyDef.type = bodyType;
 
         body = world.createBody(myBodyDef);
         body.setUserData(object);

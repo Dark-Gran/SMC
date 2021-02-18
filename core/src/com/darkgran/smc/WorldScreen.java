@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -53,7 +54,18 @@ public class WorldScreen implements Screen {
     private ArrayList corpses = new ArrayList();
     private boolean reload = false;
     private int currentLevelID = 0;
+    public final Vector2 mouseInWorld2D = new Vector2();
+    public final Vector3 mouseInWorld3D = new Vector3();
     private final InputAdapter generalInputProcessor = new InputAdapter() {
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            if (levelStage != null) {
+                refreshMouse();
+                levelStage.spawnPlayerCircle(mouseInWorld2D.x, mouseInWorld2D.y);
+            }
+            return true;
+        }
+
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             if (levelStage != null) {
@@ -86,7 +98,8 @@ public class WorldScreen implements Screen {
             return true;
         }
     };
-    private final BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/bahnschrift.fnt"));
+
+    private final BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/bahnschrift.fnt")); //in-future: move to atlas
     private final Texture continueTexture = new Texture("images/continue.png");
     private final ImageButton continueButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(continueTexture)));
 
@@ -117,6 +130,15 @@ public class WorldScreen implements Screen {
     private void setupUIStage() {
         UIStage = new Stage(new ExtendViewport(SaveMeCircles.SW, SaveMeCircles.SH));
         continueButton.setPosition(Math.round(SaveMeCircles.SW/2-continueButton.getWidth()/2), Math.round(SaveMeCircles.SW/15-continueButton.getHeight()/2));
+    }
+
+    private void refreshMouse() {
+        mouseInWorld3D.x = Gdx.input.getX();
+        mouseInWorld3D.y = Gdx.input.getY();
+        mouseInWorld3D.z = 0;
+        camera.unproject(mouseInWorld3D);
+        mouseInWorld2D.x = mouseInWorld3D.x;
+        mouseInWorld2D.y = mouseInWorld3D.y;
     }
 
     @Override

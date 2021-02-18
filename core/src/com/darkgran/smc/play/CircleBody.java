@@ -5,12 +5,12 @@ import com.badlogic.gdx.physics.box2d.*;
 public class CircleBody {
     private final Body body;
 
-    public CircleBody(final World world, final ColoredCircle coloredCircle, float x, float y, float radius) {
+    public CircleBody(final World world, final Object obj, float x, float y, float radius, BodyDef.BodyType bodyType) {
         BodyDef myBodyDef = new BodyDef();
-        myBodyDef.type = BodyDef.BodyType.DynamicBody;
+        myBodyDef.type = bodyType;
 
         body = world.createBody(myBodyDef);
-        body.setUserData(coloredCircle);
+        body.setUserData(obj);
 
         body.setTransform(x, y, 0f);
         CircleShape circleShape = new CircleShape();

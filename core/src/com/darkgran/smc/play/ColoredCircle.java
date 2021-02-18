@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,7 +29,7 @@ public class ColoredCircle extends Actor {
     public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType colorType) {
         this.colorType = colorType;
         this.levelStage = levelStage;
-        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius);
+        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius, BodyDef.BodyType.DynamicBody);
         refreshActorBounds();
         this.radius = radius;
         this.direction = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);

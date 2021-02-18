@@ -4,6 +4,7 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.darkgran.smc.WorldScreen;
 
@@ -17,7 +18,7 @@ public class DoorSwitch extends Actor {
     public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, BareDoor[] doors, SwitchType switchType, Texture texture) {
         this.levelStage = levelStage;
         this.switchType = switchType;
-        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height, 0f);
+        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height, 0f, BodyDef.BodyType.StaticBody);
         chainBody.getBody().setTransform(new Vector2(x, y), angle);
         chainBody.getBody().getFixtureList().get(0).setSensor(true);
         this.setBounds(x-width, y-height, width*2, height*2);

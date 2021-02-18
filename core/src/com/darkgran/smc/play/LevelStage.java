@@ -42,10 +42,12 @@ public class LevelStage extends Stage {
     private float frameCounter = 0;
     private int seconds = 0;
     private String introMessage;
-    private final Texture wallTex = new Texture("images/wall.png");
+    private PlayerCircle playerCircle = null;
+    private final Texture wallTex = new Texture("images/wall.png"); //in-future: move to atlas
     private final Texture wallTexB = new Texture("images/wallB.png");
     private final Texture wallTexG = new Texture("images/wallG.png");
     private final Texture soTex = new Texture("images/switch_over.png");
+
 
     public LevelStage(final WorldScreen worldScreen, final Stage UIStage, Viewport viewport) {
         super(viewport);
@@ -244,6 +246,10 @@ public class LevelStage extends Stage {
             worldScreen.destroyBody(doorSwitch.getChainBody().getBody());
         }
         switches.clear();
+        if (playerCircle != null) {
+            worldScreen.destroyBody(playerCircle.getBody().getBody());
+            playerCircle = null;
+        }
     }
 
     public void removeCircle(ColoredCircle coloredCircle) {
@@ -401,11 +407,20 @@ public class LevelStage extends Stage {
         }
     }
 
+    public void spawnPlayerCircle(float x, float y) {
+        if (playerCircle == null) {
+            playerCircle = new PlayerCircle(this, x, y, 0.5f);
+        }
+    }
+
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 circle.drawShapes(shapeRenderer);
             }
+        }
+        if (playerCircle != null) {
+            playerCircle.drawShapes(shapeRenderer);
         }
         for (Beam beam : beams) {
             beam.draw(shapeRenderer);
