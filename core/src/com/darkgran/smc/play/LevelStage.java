@@ -429,11 +429,11 @@ public class LevelStage extends Stage {
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
-                circle.drawShapes(shapeRenderer, circle.getColorType().getColor());
+                circle.drawCircleShape(shapeRenderer, circle.getColorType().getColor());
             }
         }
         if (playerCircle != null) {
-            playerCircle.drawShapes(shapeRenderer, Color.WHITE);
+            playerCircle.drawCircleShape(shapeRenderer, Color.WHITE);
         }
         for (Beam beam : beams) {
             beam.draw(shapeRenderer);
