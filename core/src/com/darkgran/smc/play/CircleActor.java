@@ -17,7 +17,7 @@ public class CircleActor extends Actor {
         refreshActorBounds();
     }
 
-    public void drawCircleShape(ShapeRenderer shapeRenderer, Color color) {
+    public void drawShape(ShapeRenderer shapeRenderer, Color color) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(color);
         int segments = Math.round(getRadius()*200);
