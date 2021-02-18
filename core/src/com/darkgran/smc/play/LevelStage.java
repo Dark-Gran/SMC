@@ -45,6 +45,8 @@ public class LevelStage extends Stage {
     private String introMessage;
     private PlayerCircle playerCircle = null;
     private boolean ghostActive = false;
+    private float ghostTimer = 0;
+    private SimpleCounter ghostLock = new SimpleCounter(false, 3, 0);
     private final Texture wallTex = new Texture("images/wall.png"); //in-future: move to atlas
     private final Texture wallTexB = new Texture("images/wallB.png");
     private final Texture wallTexG = new Texture("images/wallG.png");
@@ -217,6 +219,7 @@ public class LevelStage extends Stage {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     lastTouch = null;
                     worldScreen.getCorpses().add(playerCircle);
+                    ghostLock.setEnabled(true);
                     return true;
                 }
                 @Override
@@ -357,6 +360,9 @@ public class LevelStage extends Stage {
             enableContinue();
         }
         //Play Input
+        if (ghostLock.isEnabled()) {
+            ghostLock.update();
+        }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !completed) {
             if (lastTouch != null) {
                 if (lastTouch.isDisabled()) {
@@ -364,8 +370,15 @@ public class LevelStage extends Stage {
                 } else {
                     distributedSizeChange(lastTouch);
                 }
-            } else {
-                ghostActive = true; //TODO
+            } else if (playerCircle == null && !ghostLock.isEnabled()){
+                ghostActive = true;
+                if (ghostTimer > 20) {
+                    ghostTimer = 0;
+                    ghostActive = false;
+                    spawnPlayerCircle(worldScreen.getMouseInWorld2D().x, worldScreen.getMouseInWorld2D().y);
+                } else {
+                    ghostTimer++;
+                }
             }
         }
         //Updates
@@ -391,6 +404,11 @@ public class LevelStage extends Stage {
             }
             circlesToAdd.clear();
         }
+    }
+
+    public void removeGhost() {
+        setGhostActive(false);
+        ghostTimer = 0;
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) { //in-future: rework (see debugCR())
@@ -432,8 +450,13 @@ public class LevelStage extends Stage {
         }
     }
 
-    private void drawGhost() {
-
+    private void drawGhost(ShapeRenderer shapeRenderer) {
+        worldScreen.refreshMouse();
+        Gdx.gl.glLineWidth(3);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.circle(worldScreen.getMouseInWorld2D().x, worldScreen.getMouseInWorld2D().y, PC_SIZE, 40);
+        shapeRenderer.end();
+        Gdx.gl.glLineWidth(1);
     }
 
     public void drawShapes(ShapeRenderer shapeRenderer) {
@@ -443,13 +466,7 @@ public class LevelStage extends Stage {
             }
         }
         if (ghostActive) {
-            worldScreen.refreshMouse();
-            int segments = Math.round(PC_SIZE*200);
-            if (segments < 10) { segments = 10; }
-            else if (segments > 100) { segments = 50; }
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.circle(worldScreen.getMouseInWorld2D().x, worldScreen.getMouseInWorld2D().y, PC_SIZE, segments);
-            shapeRenderer.end();
+            drawGhost(shapeRenderer);
         }
         if (playerCircle != null) {
             playerCircle.drawCircleShape(shapeRenderer, Color.WHITE);

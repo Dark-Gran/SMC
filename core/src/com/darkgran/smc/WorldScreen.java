@@ -56,19 +56,12 @@ public class WorldScreen implements Screen {
     public final Vector2 mouseInWorld2D = new Vector2();
     public final Vector3 mouseInWorld3D = new Vector3();
     private final InputAdapter generalInputProcessor = new InputAdapter() {
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if (levelStage != null) {
-                refreshMouse();
-            }
-            return true;
-        }
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             if (levelStage != null) {
                 levelStage.setLastTouch(null);
-                levelStage.setGhostActive(false);
+                levelStage.removeGhost();
             }
             return true;
         }
@@ -148,6 +141,10 @@ public class WorldScreen implements Screen {
         Gdx.gl.glEnable(GL20.GL_BLEND);
 
         if (!reload) {
+
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                refreshMouse();
+            }
 
             camera.update();
 
