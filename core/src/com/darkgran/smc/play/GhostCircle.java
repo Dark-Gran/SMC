@@ -26,7 +26,7 @@ public class GhostCircle {
         this.levelStage = levelStage;
         this.size = size;
         lock = new SimpleCounter(false, lockTime, 0);
-        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, 0, 0, LevelStage.PC_SIZE, BodyDef.BodyType.StaticBody);
+        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, 0, 0, LevelStage.PC_SIZE, BodyDef.BodyType.DynamicBody);
         circleBody.getBody().getFixtureList().get(0).setSensor(true);
     }
 

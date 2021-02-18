@@ -106,7 +106,7 @@ public class WorldScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, 0), false);
         world.setVelocityThreshold(0.1f);
         setupUIStage();
         levelStage = new LevelStage(this, UIStage, viewport);
