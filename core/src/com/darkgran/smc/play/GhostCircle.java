@@ -48,7 +48,7 @@ public class GhostCircle {
         int maxSegment = Math.round(segments / ((spawnTime+1) / ghostTimer));
         float degreeStep = 360 / segments;
         float angle = 0;
-        for (int i = 0; i <= maxSegment; i++) {
+        for (int i = 0; i <= segments && i <= maxSegment; i++) {
             float x = midX + (float) (size * sin(angle));
             float y = midY + (float) (size * cos(angle));
             angle += degreeStep*WorldScreen.DEGREES_TO_RADIANS;
