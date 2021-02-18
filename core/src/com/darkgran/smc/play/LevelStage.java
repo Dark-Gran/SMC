@@ -44,7 +44,7 @@ public class LevelStage extends Stage {
     private int seconds = 0;
     private String introMessage;
     private PlayerCircle playerCircle = null;
-    private GhostCircle ghostCircle = new GhostCircle(this, PC_SIZE, 3, 40);
+    private final GhostCircle ghostCircle;
     private final Texture wallTex = new Texture("images/wall.png"); //in-future: move to atlas
     private final Texture wallTexB = new Texture("images/wallB.png");
     private final Texture wallTexG = new Texture("images/wallG.png");
@@ -55,6 +55,7 @@ public class LevelStage extends Stage {
         super(viewport);
         this.worldScreen = worldScreen;
         this.UIStage = UIStage;
+        ghostCircle = new GhostCircle(this, PC_SIZE, 3, 40);
         LEVEL_LIBRARY.loadLocal("content/levels.json");
     }
 
@@ -526,4 +527,7 @@ public class LevelStage extends Stage {
         this.playerCircle = playerCircle;
     }
 
+    public GhostCircle getGhostCircle() {
+        return ghostCircle;
+    }
 }

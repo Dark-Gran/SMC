@@ -1,7 +1,11 @@
 package com.darkgran.smc.play;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.utils.Array;
 import com.darkgran.smc.WorldScreen;
 
 import static java.lang.Math.cos;
@@ -14,12 +18,28 @@ public class GhostCircle {
     private float ghostTimer = 0;
     private final int spawnTime;
     private final SimpleCounter lock;
+    private final CircleBody circleBody;
+    private boolean spawnable = true;
 
     public GhostCircle(LevelStage levelStage, float size, int lockTime, int spawnTime) {
         this.spawnTime = spawnTime;
         this.levelStage = levelStage;
         this.size = size;
         lock = new SimpleCounter(false, lockTime, 0);
+        circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, 0, 0, LevelStage.PC_SIZE, BodyDef.BodyType.StaticBody);
+        circleBody.getBody().getFixtureList().get(0).setSensor(true);
+    }
+
+    private boolean couldBeSpawnedNow() {
+        Array<Contact> contacts = levelStage.getWorldScreen().getWorld().getContactList();
+        for (Contact contact : contacts) {
+            if (contact.getFixtureA().getBody() == circleBody.getBody() || contact.getFixtureB().getBody() == circleBody.getBody()) {
+                if (contact.isTouching()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void update(boolean buttonDown, boolean allowed) {
@@ -28,18 +48,27 @@ public class GhostCircle {
         } else if (buttonDown && allowed) {
             active = true;
             if (ghostTimer > spawnTime) {
-                ghostTimer = 0;
-                active = false;
-                levelStage.spawnPlayerCircle(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y);
+                if (couldBeSpawnedNow()) {
+                    ghostTimer = 0;
+                    active = false;
+                    levelStage.spawnPlayerCircle(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y);
+                }
             } else {
                 ghostTimer++;
             }
         }
     }
 
+    public void updateBody() {
+        if (active) {
+            circleBody.getBody().setTransform(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y, 0);
+        }
+    }
+
     public void draw(ShapeRenderer shapeRenderer) {
         Gdx.gl.glLineWidth(3);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(couldBeSpawnedNow() ? Color.WHITE : Color.RED);
         final int segments = 40;
 
         float midX = levelStage.getWorldScreen().getMouseInWorld2D().x;
@@ -58,6 +87,7 @@ public class GhostCircle {
         }
 
         shapeRenderer.end();
+        shapeRenderer.setColor(Color.WHITE);
         Gdx.gl.glLineWidth(1);
     }
 

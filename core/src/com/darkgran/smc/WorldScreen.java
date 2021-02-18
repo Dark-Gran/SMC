@@ -164,6 +164,7 @@ public class WorldScreen implements Screen {
             UIStage.draw();
             levelStage.act(delta);
             levelStage.draw();
+            levelStage.getGhostCircle().updateBody();
 
             //drawBox2DDebug();
 
