@@ -43,6 +43,7 @@ public class LevelStage extends Stage {
     private int seconds = 0;
     private String introMessage;
     private PlayerCircle playerCircle = null;
+    private boolean ghostActive = false;
     private final Texture wallTex = new Texture("images/wall.png"); //in-future: move to atlas
     private final Texture wallTexB = new Texture("images/wallB.png");
     private final Texture wallTexG = new Texture("images/wallG.png");
@@ -354,12 +355,16 @@ public class LevelStage extends Stage {
             completed = true;
             enableContinue();
         }
-        //Circle Input
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && lastTouch != null && !completed) {
-            if (lastTouch.isDisabled()) {
-                lastTouch = null;
+        //Play Input
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !completed) {
+            if (lastTouch != null) {
+                if (lastTouch.isDisabled()) {
+                    lastTouch = null;
+                } else {
+                    distributedSizeChange(lastTouch);
+                }
             } else {
-                distributedSizeChange(lastTouch);
+                ghostActive = true; //TODO
             }
         }
         //Updates
