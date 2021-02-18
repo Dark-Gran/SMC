@@ -44,9 +44,7 @@ public class LevelStage extends Stage {
     private int seconds = 0;
     private String introMessage;
     private PlayerCircle playerCircle = null;
-    private boolean ghostActive = false;
-    private float ghostTimer = 0;
-    private SimpleCounter ghostLock = new SimpleCounter(false, 3, 0);
+    private GhostCircle ghostCircle = new GhostCircle(this, PC_SIZE, 3);
     private final Texture wallTex = new Texture("images/wall.png"); //in-future: move to atlas
     private final Texture wallTexB = new Texture("images/wallB.png");
     private final Texture wallTexG = new Texture("images/wallG.png");
@@ -219,7 +217,7 @@ public class LevelStage extends Stage {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     lastTouch = null;
                     worldScreen.getCorpses().add(playerCircle);
-                    ghostLock.setEnabled(true);
+                    ghostCircle.getLock().setEnabled(true);
                     return true;
                 }
                 @Override
@@ -360,24 +358,15 @@ public class LevelStage extends Stage {
             enableContinue();
         }
         //Play Input
-        if (ghostLock.isEnabled()) {
-            ghostLock.update();
-        }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !completed) {
-            if (lastTouch != null) {
-                if (lastTouch.isDisabled()) {
-                    lastTouch = null;
-                } else {
-                    distributedSizeChange(lastTouch);
-                }
-            } else if (playerCircle == null && !ghostLock.isEnabled()){
-                ghostActive = true;
-                if (ghostTimer > 20) {
-                    ghostTimer = 0;
-                    ghostActive = false;
-                    spawnPlayerCircle(worldScreen.getMouseInWorld2D().x, worldScreen.getMouseInWorld2D().y);
-                } else {
-                    ghostTimer++;
+        if (!completed) {
+            ghostCircle.update(Gdx.input.isButtonPressed(Input.Buttons.LEFT), playerCircle == null);
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                if (lastTouch != null) {
+                    if (lastTouch.isDisabled()) {
+                        lastTouch = null;
+                    } else {
+                        distributedSizeChange(lastTouch);
+                    }
                 }
             }
         }
@@ -407,8 +396,8 @@ public class LevelStage extends Stage {
     }
 
     public void removeGhost() {
-        setGhostActive(false);
-        ghostTimer = 0;
+        ghostCircle.setActive(false);
+        ghostCircle.setGhostTimer(0);
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) { //in-future: rework (see debugCR())
@@ -450,23 +439,14 @@ public class LevelStage extends Stage {
         }
     }
 
-    private void drawGhost(ShapeRenderer shapeRenderer) {
-        worldScreen.refreshMouse();
-        Gdx.gl.glLineWidth(3);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.circle(worldScreen.getMouseInWorld2D().x, worldScreen.getMouseInWorld2D().y, PC_SIZE, 40);
-        shapeRenderer.end();
-        Gdx.gl.glLineWidth(1);
-    }
-
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 circle.drawCircleShape(shapeRenderer, circle.getColorType().getColor());
             }
         }
-        if (ghostActive) {
-            drawGhost(shapeRenderer);
+        if (ghostCircle.isActive()) {
+            ghostCircle.draw(shapeRenderer);
         }
         if (playerCircle != null) {
             playerCircle.drawCircleShape(shapeRenderer, Color.WHITE);
@@ -546,11 +526,4 @@ public class LevelStage extends Stage {
         this.playerCircle = playerCircle;
     }
 
-    public boolean isGhostActive() {
-        return ghostActive;
-    }
-
-    public void setGhostActive(boolean ghostActive) {
-        this.ghostActive = ghostActive;
-    }
 }
