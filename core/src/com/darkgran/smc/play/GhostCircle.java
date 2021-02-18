@@ -45,7 +45,7 @@ public class GhostCircle {
         float midX = levelStage.getWorldScreen().getMouseInWorld2D().x;
         float midY = levelStage.getWorldScreen().getMouseInWorld2D().y;
 
-        int maxSegment = Math.round(segments / (spawnTime / ghostTimer));
+        int maxSegment = Math.round(segments / ((spawnTime+1) / ghostTimer));
         float degreeStep = 360 / segments;
         float angle = 0;
         for (int i = 0; i <= maxSegment; i++) {
