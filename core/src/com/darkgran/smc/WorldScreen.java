@@ -60,7 +60,6 @@ public class WorldScreen implements Screen {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             if (levelStage != null) {
                 refreshMouse();
-                //levelStage.spawnPlayerCircle(mouseInWorld2D.x, mouseInWorld2D.y); //TODO
             }
             return true;
         }
