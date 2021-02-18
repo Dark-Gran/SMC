@@ -49,13 +49,15 @@ public class GhostCircle {
             active = true;
             if (ghostTimer > spawnTime) {
                 if (couldBeSpawnedNow()) {
-                    ghostTimer = 0;
                     active = false;
+                    ghostTimer = 0;
                     levelStage.spawnPlayerCircle(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y);
                 }
             } else {
                 ghostTimer++;
             }
+        } else {
+            active = false;
         }
     }
 
