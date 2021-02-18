@@ -30,18 +30,6 @@ public class GhostCircle {
         circleBody.getBody().getFixtureList().get(0).setSensor(true);
     }
 
-    private boolean couldBeSpawnedNow() {
-        Array<Contact> contacts = levelStage.getWorldScreen().getWorld().getContactList();
-        for (Contact contact : contacts) {
-            if (contact.getFixtureA().getBody() == circleBody.getBody() || contact.getFixtureB().getBody() == circleBody.getBody()) {
-                if (contact.isTouching()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public void update(boolean buttonDown, boolean allowed) {
         if (lock.isEnabled()) {
             lock.update();
@@ -91,6 +79,18 @@ public class GhostCircle {
         shapeRenderer.end();
         shapeRenderer.setColor(Color.WHITE);
         Gdx.gl.glLineWidth(1);
+    }
+
+    private boolean couldBeSpawnedNow() {
+        Array<Contact> contacts = levelStage.getWorldScreen().getWorld().getContactList();
+        for (Contact contact : contacts) {
+            if (contact.getFixtureA().getBody() == circleBody.getBody() || contact.getFixtureB().getBody() == circleBody.getBody()) {
+                if (contact.isTouching()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public boolean isLocked() {
