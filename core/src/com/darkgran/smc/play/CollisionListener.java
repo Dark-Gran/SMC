@@ -56,11 +56,13 @@ public class CollisionListener implements ContactListener {
                         contact.setRestitution(0f);
                         break;
                 }
-                if (!circleA.isDisabled() && !circleB.isDisabled()) {
-                    if (circleA.getRadius() > circleB.getRadius()) {
-                        circleA.interact(circleB, interactionType);
-                    } else {
-                        circleB.interact(circleA, interactionType);
+                if (contact.getFixtureA().getBody().getWorld() == levelStage.getWorldScreen().getWorld() && contact.getFixtureB().getBody().getWorld() == levelStage.getWorldScreen().getWorld()) {
+                    if (!circleA.isDisabled() && !circleB.isDisabled()) {
+                        if (circleA.getRadius() > circleB.getRadius()) {
+                            circleA.interact(circleB, interactionType);
+                        } else {
+                            circleB.interact(circleA, interactionType);
+                        }
                     }
                 }
             }
