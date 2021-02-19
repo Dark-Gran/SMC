@@ -169,7 +169,7 @@ public class SimulationManager {
         md.mass = body.getMassData().mass;
         newBody.setMassData(md);
 
-        newBody.getFixtureList().get(0).setSensor(body.getFixtureList().get(0).isSensor());
+        newBody.getFixtureList().get(0).setSensor(!(body.getUserData() instanceof GhostCircle) && body.getFixtureList().get(0).isSensor());
 
         newBody.setFixedRotation(body.isFixedRotation());
         newBody.setGravityScale(body.getGravityScale());
