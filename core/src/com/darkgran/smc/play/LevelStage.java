@@ -21,12 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LevelStage extends Stage {
-    public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
+    public static final int MIN_RADIUS = 50; //for "not merging away" circles
+    public static final int ACTUAL_MIN_RADIUS = 1;
+    public static final int RADIUS_CHANGE = 10;
+    public static final int MIN_RADIUS_CHANGE = 1;
+    public static final int PC_SIZE = 200;
     public static final float COMFORT_RADIUS = 0.1f;
-    public static final float ACTUAL_MIN_RADIUS = 0.001f;
-    public static final float RADIUS_CHANGE = 0.01f;
-    public static final float MIN_RADIUS_CHANGE = 0.001f;
-    public static final float PC_SIZE = 0.2f;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
     private final WorldScreen worldScreen;
     private final Stage UIStage;
@@ -315,7 +315,7 @@ public class LevelStage extends Stage {
         System.out.println(colorPowers);
     }
 
-    private float getCR(ColorType colorType) { //in-future fix the changes in color power (ie. debug distributedSizeChange() + grow section in update())
+    private float getCR(ColorType colorType) {
         float whitePower = 0f;
         float bluePower = 0f;
         float greenPower = 0f;
@@ -324,6 +324,7 @@ public class LevelStage extends Stage {
             for (ColoredCircle circle : entry.getValue()) {
                 switch (circle.getColorType()) {
                     case WHITE:
+                        System.out.println("Ehm: "+circle.getRadius());
                         whitePower += circle.getRadius();
                         break;
                     case BLUE:
@@ -338,7 +339,7 @@ public class LevelStage extends Stage {
                 }
             }
         }
-        //System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
+        System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
         switch (colorType) {
             default:
                 return whitePower;
@@ -352,8 +353,8 @@ public class LevelStage extends Stage {
     }
 
     public void update() {
-        //debugCP();
-        //getCR(ColorType.WHITE);
+        debugCP();
+        getCR(ColorType.WHITE);
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
@@ -401,8 +402,8 @@ public class LevelStage extends Stage {
         ghostCircle.setGhostTimer(0);
     }
 
-    private void distributedSizeChange(ColoredCircle chosenCircle) { //in-future: rework (see debugCR())
-        if (circles.get(chosenCircle.getColorType()) != null) {
+    private void distributedSizeChange(ColoredCircle chosenCircle) {
+        /*if (circles.get(chosenCircle.getColorType()) != null) {
             ArrayList<ColoredCircle> coloredCircles = circles.get(chosenCircle.getColorType());
             if (coloredCircles.size() > 1) {
                 //float maxRadius = colorPowers.get(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
@@ -417,7 +418,7 @@ public class LevelStage extends Stage {
                         }
                     }
                     if (changeSpace >= RADIUS_CHANGE && eligibles.size() > 0) {
-                        float changeDown = RADIUS_CHANGE / eligibles.size();
+                        int changeDown = Math.round(RADIUS_CHANGE / eligibles.size()); //TODO
                         float spareChange = 0f;
                         for (int i = 0; i < eligibles.size(); i++) {
                             ColoredCircle circle = eligibles.get(i);
@@ -437,7 +438,7 @@ public class LevelStage extends Stage {
                     }
                 }
             }
-        }
+        }*/
     }
 
     public void drawShapes(ShapeRenderer shapeRenderer) {

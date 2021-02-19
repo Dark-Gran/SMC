@@ -8,7 +8,7 @@ import com.darkgran.smc.WorldScreen;
 public class PlayerCircle extends CircleActor { //TODO sprite
     private final Sprite sprite;
 
-    public PlayerCircle(LevelStage levelStage, float x, float y, float radius, Texture tex) {
+    public PlayerCircle(LevelStage levelStage, float x, float y, int radius, Texture tex) {
         super(levelStage, x, y, radius, BodyDef.BodyType.StaticBody);
         sprite = new Sprite(tex);
         updateSprite();

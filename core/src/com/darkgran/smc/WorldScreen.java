@@ -166,7 +166,7 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            //drawBox2DDebug();
+            drawBox2DDebug();
 
             levelStage.tickTock();
             timeWorld(delta);

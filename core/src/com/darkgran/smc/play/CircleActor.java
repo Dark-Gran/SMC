@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class CircleActor extends Actor {
     private final LevelStage levelStage;
     private CircleBody circleBody;
-    private float radius;
+    private int radius;
 
-    public CircleActor(final LevelStage levelStage, float x, float y, float radius, BodyDef.BodyType bodyType) {
+    public CircleActor(final LevelStage levelStage, float x, float y, int radius, BodyDef.BodyType bodyType) {
         this.levelStage = levelStage;
         circleBody = new CircleBody(levelStage.getWorldScreen().getWorld(), this, x, y, radius, bodyType);
         this.radius = radius;
@@ -20,16 +20,17 @@ public class CircleActor extends Actor {
     public void drawShape(ShapeRenderer shapeRenderer, Color color) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(color);
-        int segments = Math.round(getRadius()*200);
+        int segments = Math.round(getRadius()*0.2f);
         if (segments < 10) { segments = 10; }
         else if (segments > 100) { segments = 50; }
-        shapeRenderer.circle(getCircleBody().getBody().getPosition().x, getCircleBody().getBody().getPosition().y, getRadius(), segments);
+        shapeRenderer.circle(getCircleBody().getBody().getPosition().x, getCircleBody().getBody().getPosition().y, getRadius()/1000f, segments);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
     }
 
     public void refreshActorBounds() {
-        this.setBounds(circleBody.getBody().getPosition().x-radius, circleBody.getBody().getPosition().y-radius, radius*2, radius*2);
+        float actualRadius = radius/1000f;
+        this.setBounds(circleBody.getBody().getPosition().x-actualRadius, circleBody.getBody().getPosition().y-actualRadius, actualRadius*2, actualRadius*2);
     }
 
     public CircleBody getCircleBody() {
@@ -40,11 +41,11 @@ public class CircleActor extends Actor {
         this.circleBody = circleBody;
     }
 
-    public float getRadius() {
+    public int getRadius() {
         return radius;
     }
 
-    public void setRadius(float radius) {
+    public void setRadius(int radius) {
         this.radius = radius;
     }
 
