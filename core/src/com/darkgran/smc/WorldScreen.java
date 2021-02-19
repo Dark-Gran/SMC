@@ -4,12 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -50,6 +48,7 @@ public class WorldScreen implements Screen {
     private World world;
     private World worldSimulation;
     private SimulationManager simulationManager;
+    private CircleSensor simSensor;
     private float worldTimer = 0;
     private LevelStage levelStage;
     private Stage UIStage;
@@ -123,6 +122,7 @@ public class WorldScreen implements Screen {
         Gdx.input.setCursorCatched(false);
         worldSimulation = new World(new Vector2(0, 0), false);
         simulationManager = new SimulationManager(worldSimulation, VELOCITY_ITERATIONS, POSITION_ITERATIONS, STEP_TIME);
+        simSensor = new CircleSensor(levelStage, 0.4f, BodyDef.BodyType.StaticBody);
     }
 
     private void setupUIStage() {
@@ -175,7 +175,7 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            //drawBox2DDebug(this.world);
+            drawBox2DDebug(this.world);
 
             levelStage.tickTock();
             timeWorld(delta);
