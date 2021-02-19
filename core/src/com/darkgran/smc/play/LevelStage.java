@@ -270,6 +270,7 @@ public class LevelStage extends Stage {
             worldScreen.destroyBody(playerCircle.getCircleBody().getBody());
             playerCircle = null;
         }
+        removeGhost();
     }
 
     public void removeCircle(ColoredCircle coloredCircle) {
