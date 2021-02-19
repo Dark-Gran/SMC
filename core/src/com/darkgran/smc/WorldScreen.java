@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.play.*;
@@ -46,6 +47,7 @@ public class WorldScreen implements Screen {
     private final OrthographicCamera camera;
     private final Viewport viewport;
     private World world;
+    private World worldSimulation;
     private float worldTimer = 0;
     private LevelStage levelStage;
     private Stage UIStage;
@@ -106,8 +108,8 @@ public class WorldScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
+        World.setVelocityThreshold(0.1f);
         world = new World(new Vector2(0, 0), false);
-        world.setVelocityThreshold(0.1f);
         setupUIStage();
         levelStage = new LevelStage(this, UIStage, viewport);
         smc.getInputMultiplexer().addProcessor(UIStage);
@@ -117,6 +119,8 @@ public class WorldScreen implements Screen {
         world.setContactListener(collisionListener);
         levelStage.loadLevel(currentLevelID);
         Gdx.input.setCursorCatched(false);
+        worldSimulation = new World(new Vector2(0, 0), false);
+        worldSimulation.setContactListener(collisionListener);
     }
 
     private void setupUIStage() {
@@ -166,7 +170,9 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            //drawBox2DDebug();
+            syncSimulation();
+            drawBox2DDebug(worldSimulation);
+            //drawBox2DDebug(this.world);
 
             levelStage.tickTock();
             timeWorld(delta);
@@ -175,6 +181,45 @@ public class WorldScreen implements Screen {
             reload = false;
             levelStage.switchLevel(currentLevelID);
         }
+    }
+
+    public void syncSimulation() {
+        if (!worldSimulation.isLocked()) {
+            Array<Body> bodies = new Array<>();
+            world.getBodies(bodies);
+            for (Body body : bodies) {
+                createBody(body, worldSimulation);
+            }
+        }
+    }
+
+    private void createBody(Body body, World world) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = body.getType();
+        Body newBody = worldSimulation.createBody(bodyDef);
+        newBody.setUserData(body.getUserData());
+        newBody.setTransform(body.getPosition(), body.getAngle());
+        newBody.setLinearVelocity(body.getLinearVelocity());
+
+        Fixture fixture = body.getFixtureList().get(0);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = fixture.getShape();
+        fixtureDef.density = fixture.getDensity();
+        fixtureDef.restitution = fixture.getRestitution();
+        fixtureDef.friction = fixture.getFriction();
+
+        MassData md = new MassData();
+        md.mass = 0.1f*fixture.getShape().getRadius();
+        newBody.setMassData(md);
+        //md.I = 1;
+        //md.center = body.getLocalCenter();
+
+        newBody.createFixture(fixtureDef);
+
+        newBody.setFixedRotation(body.isFixedRotation());
+        newBody.setGravityScale(body.getGravityScale());
+        newBody.setLinearDamping(body.getLinearDamping());
+        newBody.setAngularDamping(body.getAngularDamping());
     }
 
     public void timeWorld(float delta) {
@@ -223,11 +268,11 @@ public class WorldScreen implements Screen {
         world.destroyBody(body);
     }
 
-    private void drawBox2DDebug() {
+    private void drawBox2DDebug(World world) {
         Matrix4 debugMatrix = new Matrix4(camera.combined);
         debugMatrix.scale(1f, 1f, 1f);
         debugRenderer.setDrawBodies(true);
-        debugRenderer.render(this.world, debugMatrix);
+        debugRenderer.render(world, debugMatrix);
     }
 
     @Override
