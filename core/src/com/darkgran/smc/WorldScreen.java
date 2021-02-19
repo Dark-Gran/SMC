@@ -154,6 +154,7 @@ public class WorldScreen implements Screen {
             camera.update();
 
             shapeRenderer.setProjectionMatrix(camera.combined);
+            drawSimulation(shapeRenderer);
             levelStage.drawShapes(shapeRenderer);
 
             smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
@@ -171,8 +172,8 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            drawSimulation(shapeRenderer);
-            drawBox2DDebug(worldSimulation);
+
+            //drawBox2DDebug(worldSimulation);
             //drawBox2DDebug(this.world);
 
             levelStage.tickTock();
@@ -200,13 +201,14 @@ public class WorldScreen implements Screen {
         resetSimulation();
         Array<Body> bodies;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i <= 100; i++) {
+        for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
             for (Body body : bodies) {
                 if (body.getUserData() instanceof ColoredCircle) {
-                    applyCircleSpeeder((ColoredCircle) body.getUserData(), body);
-                    if (i % 10 == 0) {
+                    ColoredCircle circle = (ColoredCircle) body.getUserData();
+                    applyCircleSpeeder(circle, body);
+                    if (i % 10 == 0 && !circle.isMergingAway() && !circle.isGone()) {
                         shapeRenderer.setColor(Color.GOLD);
                         shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
                     }
