@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class CircleBody {
     private final Body body;
 
-    public CircleBody(final World world, final Object obj, float x, float y, float radius, BodyDef.BodyType bodyType) {
+    public CircleBody(final World world, final Object obj, float x, float y, double radius, BodyDef.BodyType bodyType) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = bodyType;
 
@@ -14,7 +14,7 @@ public class CircleBody {
 
         body.setTransform(x, y, 0f);
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(radius);
+        circleShape.setRadius((float) radius);
 
         FixtureDef boxFixtureDef = new FixtureDef();
         boxFixtureDef.shape = circleShape;
@@ -23,7 +23,7 @@ public class CircleBody {
         boxFixtureDef.restitution = 1f;
 
         MassData md = new MassData();
-        md.mass = 0.1f*radius;
+        md.mass = 0.1f*(float) radius;
         body.setMassData(md);
         //md.I = 1;
         //md.center = body.getLocalCenter();

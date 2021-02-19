@@ -176,7 +176,7 @@ public class LevelStage extends Stage {
             md.mass = 0.1f*ACTUAL_MIN_RADIUS;
             circle.getCircleBody().getBody().setMassData(md);
             circles.get(circle.getColorType()).add(circle);
-            if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+circle.getRadius()); }
+            if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+(float) circle.getRadius()); }
             addActor(circle);
             addCircleClicks(circle);
         } else {
@@ -338,7 +338,7 @@ public class LevelStage extends Stage {
                 }
             }
         }
-        //System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
+        System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
         switch (colorType) {
             default:
                 return whitePower;
@@ -352,8 +352,8 @@ public class LevelStage extends Stage {
     }
 
     public void update() {
-        //debugCP();
-        //getCR(ColorType.WHITE);
+        debugCP();
+        getCR(ColorType.WHITE);
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
@@ -405,11 +405,10 @@ public class LevelStage extends Stage {
         if (circles.get(chosenCircle.getColorType()) != null) {
             ArrayList<ColoredCircle> coloredCircles = circles.get(chosenCircle.getColorType());
             if (coloredCircles.size() > 1) {
-                //float maxRadius = colorPowers.get(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
-                float maxRadius = getCR(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
+                double maxRadius = getCR(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
                 if (chosenCircle.getRadius() + RADIUS_CHANGE <= maxRadius) {
                     ArrayList<ColoredCircle> eligibles = new ArrayList<>();
-                    float changeSpace = 0f;
+                    double changeSpace = 0f;
                     for (ColoredCircle circle : coloredCircles) {
                         if (circle != chosenCircle && circle.getColorType() == chosenCircle.getColorType() && circle.getRadius() - MIN_RADIUS_CHANGE >= LevelStage.MIN_RADIUS) {
                             eligibles.add(circle);
@@ -417,8 +416,8 @@ public class LevelStage extends Stage {
                         }
                     }
                     if (changeSpace >= RADIUS_CHANGE && eligibles.size() > 0) {
-                        float changeDown = RADIUS_CHANGE / eligibles.size();
-                        float spareChange = 0f;
+                        double changeDown = RADIUS_CHANGE / eligibles.size();
+                        double spareChange = 0f;
                         for (int i = 0; i < eligibles.size(); i++) {
                             ColoredCircle circle = eligibles.get(i);
                             if (circle.getRadius() - changeDown >= LevelStage.MIN_RADIUS) {
