@@ -156,9 +156,13 @@ public class SimulationManager {
         fixtureDef.restitution = fixture.getRestitution();
         fixtureDef.friction = fixture.getFriction();
 
-        newBody.setMassData(body.getMassData());
-
         newBody.createFixture(fixtureDef);
+
+        newBody.getFixtureList().get(0).setDensity(body.getFixtureList().get(0).getDensity());
+        newBody.resetMassData();
+        MassData md = new MassData();
+        md.mass = body.getMassData().mass;
+        newBody.setMassData(md);
 
         newBody.setFixedRotation(body.isFixedRotation());
         newBody.setGravityScale(body.getGravityScale());

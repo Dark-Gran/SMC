@@ -23,7 +23,7 @@ public class CollisionListener implements ContactListener {
     }
 
     @Override
-    public void preSolve(Contact contact, Manifold oldManifold) { //TODO debug
+    public void preSolve(Contact contact, Manifold oldManifold) {
         ColoredCircle circleA = null;
         ColoredCircle circleB = null;
         if (contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle) {
@@ -47,8 +47,10 @@ public class CollisionListener implements ContactListener {
                 }
             }
             if (circleA != null && circleB != null) {
+
                 InteractionType interactionType = getInteractionType(circleA, circleB);
-                switch (getCollisionType(circleA.getColorType(), circleB.getColorType(), interactionType)) {
+                CollisionType collisionType = getCollisionType(circleA.getColorType(), circleB.getColorType(), interactionType);
+                switch (collisionType) {
                     case IGNORED:
                         contact.setEnabled(false);
                         break;
