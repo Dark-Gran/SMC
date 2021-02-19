@@ -444,7 +444,7 @@ public class LevelStage extends Stage {
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
-                circle.drawTravelRay(shapeRenderer);
+                //circle.drawTravelRay(shapeRenderer);
                 circle.drawShape(shapeRenderer, circle.getColorType().getColor());
             }
         }

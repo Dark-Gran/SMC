@@ -140,12 +140,29 @@ public class ColoredCircle extends CircleActor {
         }
         //Misc
         refreshActorBounds();
-        Vector2 startPos = getCircleBody().getBody().getPosition();
+        /*Vector2 startPos = getCircleBody().getBody().getPosition();
         Vector2 startVel = getCircleBody().getBody().getLinearVelocity();
         Vector2 lastTP = startPos;
         Vector2 travelPos = getTravelPoint(startPos, getCircleBody().getBody().getLinearVelocity(), 180);
         travelRayCallback.getPoints().clear();
-        getLevelStage().getWorldScreen().getWorld().rayCast(travelRayCallback, lastTP, travelPos);
+        getLevelStage().getWorldScreen().getWorld().rayCast(travelRayCallback, lastTP, travelPos);*/
+    }
+
+    public void drawTravelRay(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.GOLD);
+
+        if (travelRayCallback.getPoints().size() > 0) {
+            Vector2 TRPoints = travelRayCallback.getPoints().get(travelRayCallback.getPoints().size() - 1);
+            shapeRenderer.line(getCircleBody().getBody().getPosition().x, getCircleBody().getBody().getPosition().y, TRPoints.x, TRPoints.y);
+            /*if (travelRayCallback.getNormals().size() > 0) {
+                Vector2 TRNormals = travelRayCallback.getNormals().get(travelRayCallback.getNormals().size() - 1);
+                shapeRenderer.line(TRPoints.x, TRPoints.y, TRNormals.x, TRNormals.y);
+            }*/
+        }
+
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.end();
     }
 
     private void updateSpeedLimit() {
@@ -176,34 +193,6 @@ public class ColoredCircle extends CircleActor {
 
     public void addToGrow(double grow) {
         growBuffer += grow;
-    }
-
-    public void drawTravelRay(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.GOLD);
-
-        if (travelRayCallback.getPoints().size() > 0) {
-            Vector2 TRPoints = travelRayCallback.getPoints().get(travelRayCallback.getPoints().size() - 1);
-            shapeRenderer.line(getCircleBody().getBody().getPosition().x, getCircleBody().getBody().getPosition().y, TRPoints.x, TRPoints.y);
-            if (travelRayCallback.getNormals().size() > 0) {
-                Vector2 TRNormals = travelRayCallback.getNormals().get(travelRayCallback.getNormals().size() - 1);
-                shapeRenderer.line(TRPoints.x, TRPoints.y, TRNormals.x, TRNormals.y);
-            }
-        }
-
-        /*float x = getCircleBody().getBody().getPosition().x;
-        float y = getCircleBody().getBody().getPosition().y;
-        for (int i = 0; i < 180; i++) {
-            if (i > 0) {
-
-            }
-            shapeRenderer.line(x, y, travelPos.x, travelPos.y);
-            x = travelPos.x;
-            y = travelPos.y;
-        }*/
-
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.end();
     }
 
     private Vector2 getTravelPoint(Vector2 startPos, Vector2 startVel, float step) {
