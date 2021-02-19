@@ -467,7 +467,7 @@ public class LevelStage extends Stage {
 
     public void drawSprites(SpriteBatch batch) {
         //Intro
-        if (frameCounter < 150) {
+        if (frameCounter < 250) {
             drawLevelIntro(batch, frameCounter);
         }
         //Timer
@@ -492,8 +492,8 @@ public class LevelStage extends Stage {
             GlyphLayout layout = new GlyphLayout();
             layout.setText(worldScreen.getFont(), introMessage);
             float alpha = 1;
-            if (time > 100) {
-                alpha = ((150 - time) * 2) / 100;
+            if (time > 200) {
+                alpha = ((250 - time) * 2) / 100;
             }
             drawText(worldScreen.getFont(), batch, introMessage, SaveMeCircles.SW/2-layout.width/2, (SaveMeCircles.SH / 5), new Color(1, 1, 1, alpha));
         }
