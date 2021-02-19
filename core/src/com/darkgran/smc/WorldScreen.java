@@ -185,18 +185,6 @@ public class WorldScreen implements Screen {
         }
     }
 
-    private void applyCircleSpeeder(ColoredCircle circle, Body body) {
-        float speed = ColoredCircle.getSpeedLimit(circle.getColorType().getSpeed(), circle.getRadius(), false, 0);
-        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
-        if ((float) currentSpeed != speed) {
-            float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
-            if (currentSpeed == 0) { angle += angle > PI ? -PI : PI; }
-            double speedX = speed * cos(angle);
-            double speedY = speed * sin(angle);
-            body.setLinearVelocity((float) speedX, (float) speedY);
-        }
-    }
-
     private void drawSimulation(ShapeRenderer shapeRenderer) {
         resetSimulation();
         Array<Body> bodies;
@@ -219,6 +207,18 @@ public class WorldScreen implements Screen {
         }
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
+    }
+
+    private void applyCircleSpeeder(ColoredCircle circle, Body body) {
+        float speed = ColoredCircle.getSpeedLimit(circle.getColorType().getSpeed(), circle.getRadius(), false, 0);
+        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
+        if ((float) currentSpeed != speed) {
+            float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
+            if (currentSpeed == 0) { angle += angle > PI ? -PI : PI; }
+            double speedX = speed * cos(angle);
+            double speedY = speed * sin(angle);
+            body.setLinearVelocity((float) speedX, (float) speedY);
+        }
     }
 
     private void resetSimulation() {
