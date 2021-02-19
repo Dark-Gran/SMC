@@ -155,7 +155,7 @@ public class WorldScreen implements Screen {
             camera.update();
 
             shapeRenderer.setProjectionMatrix(camera.combined);
-            simulationManager.drawSimulation(shapeRenderer, collisionListener, world);
+            simulationManager.drawSimulation(shapeRenderer, collisionListener, world, debugRenderer, new Matrix4(camera.combined));
             levelStage.drawShapes(shapeRenderer);
 
             smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
@@ -173,7 +173,6 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            if (worldSimulation != null) { drawBox2DDebug(worldSimulation); }
             drawBox2DDebug(this.world);
 
             levelStage.tickTock();

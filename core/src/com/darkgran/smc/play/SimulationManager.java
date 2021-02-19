@@ -2,6 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -22,7 +23,7 @@ public class SimulationManager {
         this.STEP_TIME = STEP_TIME;
     }
 
-    public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld) {
+    public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -43,6 +44,9 @@ public class SimulationManager {
         }
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
+        debugRenderer.setDrawBodies(true);
+        debugRenderer.render(worldSimulation, matrix);
+
     }
 
     private void resetSimulation(CollisionListener collisionListener, World copyWorld) {
