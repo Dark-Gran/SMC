@@ -40,7 +40,7 @@ public class LevelStage extends Stage {
     private int currentLevel = -1;
     private boolean completed = false;
     private float timer = 0;
-    private float frameCounter = 0;
+    private int frameCounter = 0;
     private int seconds = 0;
     private String introMessage;
     private PlayerCircle playerCircle = null;
