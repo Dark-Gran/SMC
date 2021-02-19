@@ -198,7 +198,7 @@ public class WorldScreen implements Screen {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = body.getType();
         Body newBody = worldSimulation.createBody(bodyDef);
-        newBody.setUserData(body.getUserData()); //TODO
+        newBody.setUserData(body.getUserData());
         newBody.setTransform(body.getPosition(), body.getAngle());
         newBody.setLinearVelocity(body.getLinearVelocity());
 
