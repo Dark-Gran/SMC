@@ -29,7 +29,7 @@ public class SimulationManager {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i <= 240; i++) {
+        for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
             for (Body body : bodies) {
@@ -54,7 +54,7 @@ public class SimulationManager {
         //debugRenderer.render(worldSimulation, matrix);
     }
 
-    private void resetSimulation(CollisionListener collisionListener, World copyWorld) {
+    public void resetSimulation(CollisionListener collisionListener, World copyWorld) {
         //if (worldSimulation != null) { worldSimulation.dispose(); }
         worldSimulation = new World(new Vector2(0, 0), false);;
         worldSimulation.setContactListener(collisionListener);

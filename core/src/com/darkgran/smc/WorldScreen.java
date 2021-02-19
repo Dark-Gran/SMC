@@ -121,6 +121,7 @@ public class WorldScreen implements Screen {
         Gdx.input.setCursorCatched(false);
         worldSimulation = new World(new Vector2(0, 0), false);
         simulationManager = new SimulationManager(this, worldSimulation, VELOCITY_ITERATIONS, POSITION_ITERATIONS, STEP_TIME);
+        simulationManager.resetSimulation(collisionListener, world);
     }
 
     private void setupUIStage() {
