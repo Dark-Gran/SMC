@@ -114,14 +114,14 @@ public class ColoredCircle extends CircleActor {
             freshShard = false;
         }
         //Speed Cap
-        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
+        /*double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
             float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
             if (currentSpeed == 0) { angle += angle > PI ? -PI : PI; }
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
-        }
+        }*/
         //Screen Edge
         if (body.getPosition().x-getRadius() >= WorldScreen.WORLD_WIDTH || body.getPosition().x+getRadius() <= 0 || body.getPosition().y-getRadius() >= WorldScreen.WORLD_HEIGHT || body.getPosition().y+getRadius() <= 0) {
             double newX = body.getPosition().x;

@@ -119,8 +119,6 @@ public class WorldScreen implements Screen {
         world.setContactListener(collisionListener);
         levelStage.loadLevel(currentLevelID);
         Gdx.input.setCursorCatched(false);
-        worldSimulation = new World(new Vector2(0, 0), false);
-        worldSimulation.setContactListener(collisionListener);
     }
 
     private void setupUIStage() {
@@ -185,19 +183,22 @@ public class WorldScreen implements Screen {
 
     public void simulateWorld() {
         worldSimulation = new World(new Vector2(0, 0), false);;
+        worldSimulation.setContactListener(collisionListener);
         Array<Body> bodies = new Array<>();
         world.getBodies(bodies);
         for (Body body : bodies) {
             copyBody(body, worldSimulation);
         }
-        worldSimulation.step(STEP_TIME*100, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+        for (int i = 0; i <= 100; i++) {
+            worldSimulation.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+        }
     }
 
     private void copyBody(Body body, World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = body.getType();
         Body newBody = worldSimulation.createBody(bodyDef);
-        newBody.setUserData(body.getUserData());
+        newBody.setUserData(body.getUserData()); //TODO
         newBody.setTransform(body.getPosition(), body.getAngle());
         newBody.setLinearVelocity(body.getLinearVelocity());
 
