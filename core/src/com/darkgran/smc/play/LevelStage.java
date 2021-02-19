@@ -45,11 +45,14 @@ public class LevelStage extends Stage {
     private String introMessage;
     private PlayerCircle playerCircle = null;
     private final GhostCircle ghostCircle;
-    private final Texture texWallW = new Texture("images/wallW.png"); //in-future: move to atlas
+    private final Texture texWall = new Texture("images/wall.png"); //in-future: move to atlas
+    private final Texture texWallW = new Texture("images/wallW.png");
     private final Texture texWallB = new Texture("images/wallB.png");
     private final Texture texWallG = new Texture("images/wallG.png");
-    private final Texture texWallBig = new Texture("images/wallBig.png");
-    private final Texture texWallBigW = new Texture("images/wallBigW.png");
+    private final Texture texMediumWall = new Texture("images/mediumWall.png");
+    private final Texture texMediumWallW = new Texture("images/mediumWallW.png");
+    private final Texture texBigWall = new Texture("images/bigWall.png");
+    private final Texture texBigWallW = new Texture("images/bigWallW.png");
     private final Texture soTex = new Texture("images/switch_over.png");
     private final Texture pcTex = new Texture("images/circle.png");
 
@@ -119,18 +122,35 @@ public class LevelStage extends Stage {
                 }
                 setupActors();
                 //Obstacles
-                for (WallInfo wallInfo : levelInfo.getWalls()) {
-                    Texture tex = texWallW;
-                    if (wallInfo.getHeight() > 2) {
-                        tex = texWallBig;
-                        if (wallInfo.getType() == ColorType.WHITE) {
-                            tex = texWallBigW;
+                for (WallInfo wallInfo : levelInfo.getWalls()) { //Wall Textures (in-future: move to atlas manager)
+                    Texture tex = texWall;
+                    if (wallInfo.getHeight() < 5) {
+                        switch (wallInfo.getType()) {
+                            case WHITE:
+                                tex = texWallW;
+                                break;
+                            case BLUE:
+                                tex = texWallB;
+                                break;
+                            case GREEN:
+                                tex = texWallG;
+                                break;
+                        }
+                    } else if (wallInfo.getHeight() < 10) {
+                        switch (wallInfo.getType()) {
+                            default:
+                                tex = texMediumWall;
+                            case WHITE:
+                                tex = texMediumWallW;
+                                break;
                         }
                     } else {
-                        if (wallInfo.getType() == ColorType.BLUE) {
-                            tex = texWallB;
-                        } else if (wallInfo.getType() == ColorType.GREEN) {
-                            tex = texWallG;
+                        switch (wallInfo.getType()) {
+                            default:
+                                tex = texBigWall;
+                            case WHITE:
+                                tex = texBigWallW;
+                                break;
                         }
                     }
                     walls.add(new Wall(this, wallInfo.getX(), wallInfo.getY(), wallInfo.getWidth()/2, wallInfo.getHeight()/2, (float) (wallInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), wallInfo.getType(), tex));
@@ -514,11 +534,14 @@ public class LevelStage extends Stage {
 
     public void dispose() {
         disableContinue();
+        texBigWall.dispose();
+        texBigWallW.dispose();
+        texWall.dispose();
         texWallW.dispose();
         texWallB.dispose();
         texWallG.dispose();
-        texWallBig.dispose();
-        texWallBigW.dispose();
+        texMediumWall.dispose();
+        texMediumWallW.dispose();
         soTex.dispose();
         pcTex.dispose();
     }
