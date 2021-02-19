@@ -1,5 +1,6 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -19,6 +20,7 @@ public class ColoredCircle extends CircleActor {
     private boolean freshShard = false;
     private SimpleCounter interactionLock = new SimpleCounter(false, 30, 0);
     private SimpleCounter breakLock = new SimpleCounter(false, 60, 0);
+    private final TravelLine travelLine;
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, double radius, float degrees, ColorType colorType) {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
@@ -27,7 +29,9 @@ public class ColoredCircle extends CircleActor {
         updateSpeedLimit();
         double speedX = speed * cos(direction);
         double speedY = speed * sin(direction);
-        getCircleBody().getBody().setLinearVelocity((float) speedX, (float) speedY);
+        Vector2 speed = new Vector2((float) speedX, (float) speedY);
+        getCircleBody().getBody().setLinearVelocity(speed);
+        this.travelLine = new TravelLine(x, y, speed);
     }
 
     public void interact(ColoredCircle circle, InteractionType interactionType) {
@@ -138,8 +142,9 @@ public class ColoredCircle extends CircleActor {
             }
             body.setTransform((float) newX, (float) newY, body.getAngle());
         }
-        //Actor position
+        //Misc
         refreshActorBounds();
+        travelLine.update(body.getPosition().x, body.getPosition().y, body.getLinearVelocity());
     }
 
     private void updateSpeedLimit() {
@@ -212,4 +217,7 @@ public class ColoredCircle extends CircleActor {
         this.freshShard = freshShard;
     }
 
+    public TravelLine getTravelLine() {
+        return travelLine;
+    }
 }
