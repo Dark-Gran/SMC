@@ -54,7 +54,8 @@ public class WorldScreen implements Screen {
     private final CollisionListener collisionListener;
     private ArrayList corpses = new ArrayList();
     private boolean reload = false;
-    private int currentLevelID = 0;
+    private int currentLevelID = 3;
+
     public final Vector2 mouseInWorld2D = new Vector2();
     public final Vector3 mouseInWorld3D = new Vector3();
     private final InputAdapter generalInputProcessor = new InputAdapter() {

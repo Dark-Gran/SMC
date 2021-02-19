@@ -25,11 +25,11 @@
     "id": 2,
     "intro": "In Boundless Peace, Infinity Becomes One.",
     "circles": [
-      { "type": "WHITE", "x": 2, "y": 0, "radius": 0.3, "angle": 30 },
-      { "type": "WHITE", "x": 3, "y": 1, "radius": 0.2, "angle": 70 },
-      { "type": "WHITE", "x": 4, "y": 2, "radius": 0.2, "angle": 130 },
-      { "type": "WHITE", "x": 5, "y": 3, "radius": 0.3, "angle": 45 },
-      { "type": "WHITE", "x": 6, "y": 4, "radius": 0.15, "angle": 180 }
+      { "type": "WHITE", "x": 2, "y": 0, "radius": 0.4, "angle": 30 },
+      { "type": "WHITE", "x": 3, "y": 1, "radius": 0.3, "angle": 70 },
+      { "type": "WHITE", "x": 4, "y": 2, "radius": 0.3, "angle": 130 },
+      { "type": "WHITE", "x": 5, "y": 3, "radius": 0.4, "angle": 45 },
+      { "type": "WHITE", "x": 6, "y": 4, "radius": 0.25, "angle": 180 }
     ],
     "walls": [],
     "beams": [],
@@ -39,14 +39,15 @@
     "id": 3,
     "intro": "Lonely Leaf Welcomes Wind.",
     "circles": [
-      { "type": "WHITE", "x": 2.5, "y": 4, "radius": 0.3, "angle": 330 },
-      { "type": "WHITE", "x": 3, "y": 3, "radius": 0.2, "angle": 250 },
-      { "type": "WHITE", "x": 4, "y": 4, "radius": 0.2, "angle": 130 },
-      { "type": "WHITE", "x": 7, "y": 3, "radius": 0.15, "angle": 190 },
-      { "type": "WHITE", "x": 6, "y": 4, "radius": 0.15, "angle": 200 },
-      { "type": "WHITE", "x": 7, "y": 4.5, "radius": 0.25, "angle": 350 },
-      { "type": "WHITE", "x": 6, "y": 2, "radius": 0.3, "angle": 160 },
-      { "type": "WHITE", "x": 2.5, "y": 0, "radius": 0.3, "angle": 30 }
+      { "type": "WHITE", "x": 3, "y": 1.5, "radius": 0.15, "angle": 190 },
+      { "type": "WHITE", "x": 3, "y": 2, "radius": 0.15, "angle": 190 },
+      { "type": "WHITE", "x": 3, "y": 3, "radius": 0.15, "angle": 170 },
+      { "type": "WHITE", "x": 3, "y": 3.5, "radius": 0.15, "angle": 170 },
+      { "type": "WHITE", "x": 6.6, "y": 1.5, "radius": 0.15, "angle": 350 },
+      { "type": "WHITE", "x": 6.6, "y": 2, "radius": 0.15, "angle": 350 },
+      { "type": "WHITE", "x": 6.6, "y": 3, "radius": 0.15, "angle": 10 },
+      { "type": "WHITE", "x": 6.6, "y": 3.5, "radius": 0.15, "angle": 10 },
+      { "type": "WHITE", "x": 4.8, "y": 3, "radius": 0.15, "angle": 90 }
     ],
     "walls": [
       { "type": "WHITE", "x": 1.49, "y": 2.4, "width": 0.49, "height": 6, "angle": 0 },
