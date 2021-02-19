@@ -11,12 +11,14 @@ import com.darkgran.smc.WorldScreen;
 import static java.lang.Math.*;
 
 public class SimulationManager {
+    private final WorldScreen worldScreen;
     private final int VELOCITY_ITERATIONS;
     private final int POSITION_ITERATIONS;
     private final float STEP_TIME;
     private World worldSimulation;
 
-    public SimulationManager(World worldSimulation, int VELOCITY_ITERATIONS, int POSITION_ITERATIONS, float STEP_TIME) {
+    public SimulationManager(WorldScreen worldScreen, World worldSimulation, int VELOCITY_ITERATIONS, int POSITION_ITERATIONS, float STEP_TIME) {
+        this.worldScreen = worldScreen;
         this.worldSimulation = worldSimulation;
         this.VELOCITY_ITERATIONS = VELOCITY_ITERATIONS;
         this.POSITION_ITERATIONS = POSITION_ITERATIONS;
@@ -27,16 +29,20 @@ public class SimulationManager {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i <= 180; i++) {
+        for (int i = 0; i <= 240; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
             for (Body body : bodies) {
+                float rad = 2f;
                 if (body.getUserData() instanceof ColoredCircle) {
                     ColoredCircle circle = (ColoredCircle) body.getUserData();
                     applyCircleUpdate(circle, body);
-                    if (i % 10 == 0 && !circle.isFreshShard() && !circle.isMergingAway() && !circle.isGone()) {
-                        shapeRenderer.setColor(circle.getColorType().getColor().r, circle.getColorType().getColor().g, circle.getColorType().getColor().b, 0.7f);
-                        shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
+                    boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
+                    if (bodyInsideRad) {
+                        if (i % 10 == 0 && !circle.isFreshShard() && !circle.isMergingAway() && !circle.isGone()) {
+                            shapeRenderer.setColor(circle.getColorType().getColor().r, circle.getColorType().getColor().g, circle.getColorType().getColor().b, 0.7f);
+                            shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
+                        }
                     }
                 }
             }

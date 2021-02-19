@@ -120,7 +120,7 @@ public class WorldScreen implements Screen {
         levelStage.loadLevel(currentLevelID);
         Gdx.input.setCursorCatched(false);
         worldSimulation = new World(new Vector2(0, 0), false);
-        simulationManager = new SimulationManager(worldSimulation, VELOCITY_ITERATIONS, POSITION_ITERATIONS, STEP_TIME);
+        simulationManager = new SimulationManager(this, worldSimulation, VELOCITY_ITERATIONS, POSITION_ITERATIONS, STEP_TIME);
     }
 
     private void setupUIStage() {
@@ -173,7 +173,7 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            drawBox2DDebug(this.world);
+            //drawBox2DDebug(this.world);
 
             levelStage.tickTock();
             timeWorld(delta);
