@@ -21,18 +21,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LevelStage extends Stage {
-    public static final float MIN_RADIUS = 0.05f; //for "not merging away" circles
-    public static final float COMFORT_RADIUS = 0.1f;
-    public static final float ACTUAL_MIN_RADIUS = 0.001f;
-    public static final float RADIUS_CHANGE = 0.01f;
-    public static final float MIN_RADIUS_CHANGE = 0.001f;
-    public static final float PC_SIZE = 0.2f;
+    public static final double MIN_RADIUS = 0.05; //for "not merging away" circles
+    public static final double COMFORT_RADIUS = 0.1;
+    public static final double ACTUAL_MIN_RADIUS = 0.001;
+    public static final double RADIUS_CHANGE = 0.01;
+    public static final double MIN_RADIUS_CHANGE = 0.001;
+    public static final double PC_SIZE = 0.2;
     public static final LevelLibrary LEVEL_LIBRARY = new LevelLibrary();
     private final WorldScreen worldScreen;
     private final Stage UIStage;
     private final HashMap<ColorType, ArrayList<ColoredCircle>> circles = new HashMap<>();
     private final HashMap<CircleInfo, Boolean> circlesToAdd = new HashMap<>();
-    private final EnumMap<ColorType, Float> colorPowers = new EnumMap<>(ColorType.class);
+    private final EnumMap<ColorType, Double> colorPowers = new EnumMap<>(ColorType.class);
     private final ArrayList<Wall> walls = new ArrayList<>();
     private final ArrayList<Beam> beams = new ArrayList<>();
     private final ArrayList<DoorSwitch> switches = new ArrayList<>();
@@ -55,7 +55,7 @@ public class LevelStage extends Stage {
         super(viewport);
         this.worldScreen = worldScreen;
         this.UIStage = UIStage;
-        ghostCircle = new GhostCircle(this, PC_SIZE, 3, 40);
+        ghostCircle = new GhostCircle(this, (float) PC_SIZE, 3, 40);
         LEVEL_LIBRARY.loadLocal("content/levels.json");
     }
 
@@ -72,13 +72,13 @@ public class LevelStage extends Stage {
             if (levelInfo != null) {
                 //Circles
                 ArrayList<ColoredCircle> whites = new ArrayList<>();
-                float whitePower = 0f;
+                double whitePower = 0f;
                 ArrayList<ColoredCircle> blues = new ArrayList<>();
-                float bluePower = 0f;
+                double bluePower = 0f;
                 ArrayList<ColoredCircle> greens = new ArrayList<>();
-                float greenPower = 0f;
+                double greenPower = 0f;
                 ArrayList<ColoredCircle> reds = new ArrayList<>();
-                float redPower = 0f;
+                double redPower = 0f;
                 for (CircleInfo circleInfo : levelInfo.getCircles()) {
                     switch (circleInfo.getType()) {
                         case WHITE:
@@ -173,7 +173,7 @@ public class LevelStage extends Stage {
             circle.setLockedFromInteractions(true);
             circle.setUnbreakable(true);
             MassData md = new MassData();
-            md.mass = 0.1f*ACTUAL_MIN_RADIUS;
+            md.mass = 0.1f*(float) ACTUAL_MIN_RADIUS;
             circle.getCircleBody().getBody().setMassData(md);
             circles.get(circle.getColorType()).add(circle);
             if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+(float) circle.getRadius()); }
@@ -211,7 +211,7 @@ public class LevelStage extends Stage {
 
     public void spawnPlayerCircle(float x, float y) {
         if (playerCircle == null) {
-            playerCircle = new PlayerCircle(this, x, y, PC_SIZE, pcTex);
+            playerCircle = new PlayerCircle(this, x, y, (float) PC_SIZE, pcTex);
             addActor(playerCircle);
             playerCircle.addListener(new ClickListener() {
                 @Override
@@ -315,11 +315,11 @@ public class LevelStage extends Stage {
         System.out.println(colorPowers);
     }
 
-    private float getCR(ColorType colorType) { //in-future fix the changes in color power (ie. debug distributedSizeChange() + grow section in update())
-        float whitePower = 0f;
-        float bluePower = 0f;
-        float greenPower = 0f;
-        float redPower = 0f;
+    private double getCR(ColorType colorType) { //in-future fix the changes in color power (ie. debug distributedSizeChange() + grow section in update())
+        double whitePower = 0f;
+        double bluePower = 0f;
+        double greenPower = 0f;
+        double redPower = 0f;
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 switch (circle.getColorType()) {

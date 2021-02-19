@@ -144,7 +144,7 @@ public class ColoredCircle extends CircleActor {
 
     @Override
     public void refreshActorBounds() {
-        this.setBounds((getCircleBody().getBody().getPosition().x-((float) getRadius()+LevelStage.COMFORT_RADIUS)), (getCircleBody().getBody().getPosition().y-((float) getRadius()+LevelStage.COMFORT_RADIUS)), (((float) getRadius()+LevelStage.COMFORT_RADIUS)*2), (((float) getRadius()+LevelStage.COMFORT_RADIUS)*2));
+        this.setBounds((getCircleBody().getBody().getPosition().x-((float) (getRadius()+LevelStage.COMFORT_RADIUS))), (getCircleBody().getBody().getPosition().y-((float) (getRadius()+LevelStage.COMFORT_RADIUS))), (((float) (getRadius()+LevelStage.COMFORT_RADIUS))*2), (((float) (getRadius()+LevelStage.COMFORT_RADIUS))*2));
     }
 
     @Override
