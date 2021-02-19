@@ -70,11 +70,9 @@ public class GhostCircle extends CircleSensor {
     private boolean couldBeSpawnedNow() {
         Array<Contact> contacts = getLevelStage().getWorldScreen().getWorld().getContactList();
         for (Contact contact : contacts) {
-            if (!(contact.getFixtureA().getBody().getUserData() instanceof SimSensor || contact.getFixtureB().getBody().getUserData() instanceof SimSensor)) {
-                if (contact.getFixtureA().getBody() == getCircleBody().getBody() || contact.getFixtureB().getBody() == getCircleBody().getBody()) {
-                    if (contact.isTouching()) {
-                        return false;
-                    }
+            if (contact.getFixtureA().getBody() == getCircleBody().getBody() || contact.getFixtureB().getBody() == getCircleBody().getBody()) {
+                if (contact.isTouching()) {
+                    return false;
                 }
             }
         }

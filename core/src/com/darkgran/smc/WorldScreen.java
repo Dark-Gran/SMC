@@ -48,6 +48,7 @@ public class WorldScreen implements Screen {
     private World world;
     private World worldSimulation;
     private SimulationManager simulationManager;
+    private CircleSensor simSensor;
     private float worldTimer = 0;
     private LevelStage levelStage;
     private Stage UIStage;
@@ -64,7 +65,6 @@ public class WorldScreen implements Screen {
             if (levelStage != null) {
                 levelStage.setLastTouch(null);
                 levelStage.removeGhost();
-                simulationManager.resetSensor();
             }
             return true;
         }
@@ -121,7 +121,8 @@ public class WorldScreen implements Screen {
         levelStage.loadLevel(currentLevelID);
         Gdx.input.setCursorCatched(false);
         worldSimulation = new World(new Vector2(0, 0), false);
-        simulationManager = new SimulationManager(worldSimulation, new SimSensor(levelStage, 2f, BodyDef.BodyType.StaticBody), VELOCITY_ITERATIONS, POSITION_ITERATIONS, STEP_TIME);
+        simulationManager = new SimulationManager(worldSimulation, VELOCITY_ITERATIONS, POSITION_ITERATIONS, STEP_TIME);
+        simSensor = new CircleSensor(levelStage, 0.4f, BodyDef.BodyType.StaticBody);
     }
 
     private void setupUIStage() {

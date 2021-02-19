@@ -2,7 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
-public abstract class CircleSensor {
+public class CircleSensor {
     private final LevelStage levelStage;
     private boolean mouseFollow = false;
     private final float size;
