@@ -107,7 +107,6 @@ public class ColoredCircle extends CircleActor {
         if (getRadius() >= LevelStage.MIN_RADIUS) {
             freshShard = false;
         }
-        System.out.println("ehm: "+getRadius());
         //Speed Cap
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {

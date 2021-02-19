@@ -315,7 +315,7 @@ public class LevelStage extends Stage {
         System.out.println(colorPowers);
     }
 
-    private double getCR(ColorType colorType) { //in-future fix the changes in color power (ie. debug distributedSizeChange() + grow section in update())
+    private double getCR(ColorType colorType) { //in-future: fix changes if possible? (floating point issue: when merging and possibly also when splitting)
         double whitePower = 0;
         double bluePower = 0;
         double greenPower = 0;
@@ -338,7 +338,7 @@ public class LevelStage extends Stage {
                 }
             }
         }
-        System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
+        //System.out.println("|white="+whitePower+", blue="+bluePower+", green="+greenPower+", red="+redPower);
         switch (colorType) {
             default:
                 return whitePower;
@@ -352,8 +352,8 @@ public class LevelStage extends Stage {
     }
 
     public void update() {
-        debugCP();
-        getCR(ColorType.WHITE);
+        //debugCP();
+        //getCR(ColorType.WHITE);
         if (checkCompletion() && !completed) {
             completed = true;
             enableContinue();
@@ -405,7 +405,7 @@ public class LevelStage extends Stage {
         if (circles.get(chosenCircle.getColorType()) != null) {
             ArrayList<ColoredCircle> coloredCircles = circles.get(chosenCircle.getColorType());
             if (coloredCircles.size() > 1) {
-                double maxRadius = colorPowers.get(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
+                double maxRadius = getCR(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
                 if (chosenCircle.getRadius() + RADIUS_CHANGE <= maxRadius) {
                     ArrayList<ColoredCircle> eligibles = new ArrayList<>();
                     double changeSpace = 0f;
