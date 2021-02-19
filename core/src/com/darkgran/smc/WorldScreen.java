@@ -170,7 +170,7 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            syncSimulation();
+            simulateWorld();
             drawBox2DDebug(worldSimulation);
             //drawBox2DDebug(this.world);
 
@@ -183,17 +183,17 @@ public class WorldScreen implements Screen {
         }
     }
 
-    public void syncSimulation() {
-        if (!worldSimulation.isLocked()) {
-            Array<Body> bodies = new Array<>();
-            world.getBodies(bodies);
-            for (Body body : bodies) {
-                createBody(body, worldSimulation);
-            }
+    public void simulateWorld() {
+        worldSimulation = new World(new Vector2(0, 0), false);;
+        Array<Body> bodies = new Array<>();
+        world.getBodies(bodies);
+        for (Body body : bodies) {
+            copyBody(body, worldSimulation);
         }
+        worldSimulation.step(STEP_TIME*100, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
     }
 
-    private void createBody(Body body, World world) {
+    private void copyBody(Body body, World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = body.getType();
         Body newBody = worldSimulation.createBody(bodyDef);
