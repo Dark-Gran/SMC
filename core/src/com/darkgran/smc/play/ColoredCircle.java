@@ -1,6 +1,5 @@
 package com.darkgran.smc.play;
 
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -31,7 +30,7 @@ public class ColoredCircle extends CircleActor {
         double speedY = speed * sin(direction);
         Vector2 speed = new Vector2((float) speedX, (float) speedY);
         getCircleBody().getBody().setLinearVelocity(speed);
-        this.travelLine = new TravelLine(x, y, speed);
+        this.travelLine = new TravelLine(x, y, radius, speed);
     }
 
     public void interact(ColoredCircle circle, InteractionType interactionType) {
@@ -144,7 +143,7 @@ public class ColoredCircle extends CircleActor {
         }
         //Misc
         refreshActorBounds();
-        travelLine.update(body.getPosition().x, body.getPosition().y, body.getLinearVelocity());
+        travelLine.update(body.getPosition().x, body.getPosition().y, getRadius(), body.getLinearVelocity());
     }
 
     private void updateSpeedLimit() {
