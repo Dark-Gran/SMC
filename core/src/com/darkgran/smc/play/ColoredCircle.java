@@ -185,6 +185,10 @@ public class ColoredCircle extends CircleActor {
         if (travelRayCallback.getPoints().size() > 0) {
             Vector2 TRPoints = travelRayCallback.getPoints().get(travelRayCallback.getPoints().size() - 1);
             shapeRenderer.line(getCircleBody().getBody().getPosition().x, getCircleBody().getBody().getPosition().y, TRPoints.x, TRPoints.y);
+            if (travelRayCallback.getNormals().size() > 0) {
+                Vector2 TRNormals = travelRayCallback.getNormals().get(travelRayCallback.getNormals().size() - 1);
+                shapeRenderer.line(TRPoints.x, TRPoints.y, TRNormals.x, TRNormals.y);
+            }
         }
 
         /*float x = getCircleBody().getBody().getPosition().x;
