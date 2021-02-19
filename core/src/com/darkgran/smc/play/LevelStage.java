@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.SaveMeCircles;
 import com.darkgran.smc.WorldScreen;
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -159,10 +161,6 @@ public class LevelStage extends Stage {
                 System.out.println("Level-Loading Error!");
             }
         }
-    }
-
-    public void freshCircle(CircleInfo circleInfo, boolean additive) {
-        circlesToAdd.put(circleInfo, additive);
     }
 
     public void addCircle(CircleInfo circleInfo, boolean additive) {
@@ -394,6 +392,10 @@ public class LevelStage extends Stage {
             }
             circlesToAdd.clear();
         }
+    }
+
+    public void freshCircle(CircleInfo circleInfo, boolean additive) {
+        circlesToAdd.put(circleInfo, additive);
     }
 
     public void removeGhost() {

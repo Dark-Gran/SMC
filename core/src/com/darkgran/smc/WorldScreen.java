@@ -29,7 +29,7 @@ import static com.darkgran.smc.play.LevelStage.LEVEL_LIBRARY;
 public class WorldScreen implements Screen {
     public final static double DEGREES_TO_RADIANS = Math.PI/180;
     //WorldSettings
-    float FPS = 60.0f;
+    float FPS = 40.0f;
     float STEP_TIME = 1f / FPS;
     final int VELOCITY_ITERATIONS = 15;
     final int POSITION_ITERATIONS = 12;

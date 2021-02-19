@@ -3,8 +3,8 @@
     "id": 0,
     "intro": "Focus Hastens Destiny.",
     "circles": [
-      { "type": "WHITE", "x": 0.1, "y": 2.4, "radius": 0.5, "angle": 0 },
-      { "type": "WHITE", "x": 9.5, "y": 2.4, "radius": 0.5, "angle": 180 }
+      { "type": "WHITE", "x": 3.1, "y": 2.4, "radius": 0.5, "angle": 0 },
+      { "type": "RED", "x": 5.5, "y": 2.4, "radius": 0.05, "angle": 180 }
     ],
     "walls": [],
     "beams": [],

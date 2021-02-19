@@ -60,9 +60,15 @@ public class ColoredCircle extends CircleActor {
             setUnbreakable(true);
             double newRadius = getRadius()/2;
             addToGrow(-(getRadius()-newRadius));
-            double newX = getCircleBody().getBody().getPosition().x + (breakPoint.x < getCircleBody().getBody().getPosition().x ? -newRadius*1.5f : newRadius*1.5f);
-            double newY = getCircleBody().getBody().getPosition().y + (breakPoint.y < getCircleBody().getBody().getPosition().y ? -newRadius*1.5f : newRadius*1.5f);
-            CircleInfo newCircle = new CircleInfo((float) newX, (float) newY, (float) (getCircleBody().getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS), newRadius, colorType);
+            double angle = atan2(breakPoint.y - getCircleBody().getBody().getPosition().y, breakPoint.x-getCircleBody().getBody().getPosition().x);
+            angle += angle > PI ? -PI : PI;
+            double speedX = speed * cos(angle);
+            double speedY = speed * sin(angle);
+            getCircleBody().getBody().setLinearVelocity((float) speedX, (float) speedY);
+            double newAngle = atan2(breakPoint.y - getCircleBody().getBody().getPosition().y, breakPoint.x-getCircleBody().getBody().getPosition().x);
+            float newX = (float) (getCircleBody().getBody().getPosition().x + newRadius * cos(newAngle));
+            float newY = (float) (getCircleBody().getBody().getPosition().y + newRadius * sin(newAngle));
+            CircleInfo newCircle = new CircleInfo(newX, newY, (float) (getCircleBody().getBody().getAngle()/WorldScreen.DEGREES_TO_RADIANS), newRadius, colorType);
             getLevelStage().freshCircle(newCircle, false);
         }
     }
@@ -100,7 +106,7 @@ public class ColoredCircle extends CircleActor {
                 growBuffer += LevelStage.RADIUS_CHANGE;
                 setRadius(getRadius()-LevelStage.RADIUS_CHANGE);
             } else {
-                setRadius(getRadius()-growBuffer);
+                setRadius(getRadius()+growBuffer);
                 growBuffer = 0;
             }
         }
