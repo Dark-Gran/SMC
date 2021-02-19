@@ -399,7 +399,7 @@ public class LevelStage extends Stage {
     }
 
     public void removeGhost() {
-        ghostCircle.setActive(false);
+        ghostCircle.setMouseFollow(false);
         ghostCircle.setGhostTimer(0);
         ghostCircle.getCircleBody().getBody().setTransform(-4, -4, 0);
     }
@@ -445,11 +445,10 @@ public class LevelStage extends Stage {
     public void drawShapes(ShapeRenderer shapeRenderer) {
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
-                //circle.drawTravelRay(shapeRenderer);
                 circle.drawShape(shapeRenderer, circle.getColorType().getColor());
             }
         }
-        if (ghostCircle.isActive()) {
+        if (ghostCircle.isMouseFollow()) {
             ghostCircle.draw(shapeRenderer);
         }
         for (Beam beam : beams) {

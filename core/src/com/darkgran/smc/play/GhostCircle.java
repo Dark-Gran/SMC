@@ -26,10 +26,10 @@ public class GhostCircle extends CircleSensor {
         if (lock.isEnabled()) {
             lock.update();
         } else if (buttonDown && allowed) {
-            setActive(true);
+            setMouseFollow(true);
             if (ghostTimer > spawnTime) {
                 if (couldBeSpawnedNow()) {
-                    setActive(false);
+                    setMouseFollow(false);
                     ghostTimer = 0;
                     getLevelStage().spawnPlayerCircle(getLevelStage().getWorldScreen().getMouseInWorld2D().x, getLevelStage().getWorldScreen().getMouseInWorld2D().y);
                 }
@@ -37,7 +37,7 @@ public class GhostCircle extends CircleSensor {
                 ghostTimer++;
             }
         } else {
-            setActive(false);
+            setMouseFollow(false);
         }
     }
 

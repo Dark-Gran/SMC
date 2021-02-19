@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class CircleSensor {
     private final LevelStage levelStage;
-    private boolean active = false;
+    private boolean mouseFollow = false;
     private final float size;
     private final CircleBody circleBody;
 
@@ -16,17 +16,17 @@ public class CircleSensor {
     }
 
     public void updateBody() {
-        if (active) {
+        if (mouseFollow) {
             circleBody.getBody().setTransform(levelStage.getWorldScreen().getMouseInWorld2D().x, levelStage.getWorldScreen().getMouseInWorld2D().y, 0);
         }
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setMouseFollow(boolean active) {
+        this.mouseFollow = active;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isMouseFollow() {
+        return mouseFollow;
     }
 
     public LevelStage getLevelStage() {
