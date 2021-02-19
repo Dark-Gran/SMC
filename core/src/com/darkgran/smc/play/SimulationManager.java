@@ -169,6 +169,8 @@ public class SimulationManager {
         md.mass = body.getMassData().mass;
         newBody.setMassData(md);
 
+        newBody.getFixtureList().get(0).setSensor(body.getFixtureList().get(0).isSensor());
+
         newBody.setFixedRotation(body.isFixedRotation());
         newBody.setGravityScale(body.getGravityScale());
         newBody.setLinearDamping(body.getLinearDamping());
