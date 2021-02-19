@@ -3,10 +3,10 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.graphics.Color;
 
 public enum ColorType {
-    WHITE(Color.WHITE, 0.04f, 0.05),
-    BLUE(Color.BLUE, 0.04f, 0.05),
-    GREEN(Color.GREEN, 0.06f, 0.05),
-    RED(Color.RED, 0.08f, 0.05);
+    WHITE(Color.WHITE, 0.04f, 0.15),
+    BLUE(Color.BLUE, 0.04f, 0.15),
+    GREEN(Color.GREEN, 0.06f, 0.15),
+    RED(Color.RED, 0.08f, 0.15);
 
     private final Color color;
     private final float speed;
