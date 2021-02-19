@@ -35,7 +35,7 @@ public class SimulationManager {
                     ColoredCircle circle = (ColoredCircle) body.getUserData();
                     applyCircleUpdate(circle, body);
                     if (i % 10 == 0 && !circle.isFreshShard() && !circle.isMergingAway() && !circle.isGone()) {
-                        shapeRenderer.setColor(Color.GOLD);
+                        shapeRenderer.setColor(circle.getColorType().getColor().r, circle.getColorType().getColor().g, circle.getColorType().getColor().b, 0.7f);
                         shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
                     }
                 }

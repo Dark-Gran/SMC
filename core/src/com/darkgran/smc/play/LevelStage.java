@@ -537,4 +537,8 @@ public class LevelStage extends Stage {
     public GhostCircle getGhostCircle() {
         return ghostCircle;
     }
+
+    public boolean isCompleted() {
+        return completed;
+    }
 }
