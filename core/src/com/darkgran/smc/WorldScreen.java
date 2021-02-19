@@ -172,7 +172,6 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-
             //drawBox2DDebug(worldSimulation);
             //drawBox2DDebug(this.world);
 
@@ -232,10 +231,13 @@ public class WorldScreen implements Screen {
     }
 
     private void copyBody(Body body, World world) {
+        Object obj = body.getUserData();
+
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = body.getType();
-        Body newBody = worldSimulation.createBody(bodyDef);
-        newBody.setUserData(body.getUserData());
+        bodyDef.type = obj instanceof GhostCircle ? BodyDef.BodyType.StaticBody : body.getType();
+
+        Body newBody = world.createBody(bodyDef);
+        newBody.setUserData(obj);
         newBody.setTransform(body.getPosition(), body.getAngle());
         newBody.setLinearVelocity(body.getLinearVelocity());
 

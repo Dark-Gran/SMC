@@ -400,6 +400,7 @@ public class LevelStage extends Stage {
     public void removeGhost() {
         ghostCircle.setActive(false);
         ghostCircle.setGhostTimer(0);
+        ghostCircle.getCircleBody().getBody().setTransform(-4, -4, 0);
     }
 
     private void distributedSizeChange(ColoredCircle chosenCircle) { //in-future: rework (see debugCR())
