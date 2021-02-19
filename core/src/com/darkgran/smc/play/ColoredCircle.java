@@ -138,8 +138,9 @@ public class ColoredCircle extends CircleActor {
             }
             body.setTransform((float) newX, (float) newY, body.getAngle());
         }
-        //Misc
+        //Actor
         refreshActorBounds();
+        //RayCast
         /*Vector2 startPos = getCircleBody().getBody().getPosition();
         Vector2 startVel = getCircleBody().getBody().getLinearVelocity();
         Vector2 lastTP = startPos;
