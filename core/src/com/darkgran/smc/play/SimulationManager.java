@@ -65,8 +65,8 @@ public class SimulationManager {
         }
     }
 
-    private double applyBodyRadius(Body body, double radius, boolean mergingAway, boolean freshShard) {
-        if (radius < LevelStage.MIN_RADIUS && !mergingAway && !freshShard) { radius = LevelStage.MIN_RADIUS; }
+    private double applyBodyRadius(Body body, double radius, boolean mergingAway, boolean freshShard, ColorType colorType) {
+        if (radius < colorType.getMinRadius() && !mergingAway && !freshShard) { radius = colorType.getMinRadius(); }
         else if (radius < LevelStage.ACTUAL_MIN_RADIUS) { radius = LevelStage.ACTUAL_MIN_RADIUS; }
         if (body.getFixtureList().size > 0) {
             Shape shape = body.getFixtureList().get(0).getShape();
@@ -90,33 +90,33 @@ public class SimulationManager {
                 gB -= LevelStage.RADIUS_CHANGE;
             } else if (circle.getRadius()-LevelStage.RADIUS_CHANGE >= LevelStage.ACTUAL_MIN_RADIUS) {
                 gB = 0;
-                radius = applyBodyRadius(body, circle.getRadius()-LevelStage.RADIUS_CHANGE, mA, fS);
+                radius = applyBodyRadius(body, circle.getRadius()-LevelStage.RADIUS_CHANGE, mA, fS, circle.getColorType());
             } else {
                 g = true;
             }
         } else if (gB > 0) {
             if (gB > LevelStage.RADIUS_CHANGE) {
                 gB -= LevelStage.RADIUS_CHANGE;
-                radius = applyBodyRadius(body, circle.getRadius()+LevelStage.RADIUS_CHANGE, mA, fS);
+                radius = applyBodyRadius(body, circle.getRadius()+LevelStage.RADIUS_CHANGE, mA, fS, circle.getColorType());
             } else {
-                radius = applyBodyRadius(body, circle.getRadius()+gB, mA, fS);
+                radius = applyBodyRadius(body, circle.getRadius()+gB, mA, fS, circle.getColorType());
                 gB = 0;
                 fS = false;
             }
         } else if (gB < 0) {
             if (Math.abs(gB) > LevelStage.RADIUS_CHANGE) {
                 gB += LevelStage.RADIUS_CHANGE;
-                radius = applyBodyRadius(body, circle.getRadius()-LevelStage.RADIUS_CHANGE, mA, fS);
+                radius = applyBodyRadius(body, circle.getRadius()-LevelStage.RADIUS_CHANGE, mA, fS, circle.getColorType());
             } else {
-                radius = applyBodyRadius(body, circle.getRadius()+gB, mA, fS);
+                radius = applyBodyRadius(body, circle.getRadius()+gB, mA, fS, circle.getColorType());
                 gB = 0;
             }
         }
-        if (radius >= LevelStage.MIN_RADIUS) {
+        if (radius >= circle.getColorType().getMinRadius()) {
             fS = false;
         }
         //Speed
-        float speed = ColoredCircle.getSpeedLimit(circle.getColorType().getSpeed(), radius, fS, gB);
+        float speed = ColoredCircle.getSpeedLimit(circle.getColorType().getSpeed(), radius, fS, gB, circle.getColorType());
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
             float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);

@@ -21,7 +21,7 @@ public class ColoredCircle extends CircleActor {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
         this.colorType = colorType;
         this.direction = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
-        speed = getSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
+        speed = getSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer, colorType);
         double speedX = speed * cos(direction);
         double speedY = speed * sin(direction);
         getCircleBody().getBody().setLinearVelocity((float) speedX, (float) speedY);
@@ -71,7 +71,7 @@ public class ColoredCircle extends CircleActor {
     }
 
     public boolean canSplit() {
-        return !interactionLock.isEnabled() && getRadius() >= LevelStage.MIN_RADIUS*2;
+        return !interactionLock.isEnabled() && getRadius() >= colorType.getMinRadius()*2;
     }
 
     public void update() {
@@ -107,7 +107,7 @@ public class ColoredCircle extends CircleActor {
                 growBuffer = 0;
             }
         }
-        if (getRadius() >= LevelStage.MIN_RADIUS) {
+        if (getRadius() >= colorType.getMinRadius()) {
             freshShard = false;
         }
         //Constant Speed
@@ -139,8 +139,8 @@ public class ColoredCircle extends CircleActor {
         refreshActorBounds();
     }
 
-    public static float getSpeedLimit(float baseSpeed, double radius, boolean bufferToo, double buffer) {
-        float newSpeed = baseSpeed / (float) (bufferToo ? radius+buffer : (Math.max(radius, LevelStage.MIN_RADIUS)));
+    public static float getSpeedLimit(float baseSpeed, double radius, boolean bufferToo, double buffer, ColorType colorType) {
+        float newSpeed = baseSpeed / (float) (bufferToo ? radius+buffer : (Math.max(radius, colorType.getMinRadius())));
         if (newSpeed < 0) { newSpeed = 0; }
         return newSpeed;
     }
@@ -152,7 +152,7 @@ public class ColoredCircle extends CircleActor {
 
     @Override
     public void setRadius(double radius) {
-        if (radius < LevelStage.MIN_RADIUS && !mergingAway && !freshShard) { radius = LevelStage.MIN_RADIUS; }
+        if (radius < colorType.getMinRadius() && !mergingAway && !freshShard) { radius = colorType.getMinRadius(); }
         else if (radius < LevelStage.ACTUAL_MIN_RADIUS) { radius = LevelStage.ACTUAL_MIN_RADIUS; }
         super.setRadius(radius);
         if (getCircleBody().getBody().getFixtureList().size > 0) {
@@ -163,7 +163,7 @@ public class ColoredCircle extends CircleActor {
         md.mass = 0.1f*(float) radius;
         getCircleBody().getBody().setMassData(md);
         refreshActorBounds();
-        speed = getSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
+        speed = getSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer, colorType);
     }
 
     public void addToGrow(double grow) {

@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LevelStage extends Stage {
-    public static final double MIN_RADIUS = 0.05; //for "not merging away" circles
     public static final double COMFORT_RADIUS = 0.1;
     public static final double ACTUAL_MIN_RADIUS = 0.001;
     public static final double RADIUS_CHANGE = 0.01;
@@ -84,19 +83,19 @@ public class LevelStage extends Stage {
                     switch (circleInfo.getType()) {
                         case WHITE:
                             whites.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.WHITE));
-                            whitePower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
+                            whitePower += Math.max(circleInfo.getRadius(), ColorType.WHITE.getMinRadius());
                             break;
                         case BLUE:
                             blues.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.BLUE));
-                            bluePower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
+                            bluePower += Math.max(circleInfo.getRadius(), ColorType.BLUE.getMinRadius());
                             break;
                         case GREEN:
                             greens.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.GREEN));
-                            greenPower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
+                            greenPower += Math.max(circleInfo.getRadius(), ColorType.GREEN.getMinRadius());
                             break;
                         case RED:
                             reds.add(new ColoredCircle(this, circleInfo.getX(), circleInfo.getY(), circleInfo.getRadius(), circleInfo.getAngle(), ColorType.RED));
-                            redPower += Math.max(circleInfo.getRadius(), LevelStage.MIN_RADIUS);
+                            redPower += Math.max(circleInfo.getRadius(), ColorType.RED.getMinRadius());
                             break;
                     }
                 }
@@ -408,14 +407,14 @@ public class LevelStage extends Stage {
         if (circles.get(chosenCircle.getColorType()) != null) {
             ArrayList<ColoredCircle> coloredCircles = circles.get(chosenCircle.getColorType());
             if (coloredCircles.size() > 1) {
-                double maxRadius = getCR(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * MIN_RADIUS;
+                double maxRadius = getCR(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * chosenCircle.getColorType().getMinRadius();
                 if (chosenCircle.getRadius() + RADIUS_CHANGE <= maxRadius) {
                     ArrayList<ColoredCircle> eligibles = new ArrayList<>();
                     double changeSpace = 0f;
                     for (ColoredCircle circle : coloredCircles) {
-                        if (circle != chosenCircle && circle.getColorType() == chosenCircle.getColorType() && circle.getRadius() - MIN_RADIUS_CHANGE >= LevelStage.MIN_RADIUS) {
+                        if (circle != chosenCircle && circle.getColorType() == chosenCircle.getColorType() && circle.getRadius() - MIN_RADIUS_CHANGE >= chosenCircle.getColorType().getMinRadius()) {
                             eligibles.add(circle);
-                            changeSpace += circle.getRadius() - LevelStage.MIN_RADIUS;
+                            changeSpace += circle.getRadius() - chosenCircle.getColorType().getMinRadius();
                         }
                     }
                     if (changeSpace >= RADIUS_CHANGE && eligibles.size() > 0) {
@@ -423,11 +422,11 @@ public class LevelStage extends Stage {
                         double spareChange = 0f;
                         for (int i = 0; i < eligibles.size(); i++) {
                             ColoredCircle circle = eligibles.get(i);
-                            if (circle.getRadius() - changeDown >= LevelStage.MIN_RADIUS) {
+                            if (circle.getRadius() - changeDown >= chosenCircle.getColorType().getMinRadius()) {
                                 circle.setRadius(circle.getRadius() - changeDown);
                             } else {
-                                spareChange = changeDown - (circle.getRadius() - LevelStage.MIN_RADIUS);
-                                circle.setRadius(LevelStage.MIN_RADIUS);
+                                spareChange = changeDown - (circle.getRadius() - chosenCircle.getColorType().getMinRadius());
+                                circle.setRadius(chosenCircle.getColorType().getMinRadius());
                             }
                             if (spareChange > 0) {
                                 changeDown += spareChange / (eligibles.size() - i + 1);
