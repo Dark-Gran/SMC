@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -168,7 +170,7 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            simulateWorld();
+            drawSimulation(shapeRenderer);
             drawBox2DDebug(worldSimulation);
             //drawBox2DDebug(this.world);
 
@@ -181,16 +183,35 @@ public class WorldScreen implements Screen {
         }
     }
 
-    public void simulateWorld() {
+    private void drawSimulation(ShapeRenderer shapeRenderer) {
+        resetSimulation();
+        Array<Body> bodies;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (int i = 0; i <= 100; i++) {
+            worldSimulation.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+            if (i % 10 == 0) {
+                bodies = new Array<>();
+                worldSimulation.getBodies(bodies);
+                for (Body body : bodies) {
+                    if (body.getUserData() instanceof ColoredCircle) {
+                        shapeRenderer.setColor(Color.GOLD);
+                        shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
+                    }
+                }
+
+            }
+        }
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.end();
+    }
+
+    private void resetSimulation() {
         worldSimulation = new World(new Vector2(0, 0), false);;
         worldSimulation.setContactListener(collisionListener);
         Array<Body> bodies = new Array<>();
         world.getBodies(bodies);
         for (Body body : bodies) {
             copyBody(body, worldSimulation);
-        }
-        for (int i = 0; i <= 100; i++) {
-            worldSimulation.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
         }
     }
 
