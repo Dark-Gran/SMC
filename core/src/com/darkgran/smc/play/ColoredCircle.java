@@ -21,7 +21,7 @@ public class ColoredCircle extends CircleActor {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
         this.colorType = colorType;
         this.direction = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
-        speed = updateSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
+        speed = getSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
         double speedX = speed * cos(direction);
         double speedY = speed * sin(direction);
         getCircleBody().getBody().setLinearVelocity((float) speedX, (float) speedY);
@@ -139,7 +139,7 @@ public class ColoredCircle extends CircleActor {
         refreshActorBounds();
     }
 
-    public static float updateSpeedLimit(float baseSpeed, double radius, boolean bufferToo, double buffer) {
+    public static float getSpeedLimit(float baseSpeed, double radius, boolean bufferToo, double buffer) {
         float newSpeed = baseSpeed / (float) (bufferToo ? radius+buffer : (Math.max(radius, LevelStage.MIN_RADIUS)));
         if (newSpeed < 0) { newSpeed = 0; }
         return newSpeed;
@@ -163,7 +163,7 @@ public class ColoredCircle extends CircleActor {
         md.mass = 0.1f*(float) radius;
         getCircleBody().getBody().setMassData(md);
         refreshActorBounds();
-        speed = updateSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
+        speed = getSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
     }
 
     public void addToGrow(double grow) {
