@@ -1,5 +1,6 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -145,6 +146,10 @@ public class ColoredCircle extends CircleActor {
     private void updateSpeedLimit() {
         speed = colorType.getSpeed() / (float) (freshShard ? getRadius()+growBuffer : (Math.max(getRadius(), LevelStage.MIN_RADIUS)));
         if (speed < 0) { speed = 0; }
+    }
+
+    public void drawTravelRay(ShapeRenderer shapeRenderer) {
+        //TODO
     }
 
     @Override
