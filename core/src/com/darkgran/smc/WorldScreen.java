@@ -29,10 +29,10 @@ import static com.darkgran.smc.play.LevelStage.LEVEL_LIBRARY;
 public class WorldScreen implements Screen {
     public final static double DEGREES_TO_RADIANS = Math.PI/180;
     //WorldSettings
-    float FPS = 60.0f;
-    float STEP_TIME = 1f / FPS;
+    private float FPS = 60.0f;
     final int VELOCITY_ITERATIONS = 15;
     final int POSITION_ITERATIONS = 12;
+    public float STEP_TIME = 1f / FPS;
     public static final float WORLD_WIDTH = 9.6f;
     public static final float WORLD_HEIGHT = 4.8f;
     public static final float PPM = 200;
@@ -284,5 +284,9 @@ public class WorldScreen implements Screen {
 
     public Vector2 getMouseInWorld2D() {
         return mouseInWorld2D;
+    }
+
+    public float getSTEP_TIME() {
+        return STEP_TIME;
     }
 }

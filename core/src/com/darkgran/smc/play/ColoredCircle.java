@@ -1,11 +1,9 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.MassData;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.darkgran.smc.WorldScreen;
 
 import static java.lang.Math.*;
@@ -20,6 +18,7 @@ public class ColoredCircle extends CircleActor {
     private boolean freshShard = false;
     private SimpleCounter interactionLock = new SimpleCounter(false, 30, 0);
     private SimpleCounter breakLock = new SimpleCounter(false, 60, 0);
+    private final TravelRayCallback travelRayCallback = new TravelRayCallback();
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, double radius, float degrees, ColorType colorType) {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
@@ -139,17 +138,19 @@ public class ColoredCircle extends CircleActor {
             }
             body.setTransform((float) newX, (float) newY, body.getAngle());
         }
-        //Actor position
+        //Misc
         refreshActorBounds();
+        Vector2 startPos = getCircleBody().getBody().getPosition();
+        Vector2 startVel = getCircleBody().getBody().getLinearVelocity();
+        Vector2 lastTP = startPos;
+        Vector2 travelPos = getTravelPoint(startPos, getCircleBody().getBody().getLinearVelocity(), 180);
+        travelRayCallback.getPoints().clear();
+        getLevelStage().getWorldScreen().getWorld().rayCast(travelRayCallback, lastTP, travelPos);
     }
 
     private void updateSpeedLimit() {
         speed = colorType.getSpeed() / (float) (freshShard ? getRadius()+growBuffer : (Math.max(getRadius(), LevelStage.MIN_RADIUS)));
         if (speed < 0) { speed = 0; }
-    }
-
-    public void drawTravelRay(ShapeRenderer shapeRenderer) {
-        //TODO
     }
 
     @Override
@@ -175,6 +176,36 @@ public class ColoredCircle extends CircleActor {
 
     public void addToGrow(double grow) {
         growBuffer += grow;
+    }
+
+    public void drawTravelRay(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.GOLD);
+
+        if (travelRayCallback.getPoints().size() > 0) {
+            Vector2 TRPoints = travelRayCallback.getPoints().get(travelRayCallback.getPoints().size() - 1);
+            shapeRenderer.line(getCircleBody().getBody().getPosition().x, getCircleBody().getBody().getPosition().y, TRPoints.x, TRPoints.y);
+        }
+
+        /*float x = getCircleBody().getBody().getPosition().x;
+        float y = getCircleBody().getBody().getPosition().y;
+        for (int i = 0; i < 180; i++) {
+            if (i > 0) {
+
+            }
+            shapeRenderer.line(x, y, travelPos.x, travelPos.y);
+            x = travelPos.x;
+            y = travelPos.y;
+        }*/
+
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.end();
+    }
+
+    private Vector2 getTravelPoint(Vector2 startPos, Vector2 startVel, float step) {
+        float t = getLevelStage().getWorldScreen().getSTEP_TIME();
+        Vector2 stepVel = new Vector2(startVel.x * t, startVel.y * t);
+        return new Vector2(startPos.x + step * stepVel.x, startPos.y + step * stepVel.y);
     }
 
     public boolean isLockedFromInteractions() {
