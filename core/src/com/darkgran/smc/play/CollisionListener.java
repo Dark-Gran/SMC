@@ -46,8 +46,10 @@ public class CollisionListener implements ContactListener {
                     contact.setRestitution(0f);
                 }
             }
+            if (other instanceof SimSensor) {
+                contact.setEnabled(false);
+            }
             if (circleA != null && circleB != null) {
-
                 InteractionType interactionType = getInteractionType(circleA, circleB);
                 CollisionType collisionType = getCollisionType(circleA.getColorType(), circleB.getColorType(), interactionType);
                 switch (collisionType) {

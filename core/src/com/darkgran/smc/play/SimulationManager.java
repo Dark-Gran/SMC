@@ -11,20 +11,32 @@ import com.darkgran.smc.WorldScreen;
 import static java.lang.Math.*;
 
 public class SimulationManager {
+    private final SimSensor simSensor;
     private final int VELOCITY_ITERATIONS;
     private final int POSITION_ITERATIONS;
     private final float STEP_TIME;
     private World worldSimulation;
 
-    public SimulationManager(World worldSimulation, int VELOCITY_ITERATIONS, int POSITION_ITERATIONS, float STEP_TIME) {
+    public SimulationManager(World worldSimulation, SimSensor simSensor, int VELOCITY_ITERATIONS, int POSITION_ITERATIONS, float STEP_TIME) {
+        this.simSensor = simSensor;
         this.worldSimulation = worldSimulation;
         this.VELOCITY_ITERATIONS = VELOCITY_ITERATIONS;
         this.POSITION_ITERATIONS = POSITION_ITERATIONS;
         this.STEP_TIME = STEP_TIME;
     }
 
+    public void resetSensor() {
+        simSensor.getCircleBody().getBody().setTransform(-10, -10, 0);
+    }
+
+    private void updateSensor() {
+        simSensor.setMouseFollow(true);
+        simSensor.updateBody();
+    }
+
     public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
+        updateSensor();
         Array<Body> bodies;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i <= 180; i++) {
