@@ -72,13 +72,13 @@ public class LevelStage extends Stage {
             if (levelInfo != null) {
                 //Circles
                 ArrayList<ColoredCircle> whites = new ArrayList<>();
-                double whitePower = 0f;
+                double whitePower = 0;
                 ArrayList<ColoredCircle> blues = new ArrayList<>();
-                double bluePower = 0f;
+                double bluePower = 0;
                 ArrayList<ColoredCircle> greens = new ArrayList<>();
-                double greenPower = 0f;
+                double greenPower = 0;
                 ArrayList<ColoredCircle> reds = new ArrayList<>();
-                double redPower = 0f;
+                double redPower = 0;
                 for (CircleInfo circleInfo : levelInfo.getCircles()) {
                     switch (circleInfo.getType()) {
                         case WHITE:
@@ -99,19 +99,19 @@ public class LevelStage extends Stage {
                             break;
                     }
                 }
-                if (whitePower > 0f && whites.size() > 0) {
+                if (whitePower > 0 && whites.size() > 0) {
                     circles.put(ColorType.WHITE, whites);
                     colorPowers.put(ColorType.WHITE, whitePower);
                 }
-                if (bluePower > 0f && blues.size() > 0) {
+                if (bluePower > 0 && blues.size() > 0) {
                     circles.put(ColorType.BLUE, blues);
                     colorPowers.put(ColorType.BLUE, bluePower);
                 }
-                if (greenPower > 0f && greens.size() > 0) {
+                if (greenPower > 0 && greens.size() > 0) {
                     circles.put(ColorType.GREEN, greens);
                     colorPowers.put(ColorType.GREEN, greenPower);
                 }
-                if (redPower > 0f && reds.size() > 0) {
+                if (redPower > 0 && reds.size() > 0) {
                     circles.put(ColorType.RED, reds);
                     colorPowers.put(ColorType.RED, redPower);
                 }
@@ -316,10 +316,10 @@ public class LevelStage extends Stage {
     }
 
     private double getCR(ColorType colorType) { //in-future fix the changes in color power (ie. debug distributedSizeChange() + grow section in update())
-        double whitePower = 0f;
-        double bluePower = 0f;
-        double greenPower = 0f;
-        double redPower = 0f;
+        double whitePower = 0;
+        double bluePower = 0;
+        double greenPower = 0;
+        double redPower = 0;
         for (Map.Entry<ColorType, ArrayList<ColoredCircle>> entry : circles.entrySet()) {
             for (ColoredCircle circle : entry.getValue()) {
                 switch (circle.getColorType()) {

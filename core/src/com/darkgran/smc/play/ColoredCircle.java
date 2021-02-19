@@ -13,7 +13,7 @@ public class ColoredCircle extends CircleActor {
     private ColorType colorType;
     private float direction;
     private float speed;
-    private double growBuffer = 0f;
+    private double growBuffer = 0;
     private boolean mergingAway = false;
     private boolean gone = false;
     private boolean freshShard = false;
@@ -78,36 +78,36 @@ public class ColoredCircle extends CircleActor {
         breakLock.update();
         //Size Change
         if (mergingAway) {
-            if (growBuffer > 0f) {
+            if (growBuffer > 0) {
                 growBuffer -= LevelStage.RADIUS_CHANGE;
             } else if (getRadius()-LevelStage.RADIUS_CHANGE >= LevelStage.ACTUAL_MIN_RADIUS) {
-                growBuffer = 0f;
+                growBuffer = 0;
                 setRadius(getRadius()-LevelStage.RADIUS_CHANGE);
             } else {
                 gone = true;
             }
-        //TODO DEBUG
-        } else if (growBuffer > 0f) {
+        } else if (growBuffer > 0) {
             if (growBuffer > LevelStage.RADIUS_CHANGE) {
                 growBuffer -= LevelStage.RADIUS_CHANGE;
                 setRadius(getRadius()+LevelStage.RADIUS_CHANGE);
             } else {
                 setRadius(getRadius()+growBuffer);
-                growBuffer = 0f;
+                growBuffer = 0;
                 freshShard = false;
             }
-        } else if (growBuffer < 0f) {
+        } else if (growBuffer < 0) {
             if (Math.abs(growBuffer) > LevelStage.RADIUS_CHANGE) {
                 growBuffer += LevelStage.RADIUS_CHANGE;
                 setRadius(getRadius()-LevelStage.RADIUS_CHANGE);
             } else {
                 setRadius(getRadius()-growBuffer);
-                growBuffer = 0f;
+                growBuffer = 0;
             }
         }
         if (getRadius() >= LevelStage.MIN_RADIUS) {
             freshShard = false;
         }
+        System.out.println("ehm: "+getRadius());
         //Speed Cap
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
