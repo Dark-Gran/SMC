@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.darkgran.smc.play.*;
@@ -28,7 +27,6 @@ import com.darkgran.smc.play.*;
 import java.util.ArrayList;
 
 import static com.darkgran.smc.play.LevelStage.LEVEL_LIBRARY;
-import static java.lang.Math.*;
 
 public class WorldScreen implements Screen {
     public final static double DEGREES_TO_RADIANS = Math.PI/180;
@@ -51,6 +49,7 @@ public class WorldScreen implements Screen {
     private final Viewport viewport;
     private World world;
     private World worldSimulation;
+    private SimulationManager simulationManager;
     private float worldTimer = 0;
     private LevelStage levelStage;
     private Stage UIStage;
@@ -122,6 +121,8 @@ public class WorldScreen implements Screen {
         world.setContactListener(collisionListener);
         levelStage.loadLevel(currentLevelID);
         Gdx.input.setCursorCatched(false);
+        worldSimulation = new World(new Vector2(0, 0), false);
+        simulationManager = new SimulationManager(worldSimulation, VELOCITY_ITERATIONS, POSITION_ITERATIONS, STEP_TIME);
     }
 
     private void setupUIStage() {
@@ -154,7 +155,7 @@ public class WorldScreen implements Screen {
             camera.update();
 
             shapeRenderer.setProjectionMatrix(camera.combined);
-            drawSimulation(shapeRenderer);
+            simulationManager.drawSimulation(shapeRenderer, collisionListener, world);
             levelStage.drawShapes(shapeRenderer);
 
             smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
@@ -172,7 +173,7 @@ public class WorldScreen implements Screen {
             levelStage.draw();
             levelStage.getGhostCircle().updateBody();
 
-            drawBox2DDebug(worldSimulation);
+            if (worldSimulation != null) { drawBox2DDebug(worldSimulation); }
             drawBox2DDebug(this.world);
 
             levelStage.tickTock();
@@ -182,80 +183,6 @@ public class WorldScreen implements Screen {
             reload = false;
             levelStage.switchLevel(currentLevelID);
         }
-    }
-
-    private void drawSimulation(ShapeRenderer shapeRenderer) {
-        resetSimulation();
-        Array<Body> bodies;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i <= 180; i++) {
-            bodies = new Array<>();
-            worldSimulation.getBodies(bodies);
-            for (Body body : bodies) {
-                if (body.getUserData() instanceof ColoredCircle) {
-                    ColoredCircle circle = (ColoredCircle) body.getUserData();
-                    applyCircleSpeeder(circle, body);
-                    if (i % 10 == 0 && !circle.isMergingAway() && !circle.isGone()) {
-                        shapeRenderer.setColor(Color.GOLD);
-                        shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
-                    }
-                }
-            }
-            worldSimulation.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
-        }
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.end();
-    }
-
-    private void resetSimulation() {
-        if (worldSimulation != null) { worldSimulation.dispose(); }
-        worldSimulation = new World(new Vector2(0, 0), false);;
-        worldSimulation.setContactListener(collisionListener);
-        Array<Body> bodies = new Array<>();
-        world.getBodies(bodies);
-        for (Body body : bodies) {
-            copyBody(body, worldSimulation);
-        }
-    }
-
-    private void applyCircleSpeeder(ColoredCircle circle, Body body) {
-        float speed = ColoredCircle.getSpeedLimit(circle.getColorType().getSpeed(), circle.getRadius(), circle.isFreshShard(), circle.getGrowBuffer());
-        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
-        if ((float) currentSpeed != speed) {
-            float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
-            if (currentSpeed == 0) { angle += angle > PI ? -PI : PI; }
-            double speedX = speed * cos(angle);
-            double speedY = speed * sin(angle);
-            body.setLinearVelocity((float) speedX, (float) speedY);
-        }
-    }
-
-    private void copyBody(Body body, World world) {
-        Object obj = body.getUserData();
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = obj instanceof GhostCircle ? BodyDef.BodyType.StaticBody : body.getType();
-
-        Body newBody = world.createBody(bodyDef);
-        newBody.setUserData(obj);
-        newBody.setTransform(body.getPosition(), body.getAngle());
-        newBody.setLinearVelocity(body.getLinearVelocity());
-
-        Fixture fixture = body.getFixtureList().get(0);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = fixture.getShape();
-        fixtureDef.density = fixture.getDensity();
-        fixtureDef.restitution = fixture.getRestitution();
-        fixtureDef.friction = fixture.getFriction();
-
-        newBody.setMassData(body.getMassData());
-
-        newBody.createFixture(fixtureDef);
-
-        newBody.setFixedRotation(body.isFixedRotation());
-        newBody.setGravityScale(body.getGravityScale());
-        newBody.setLinearDamping(body.getLinearDamping());
-        newBody.setAngularDamping(body.getAngularDamping());
     }
 
     public void timeWorld(float delta) {
