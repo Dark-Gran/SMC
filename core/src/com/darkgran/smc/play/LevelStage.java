@@ -437,7 +437,7 @@ public class LevelStage extends Stage {
             ArrayList<ColoredCircle> coloredCircles = circles.get(chosenCircle.getColorType());
             if (coloredCircles.size() > 1) {
                 double maxRadius = getCR(chosenCircle.getColorType()) - (coloredCircles.size() - 1) * chosenCircle.getColorType().getMinRadius();
-                if (chosenCircle.getRadius() + RADIUS_CHANGE <= maxRadius && chosenCircle.hasSpaceForGrow(RADIUS_CHANGE)) {
+                if (chosenCircle.getRadius() + RADIUS_CHANGE <= maxRadius) {
                     ArrayList<ColoredCircle> eligibles = new ArrayList<>();
                     double changeSpace = 0f;
                     for (ColoredCircle circle : coloredCircles) {
