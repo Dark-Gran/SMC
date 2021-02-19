@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.darkgran.smc.WorldScreen;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.*;
 
 public class ColoredCircle extends CircleActor {
@@ -139,6 +141,33 @@ public class ColoredCircle extends CircleActor {
         refreshActorBounds();
     }
 
+    public boolean hasSpaceForGrow(double grow) {
+        ArrayList<WorldManifold> manifolds = new ArrayList<>();
+        for (Contact contact : getLevelStage().getWorldScreen().getWorld().getContactList()) {
+            if (contact.getFixtureA().getBody() == getCircleBody().getBody() || contact.getFixtureB().getBody() == getCircleBody().getBody()) {
+                manifolds.add(contact.getWorldManifold());
+            }
+        }
+        for (WorldManifold manifoldA : manifolds) {
+            if (manifoldA.getPoints().length > 0) {
+                Vector2 start = manifoldA.getPoints()[0];
+                for (WorldManifold manifoldB : manifolds) {
+                    if (manifoldA != manifoldB && manifoldB.getPoints().length > 0) {
+                        Vector2 end = manifoldB.getPoints()[0];
+                        if (pointIsOnLine(start, end, getCircleBody().getBody().getPosition())) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean pointIsOnLine(Vector2 start, Vector2 end, Vector2 point) {
+        return start.dst(point) + end.dst(point) == start.dst(end);
+    }
+
     public static float getSpeedLimit(float baseSpeed, double radius, boolean bufferToo, double buffer, ColorType colorType) {
         float newSpeed = baseSpeed / (float) (bufferToo ? radius+buffer : (Math.max(radius, colorType.getMinRadius())));
         if (newSpeed < 0) { newSpeed = 0; }
@@ -168,12 +197,6 @@ public class ColoredCircle extends CircleActor {
 
     public void addToGrow(double grow) {
         growBuffer += grow;
-    }
-
-    private Vector2 getTravelPoint(Vector2 startPos, Vector2 startVel, float step) {
-        float t = getLevelStage().getWorldScreen().getSTEP_TIME();
-        Vector2 stepVel = new Vector2(startVel.x * t, startVel.y * t);
-        return new Vector2(startPos.x + step * stepVel.x, startPos.y + step * stepVel.y);
     }
 
     public boolean isLockedFromInteractions() {
