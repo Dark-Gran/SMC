@@ -3,12 +3,12 @@ package com.darkgran.smc.play;
 public class CircleInfo extends PositionInfo {
     private ColorType type;
 
-    private int radius;
+    private float radius;
     private float angle;
 
     public CircleInfo() { }
 
-    public CircleInfo(float x, float y, float angle, int radius, ColorType type) {
+    public CircleInfo(float x, float y, float angle, float radius, ColorType type) {
         this.type = type;
         this.radius = radius;
         this.angle = angle;
@@ -20,7 +20,7 @@ public class CircleInfo extends PositionInfo {
         return type;
     }
 
-    public int getRadius() {
+    public float getRadius() {
         return radius;
     }
 

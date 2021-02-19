@@ -9,14 +9,12 @@ public class CircleBody {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = bodyType;
 
-        float actualRadius = radius / 1000f;
-
         body = world.createBody(myBodyDef);
         body.setUserData(obj);
 
         body.setTransform(x, y, 0f);
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(actualRadius);
+        circleShape.setRadius(radius);
 
         FixtureDef boxFixtureDef = new FixtureDef();
         boxFixtureDef.shape = circleShape;
@@ -25,7 +23,7 @@ public class CircleBody {
         boxFixtureDef.restitution = 1f;
 
         MassData md = new MassData();
-        md.mass = 0.1f*actualRadius;
+        md.mass = 0.1f*radius;
         body.setMassData(md);
         //md.I = 1;
         //md.center = body.getLocalCenter();

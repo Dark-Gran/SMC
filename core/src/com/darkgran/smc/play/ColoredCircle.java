@@ -13,14 +13,14 @@ public class ColoredCircle extends CircleActor {
     private ColorType colorType;
     private float direction;
     private float speed;
-    private int growBuffer = 0;
+    private float growBuffer = 0f;
     private boolean mergingAway = false;
     private boolean gone = false;
     private boolean freshShard = false;
     private SimpleCounter interactionLock = new SimpleCounter(false, 30, 0);
     private SimpleCounter breakLock = new SimpleCounter(false, 60, 0);
 
-    public ColoredCircle(final LevelStage levelStage, float x, float y, int radius, float degrees, ColorType colorType) {
+    public ColoredCircle(final LevelStage levelStage, float x, float y, float radius, float degrees, ColorType colorType) {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
         this.colorType = colorType;
         this.direction = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
@@ -58,7 +58,7 @@ public class ColoredCircle extends CircleActor {
         if (canSplit()) {
             setLockedFromInteractions(true);
             setUnbreakable(true);
-            int newRadius = getRadius()/2;
+            float newRadius = getRadius()/2;
             addToGrow(-(getRadius()-newRadius));
             float newX = getCircleBody().getBody().getPosition().x + (breakPoint.x < getCircleBody().getBody().getPosition().x ? -newRadius*1.5f : newRadius*1.5f);
             float newY = getCircleBody().getBody().getPosition().y + (breakPoint.y < getCircleBody().getBody().getPosition().y ? -newRadius*1.5f : newRadius*1.5f);
@@ -78,31 +78,31 @@ public class ColoredCircle extends CircleActor {
         breakLock.update();
         //Size Change
         if (mergingAway) {
-            if (growBuffer > 0) {
+            if (growBuffer > 0f) {
                 growBuffer -= LevelStage.RADIUS_CHANGE;
             } else if (getRadius()-LevelStage.RADIUS_CHANGE >= LevelStage.ACTUAL_MIN_RADIUS) {
-                growBuffer = 0;
+                growBuffer = 0f;
                 setRadius(getRadius()-LevelStage.RADIUS_CHANGE);
             } else {
                 gone = true;
             }
         //TODO DEBUG
-        } else if (growBuffer > 0) {
+        } else if (growBuffer > 0f) {
             if (growBuffer > LevelStage.RADIUS_CHANGE) {
                 growBuffer -= LevelStage.RADIUS_CHANGE;
                 setRadius(getRadius()+LevelStage.RADIUS_CHANGE);
             } else {
                 setRadius(getRadius()+growBuffer);
-                growBuffer = 0;
+                growBuffer = 0f;
                 freshShard = false;
             }
-        } else if (growBuffer < 0) {
+        } else if (growBuffer < 0f) {
             if (Math.abs(growBuffer) > LevelStage.RADIUS_CHANGE) {
                 growBuffer += LevelStage.RADIUS_CHANGE;
                 setRadius(getRadius()-LevelStage.RADIUS_CHANGE);
             } else {
                 setRadius(getRadius()-growBuffer);
-                growBuffer = 0;
+                growBuffer = 0f;
             }
         }
         if (getRadius() >= LevelStage.MIN_RADIUS) {
@@ -138,7 +138,7 @@ public class ColoredCircle extends CircleActor {
     }
 
     private void updateSpeedLimit() {
-        speed = colorType.getSpeed() / (freshShard ? getRadius()+growBuffer : (Math.max(getRadius()/1000f, LevelStage.MIN_RADIUS/1000f)));
+        speed = colorType.getSpeed() / (freshShard ? getRadius()+growBuffer : (Math.max(getRadius(), LevelStage.MIN_RADIUS)));
         if (speed < 0) { speed = 0; }
     }
 
@@ -148,7 +148,7 @@ public class ColoredCircle extends CircleActor {
     }
 
     @Override
-    public void setRadius(int radius) {
+    public void setRadius(float radius) {
         if (radius < LevelStage.MIN_RADIUS && !mergingAway && !freshShard) { radius = LevelStage.MIN_RADIUS; }
         else if (radius < LevelStage.ACTUAL_MIN_RADIUS) { radius = LevelStage.ACTUAL_MIN_RADIUS; }
         super.setRadius(radius);
