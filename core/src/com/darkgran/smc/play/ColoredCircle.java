@@ -1,7 +1,5 @@
 package com.darkgran.smc.play;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.darkgran.smc.WorldScreen;
@@ -23,7 +21,7 @@ public class ColoredCircle extends CircleActor {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
         this.colorType = colorType;
         this.direction = (float) (degrees*WorldScreen.DEGREES_TO_RADIANS);
-        updateSpeedLimit();
+        speed = updateSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
         double speedX = speed * cos(direction);
         double speedY = speed * sin(direction);
         getCircleBody().getBody().setLinearVelocity((float) speedX, (float) speedY);
@@ -112,15 +110,15 @@ public class ColoredCircle extends CircleActor {
         if (getRadius() >= LevelStage.MIN_RADIUS) {
             freshShard = false;
         }
-        //Speed Cap
-        /*double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
+        //Constant Speed
+        double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
             float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
             if (currentSpeed == 0) { angle += angle > PI ? -PI : PI; }
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
-        }*/
+        }
         //Screen Edge
         if (body.getPosition().x-getRadius() >= WorldScreen.WORLD_WIDTH || body.getPosition().x+getRadius() <= 0 || body.getPosition().y-getRadius() >= WorldScreen.WORLD_HEIGHT || body.getPosition().y+getRadius() <= 0) {
             double newX = body.getPosition().x;
@@ -141,9 +139,10 @@ public class ColoredCircle extends CircleActor {
         refreshActorBounds();
     }
 
-    private void updateSpeedLimit() {
-        speed = colorType.getSpeed() / (float) (freshShard ? getRadius()+growBuffer : (Math.max(getRadius(), LevelStage.MIN_RADIUS)));
-        if (speed < 0) { speed = 0; }
+    public static float updateSpeedLimit(float baseSpeed, double radius, boolean bufferToo, double buffer) {
+        float newSpeed = baseSpeed / (float) (bufferToo ? radius+buffer : (Math.max(radius, LevelStage.MIN_RADIUS)));
+        if (newSpeed < 0) { newSpeed = 0; }
+        return newSpeed;
     }
 
     @Override
@@ -164,7 +163,7 @@ public class ColoredCircle extends CircleActor {
         md.mass = 0.1f*(float) radius;
         getCircleBody().getBody().setMassData(md);
         refreshActorBounds();
-        updateSpeedLimit();
+        speed = updateSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer);
     }
 
     public void addToGrow(double grow) {
