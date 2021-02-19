@@ -34,7 +34,7 @@ public class SimulationManager {
                 if (body.getUserData() instanceof ColoredCircle) {
                     ColoredCircle circle = (ColoredCircle) body.getUserData();
                     applyCircleUpdate(circle, body);
-                    if (i % 10 == 0 && !circle.isMergingAway() && !circle.isGone()) {
+                    if (i % 10 == 0 && !circle.isFreshShard() && !circle.isMergingAway() && !circle.isGone()) {
                         shapeRenderer.setColor(Color.GOLD);
                         shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
                     }
@@ -44,9 +44,8 @@ public class SimulationManager {
         }
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
-        debugRenderer.setDrawBodies(true);
-        debugRenderer.render(worldSimulation, matrix);
-
+        //debugRenderer.setDrawBodies(true);
+        //debugRenderer.render(worldSimulation, matrix);
     }
 
     private void resetSimulation(CollisionListener collisionListener, World copyWorld) {
