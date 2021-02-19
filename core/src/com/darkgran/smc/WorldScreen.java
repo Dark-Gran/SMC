@@ -200,7 +200,6 @@ public class WorldScreen implements Screen {
                         shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
                     }
                 }
-
             }
             worldSimulation.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
         }
@@ -208,8 +207,19 @@ public class WorldScreen implements Screen {
         shapeRenderer.end();
     }
 
+    private void resetSimulation() {
+        if (worldSimulation != null) { worldSimulation.dispose(); }
+        worldSimulation = new World(new Vector2(0, 0), false);;
+        worldSimulation.setContactListener(collisionListener);
+        Array<Body> bodies = new Array<>();
+        world.getBodies(bodies);
+        for (Body body : bodies) {
+            copyBody(body, worldSimulation);
+        }
+    }
+
     private void applyCircleSpeeder(ColoredCircle circle, Body body) {
-        float speed = ColoredCircle.getSpeedLimit(circle.getColorType().getSpeed(), circle.getRadius(), false, 0);
+        float speed = ColoredCircle.getSpeedLimit(circle.getColorType().getSpeed(), circle.getRadius(), circle.isFreshShard(), circle.getGrowBuffer());
         double currentSpeed = Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2));
         if ((float) currentSpeed != speed) {
             float angle = (float) Math.atan2(body.getLinearVelocity().y, body.getLinearVelocity().x);
@@ -217,16 +227,6 @@ public class WorldScreen implements Screen {
             double speedX = speed * cos(angle);
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
-        }
-    }
-
-    private void resetSimulation() {
-        worldSimulation = new World(new Vector2(0, 0), false);;
-        worldSimulation.setContactListener(collisionListener);
-        Array<Body> bodies = new Array<>();
-        world.getBodies(bodies);
-        for (Body body : bodies) {
-            copyBody(body, worldSimulation);
         }
     }
 
@@ -248,11 +248,7 @@ public class WorldScreen implements Screen {
         fixtureDef.restitution = fixture.getRestitution();
         fixtureDef.friction = fixture.getFriction();
 
-        MassData md = new MassData();
-        md.mass = 0.1f*fixture.getShape().getRadius();
-        newBody.setMassData(md);
-        //md.I = 1;
-        //md.center = body.getLocalCenter();
+        newBody.setMassData(body.getMassData());
 
         newBody.createFixture(fixtureDef);
 

@@ -23,7 +23,7 @@ public class CollisionListener implements ContactListener {
     }
 
     @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
+    public void preSolve(Contact contact, Manifold oldManifold) { //TODO debug
         ColoredCircle circleA = null;
         ColoredCircle circleB = null;
         if (contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle) {

@@ -216,4 +216,7 @@ public class ColoredCircle extends CircleActor {
         this.freshShard = freshShard;
     }
 
+    public double getGrowBuffer() {
+        return growBuffer;
+    }
 }
