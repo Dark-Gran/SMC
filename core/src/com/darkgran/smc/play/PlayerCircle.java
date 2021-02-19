@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.darkgran.smc.WorldScreen;
 
-public class PlayerCircle extends CircleActor { //TODO sprite
+public class PlayerCircle extends CircleActor {
     private final Sprite sprite;
 
     public PlayerCircle(LevelStage levelStage, float x, float y, float radius, Texture tex) {
