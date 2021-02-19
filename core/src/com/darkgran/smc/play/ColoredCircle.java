@@ -19,7 +19,6 @@ public class ColoredCircle extends CircleActor {
     private boolean freshShard = false;
     private SimpleCounter interactionLock = new SimpleCounter(false, 30, 0);
     private SimpleCounter breakLock = new SimpleCounter(false, 60, 0);
-    private final TravelLine travelLine;
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, double radius, float degrees, ColorType colorType) {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
@@ -28,9 +27,7 @@ public class ColoredCircle extends CircleActor {
         updateSpeedLimit();
         double speedX = speed * cos(direction);
         double speedY = speed * sin(direction);
-        Vector2 speed = new Vector2((float) speedX, (float) speedY);
-        getCircleBody().getBody().setLinearVelocity(speed);
-        this.travelLine = new TravelLine(x, y, radius, speed);
+        getCircleBody().getBody().setLinearVelocity((float) speedX, (float) speedY);
     }
 
     public void interact(ColoredCircle circle, InteractionType interactionType) {
@@ -141,9 +138,8 @@ public class ColoredCircle extends CircleActor {
             }
             body.setTransform((float) newX, (float) newY, body.getAngle());
         }
-        //Misc
+        //Actor position
         refreshActorBounds();
-        travelLine.update(body.getPosition().x, body.getPosition().y, getRadius(), body.getLinearVelocity());
     }
 
     private void updateSpeedLimit() {
@@ -216,7 +212,4 @@ public class ColoredCircle extends CircleActor {
         this.freshShard = freshShard;
     }
 
-    public TravelLine getTravelLine() {
-        return travelLine;
-    }
 }
