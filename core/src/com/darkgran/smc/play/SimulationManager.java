@@ -61,7 +61,7 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) { //TODO
+    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
         ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
@@ -101,7 +101,7 @@ public class SimulationManager {
                     return true;
                 }
             } else {
-                Array<Vector2> polygon = new Array();
+                Array<Vector2> polygon = new Array(); //TODO
                 float[] vertices = new float[breakPoints.size()*2];
                 int r = 0;
                 for (int i = 0; i < breakPoints.size(); i++) {
