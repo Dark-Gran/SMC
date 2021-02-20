@@ -31,7 +31,7 @@ public class SimulationManager {
     public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
@@ -74,7 +74,7 @@ public class SimulationManager {
             WorldManifold manifold = contact.getWorldManifold();
             if (manifold.getPoints().length == 2) {
                 Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
-                if (otherBody.getUserData() instanceof ChainBoxObject) {
+                if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
                     ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
                     Array<Vector2> polygon = new Array();
                     polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
@@ -95,7 +95,6 @@ public class SimulationManager {
                     //shapeRenderer.polygon(vertices);
 
                     if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
-                        System.out.println("STUCK!");
                         return true;
                     }
                 }
