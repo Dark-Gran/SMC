@@ -11,11 +11,11 @@ import com.darkgran.smc.WorldScreen;
 public class DoorSwitch extends Actor {
     private final LevelStage levelStage;
     private final ChainBody chainBody;
-    private final BareDoor[] doors;
+    private final Switchable[] doors;
     private SwitchType switchType;
     private final Sprite sprite;
 
-    public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, BareDoor[] doors, SwitchType switchType, Texture texture) {
+    public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, Switchable[] doors, SwitchType switchType, Texture texture) {
         this.levelStage = levelStage;
         this.switchType = switchType;
         chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, (new Vector2[]{new Vector2(-width, -height), new Vector2(-width, +height), new Vector2(+width, +height), new Vector2(+width, -height)}), 0f, BodyDef.BodyType.StaticBody);
@@ -33,7 +33,7 @@ public class DoorSwitch extends Actor {
     }
 
     public void click() {
-        for (BareDoor door : doors) {
+        for (Switchable door : doors) {
             switch (switchType) {
                 case ACTIVATOR:
                     door.switchState();

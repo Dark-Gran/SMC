@@ -26,7 +26,7 @@ public class Beam extends BareDoor {
     }
 
     public void draw(ShapeRenderer shapeRenderer) {
-        if (isClosed()) {
+        if (isEnabled()) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(type.getColor().r, type.getColor().g, type.getColor().b, 0.7f);
             shapeRenderer.rect(getChainBody().getBody().getPosition().x - getWidth(), getChainBody().getBody().getPosition().y - getHeight(), getWidth() * 2, getHeight() * 2);

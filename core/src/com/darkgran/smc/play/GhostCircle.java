@@ -75,7 +75,7 @@ public class GhostCircle extends CircleSensor {
                 if (contact.isTouching()) {
                     Body other = getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
                     if (other.getUserData() instanceof BareDoor) {
-                        return !((BareDoor) other.getUserData()).isClosed();
+                        return !((BareDoor) other.getUserData()).isEnabled();
                     } else {
                         return false;
                     }

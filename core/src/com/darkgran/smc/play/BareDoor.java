@@ -1,18 +1,18 @@
 package com.darkgran.smc.play;
 
-public abstract class BareDoor extends ChainBoxBodyObject {
+public abstract class BareDoor extends ChainBoxBodyObject implements Switchable {
     private boolean closed;
 
     public BareDoor(LevelStage levelStage, float x, float y, float width, float height, float angle, boolean state, float restitution) {
         super(levelStage, x, y, width, height, angle, restitution);
-        changeState(state);
+        setEnabled(state);
     }
 
     public void switchState() {
-        changeState(!closed);
+        setEnabled(!closed);
     }
 
-    private void changeState(boolean state) {
+    public void setEnabled(boolean state) {
         closed = state;
         applyState();
     }
@@ -21,7 +21,7 @@ public abstract class BareDoor extends ChainBoxBodyObject {
         getChainBody().getBody().getFixtureList().get(0).setSensor(!closed);
     }
 
-    public boolean isClosed() {
+    public boolean isEnabled() {
         return closed;
     }
 }

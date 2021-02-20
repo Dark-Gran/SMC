@@ -163,13 +163,13 @@ public class LevelStage extends Stage {
                     beams.add(new Beam(this, beamInfo.getX(), beamInfo.getY(), beamInfo.getWidth()/2, beamInfo.getHeight()/2, beamInfo.getAngle(), beamInfo.getColorType(), beamInfo.isActive()));
                 }
                 for (SwitchInfo switchInfo : levelInfo.getSwitches()) {
-                    BareDoor[] doors = new BareDoor[switchInfo.getBeams().length];
-                    for (int i = 0; i < doors.length; i++) {
+                    Switchable[] switchables = new Switchable[switchInfo.getBeams().length];
+                    for (int i = 0; i < switchables.length; i++) {
                         if (beams.get(switchInfo.getBeams()[i]) != null) {
-                            doors[i] = beams.get(switchInfo.getBeams()[i]);
+                            switchables[i] = beams.get(switchInfo.getBeams()[i]);
                         }
                     }
-                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), doors, switchInfo.getSwitchType(), soTex);
+                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), switchables, switchInfo.getSwitchType(), soTex);
                     switches.add(doorSwitch);
                     this.addActor(doorSwitch);
                     doorSwitch.addListener(new ClickListener() {
