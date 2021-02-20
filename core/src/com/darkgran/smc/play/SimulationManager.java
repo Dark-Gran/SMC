@@ -61,7 +61,7 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
+    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) { //TODO 1. Debug 2. "First check all circles, then run through bodies (and then world-step)"
         ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
@@ -85,40 +85,42 @@ public class SimulationManager {
                     if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
                         return true;
                     } else {
-                        for (Vector2 point : manifold.getPoints()) {
+                        /*for (Vector2 point : manifold.getPoints()) {
                             if (!breakPoints.contains(point)) {
                                 breakPoints.add(point);
                             }
-                        }
+                        }*/
                     }
                 }
 
             }
         }
-        if (breakPoints.size() > 1) {
+        /*if (breakPoints.size() > 1) {
             if (breakPoints.size() == 2) {
                 if (pointIsOnLine(breakPoints.get(0), breakPoints.get(1), circle.getCircleBody().getBody().getPosition())) {
                     return true;
                 }
             } else {
-                Array<Vector2> polygon = new Array(); //TODO
-                float[] vertices = new float[breakPoints.size()*2];
-                int r = 0;
+                Array<Vector2> polygon = new Array();
                 for (int i = 0; i < breakPoints.size(); i++) {
-                    float x = circle.getCircleBody().getBody().getPosition().x + breakPoints.get(i).x*WorldScreen.getMMP();
-                    float y = circle.getCircleBody().getBody().getPosition().y + breakPoints.get(i).y*WorldScreen.getMMP();
-                    polygon.add(new Vector2(x, y));
-                    vertices[r] = x;
-                    vertices[r+1] = y;
-                    r += 2;
+                    float x = circle.getCircleBody().getBody().getWorldCenter().x + breakPoints.get(i).x*WorldScreen.getMMP();
+                    float y = circle.getCircleBody().getBody().getWorldCenter().y + breakPoints.get(i).y*WorldScreen.getMMP();
+                    Vector2 newVector = new Vector2(x, y);
+                    if (!(polygon.contains(newVector, false))) {
+                        polygon.add(newVector);
+                    }
+                    System.out.println(breakPoints.get(i).x*WorldScreen.getMMP()+","+breakPoints.get(i).y*WorldScreen.getMMP());
                 }
-                shapeRenderer.setColor(Color.RED);
-                shapeRenderer.polygon(vertices);
+
+                for (Vector2 vector : polygon) {
+                    shapeRenderer.setColor(Color.RED);
+                    shapeRenderer.circle(vector.x, vector.y, 0.01f, 10);
+                }
                 if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
                     return true;
                 }
             }
-        }
+        }*/
         return false;
     }
 
