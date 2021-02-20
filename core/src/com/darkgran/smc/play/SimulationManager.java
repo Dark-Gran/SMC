@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import com.darkgran.smc.WorldScreen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Math.*;
 
@@ -74,142 +76,84 @@ public class SimulationManager {
     }
 
     private void markStuckCircles() {
-        ArrayList<Contact> contacts = new ArrayList<>();
+        HashMap<ColoredCircle, ArrayList<Vector2>> circles = new HashMap<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
-                //in-future: atm we check only circles against non-circles - but how about "multi circle stucks" (can these happen?)?
                 if ((contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle)) || (contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle))) {
-                    contacts.add(contact);
+                    WorldManifold manifold = contact.getWorldManifold();
+                    if (manifold.getPoints().length > 0) {
+                        ColoredCircle circle = contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle ? (ColoredCircle) contact.getFixtureA().getBody().getUserData() : (ColoredCircle) contact.getFixtureB().getBody().getUserData();
+                        if (!circle.isStuck()) {
+                            Vector2[] checkPoints = getExtendedMidPoints(circle.getCircleBody().getBody().getPosition(), (float) circle.getRadius() / 4);
+                            Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+                            if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
+                                ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
+                                Array<Vector2> polygon = new Array();
+                                polygon.add(new Vector2(otherBody.getPosition().x - cbo.getWidth(), otherBody.getPosition().y - cbo.getHeight()));
+                                polygon.add(new Vector2(otherBody.getPosition().x - cbo.getWidth(), otherBody.getPosition().y + cbo.getHeight()));
+                                polygon.add(new Vector2(otherBody.getPosition().x + cbo.getWidth(), otherBody.getPosition().y + cbo.getHeight()));
+                                polygon.add(new Vector2(otherBody.getPosition().x + cbo.getWidth(), otherBody.getPosition().y - cbo.getHeight()));
+                                for (Vector2 checkPoint : checkPoints) {
+                                    if (Intersector.isPointInPolygon(polygon, checkPoint)) {
+                                        circle.setStuck(true);
+                                    }
+                                }
+                                if (!circle.isStuck()) {
+                                    ArrayList<Vector2> breakPoints = new ArrayList<>();
+                                    for (Vector2 point : manifold.getPoints()) {
+                                        if (!breakPoints.contains(point)) {
+                                            breakPoints.add(point);
+                                        }
+                                    }
+                                    while (breakPoints.contains(new Vector2(0, 0))) {
+                                        breakPoints.remove(new Vector2(0, 0));
+                                    }
+                                    if (circles.containsKey(circle)) {
+                                        circles.get(circle).addAll(breakPoints);
+                                    } else {
+                                        circles.put(circle, breakPoints);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-        ArrayList<Vector2> breakPoints = new ArrayList<>(); //TODO
-        Vector2[] checkPoints = new Vector2[5];
-        /*Vector2 mid = circle.getCircleBody().getBody().getPosition();
-        float offset = (float) circle.getRadius()/4;
-        checkPoints[0] = mid;
-        checkPoints[1] = new Vector2(mid.x+offset, mid.y+offset);
-        checkPoints[2] = new Vector2(mid.x-offset, mid.y-offset);
-        checkPoints[3] = new Vector2(mid.x-offset, mid.y+offset);
-        checkPoints[4] = new Vector2(mid.x+offset, mid.y-offset);*/
-        for (Contact contact : contacts) {
-            WorldManifold manifold = contact.getWorldManifold();
-            if (manifold.getPoints().length > 0) {
-                /*Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
-                if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
-                    ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
+        for (Map.Entry<ColoredCircle, ArrayList<Vector2>> entry : circles.entrySet()) {
+            ColoredCircle circle = entry.getKey();
+            if (!circle.isStuck()) {
+                ArrayList<Vector2> breakPoints = entry.getValue();
+                if (breakPoints.size() > 1) {
                     Array<Vector2> polygon = new Array();
-                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
-                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
-                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
-                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
+                    for (int i = 0; i < breakPoints.size(); i++) {
+                        Vector2 newVector = new Vector2(breakPoints.get(i).x, breakPoints.get(i).y);
+                        if (!(polygon.contains(newVector, false))) {
+                            polygon.add(newVector);
+                        }
+                    }
+                    if (polygon.size == 2) {
+                        polygon = rectFromLine(polygon, 0.05f);
+                    }
+                    Vector2[] checkPoints = getExtendedMidPoints(circle.getCircleBody().getBody().getPosition(), (float) circle.getRadius() / 4);
                     for (Vector2 checkPoint : checkPoints) {
                         if (Intersector.isPointInPolygon(polygon, checkPoint)) {
-                            //stuck true
+                            circle.setStuck(true);
                         }
                     }
-                    for (Vector2 point : manifold.getPoints()) {
-                        if (!breakPoints.contains(point)) {
-                            breakPoints.add(point);
-                        }
-                    }
-                }*/
-            }
-        }
-        while (breakPoints.contains(new Vector2(0, 0))) {
-            breakPoints.remove(new Vector2(0, 0));
-        }
-        if (breakPoints.size() > 1) {
-            Array<Vector2> polygon = new Array();
-            for (int i = 0; i < breakPoints.size(); i++) {
-                Vector2 newVector = new Vector2(breakPoints.get(i).x, breakPoints.get(i).y);
-                if (!(polygon.contains(newVector, false))) {
-                    polygon.add(newVector);
-                }
-            }
-            if (polygon.size == 2) {
-                polygon = rectFromLine(polygon, 0.05f);
-            }
-            /*for (Vector2 vector : polygon) { //"debugRender"
-                shapeRenderer.setColor(Color.RED);
-                shapeRenderer.circle(vector.x, vector.y, 0.01f, 10);
-            }*/
-            for (Vector2 checkPoint : checkPoints) {
-                if (Intersector.isPointInPolygon(polygon, checkPoint)) {
-                    //stuck true
                 }
             }
         }
-        //stuck false
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
-        ArrayList<Contact> contacts = new ArrayList<>();
-        for (Contact contact : worldScreen.getWorld().getContactList()) {
-            if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
-                if ((contact.getFixtureA().getBody().getUserData() == circle && !(contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle)) || (contact.getFixtureB().getBody().getUserData() == circle && !(contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle))) {
-                    contacts.add(contact);
-                }
-            }
-        }
-        ArrayList<Vector2> breakPoints = new ArrayList<>();
+    private Vector2[] getExtendedMidPoints(Vector2 mid, float offset) {
         Vector2[] checkPoints = new Vector2[5];
-        Vector2 mid = circle.getCircleBody().getBody().getPosition();
-        float offset = (float) circle.getRadius()/4;
         checkPoints[0] = mid;
-        checkPoints[1] = new Vector2(mid.x+offset, mid.y+offset);
-        checkPoints[2] = new Vector2(mid.x-offset, mid.y-offset);
-        checkPoints[3] = new Vector2(mid.x-offset, mid.y+offset);
-        checkPoints[4] = new Vector2(mid.x+offset, mid.y-offset);
-        for (Contact contact : contacts) {
-            WorldManifold manifold = contact.getWorldManifold();
-            if (manifold.getPoints().length > 0) {
-                Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
-                if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
-                    ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
-                    Array<Vector2> polygon = new Array();
-                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
-                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
-                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
-                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
-                    for (Vector2 checkPoint : checkPoints) {
-                        if (Intersector.isPointInPolygon(polygon, checkPoint)) {
-                            return true;
-                        }
-                    }
-                    for (Vector2 point : manifold.getPoints()) {
-                        if (!breakPoints.contains(point)) {
-                            breakPoints.add(point);
-                        }
-                    }
-                }
-            }
-        }
-        while (breakPoints.contains(new Vector2(0, 0))) {
-            breakPoints.remove(new Vector2(0, 0));
-        }
-        if (breakPoints.size() > 1) {
-            Array<Vector2> polygon = new Array();
-            for (int i = 0; i < breakPoints.size(); i++) {
-                Vector2 newVector = new Vector2(breakPoints.get(i).x, breakPoints.get(i).y);
-                if (!(polygon.contains(newVector, false))) {
-                    polygon.add(newVector);
-                }
-            }
-            if (polygon.size == 2) {
-                polygon = rectFromLine(polygon, 0.05f);
-            }
-            for (Vector2 vector : polygon) { //"debugRender"
-                shapeRenderer.setColor(Color.RED);
-                shapeRenderer.circle(vector.x, vector.y, 0.01f, 10);
-            }
-            for (Vector2 checkPoint : checkPoints) {
-                if (Intersector.isPointInPolygon(polygon, checkPoint)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        checkPoints[1] = new Vector2(mid.x + offset, mid.y + offset);
+        checkPoints[2] = new Vector2(mid.x - offset, mid.y - offset);
+        checkPoints[3] = new Vector2(mid.x - offset, mid.y + offset);
+        checkPoints[4] = new Vector2(mid.x + offset, mid.y - offset);
+        return checkPoints;
     }
 
     private void copyBody(Body body, World world) {
