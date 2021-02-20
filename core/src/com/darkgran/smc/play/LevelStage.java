@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,6 +37,7 @@ public class LevelStage extends Stage {
     private final ArrayList<Wall> walls = new ArrayList<>();
     private final ArrayList<Beam> beams = new ArrayList<>();
     private final ArrayList<DoorSwitch> switches = new ArrayList<>();
+    private final ArrayList<RotatableChainObject> rotatables = new ArrayList<>();
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
     private boolean completed = false;
@@ -184,6 +186,9 @@ public class LevelStage extends Stage {
                         }
                     });
                 }
+                for (RotatableInfo rotatableInfo : levelInfo.getRotatables()) {
+                    rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), rotatableInfo.getAngle()));
+                }
                 //Finish
                 introMessage = levelInfo.getIntro();
             } else {
@@ -296,6 +301,7 @@ public class LevelStage extends Stage {
             worldScreen.destroyBody(doorSwitch.getChainBody().getBody());
         }
         switches.clear();
+        rotatables.clear();
         if (playerCircle != null) {
             worldScreen.destroyBody(playerCircle.getCircleBody().getBody());
             playerCircle = null;

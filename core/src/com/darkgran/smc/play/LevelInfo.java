@@ -9,6 +9,7 @@ public class LevelInfo {
     private ArrayList<WallInfo> walls;
     private ArrayList<BeamInfo> beams;
     private ArrayList<SwitchInfo> switches;
+    private ArrayList<RotatableInfo> rotatables;
 
     public LevelInfo() { }
 
@@ -35,4 +36,6 @@ public class LevelInfo {
     public ArrayList<SwitchInfo> getSwitches() {
         return switches;
     }
+
+    public ArrayList<RotatableInfo> getRotatables() { return rotatables; }
 }
