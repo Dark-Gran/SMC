@@ -28,6 +28,17 @@ public class SimulationManager {
         this.STEP_TIME = STEP_TIME;
     }
 
+    public void resetSimulation(CollisionListener collisionListener, World copyWorld) {
+        //if (worldSimulation != null) { worldSimulation.dispose(); }
+        worldSimulation = new World(new Vector2(0, 0), false);;
+        worldSimulation.setContactListener(collisionListener);
+        Array<Body> bodies = new Array<>();
+        copyWorld.getBodies(bodies);
+        for (Body body : bodies) {
+            copyBody(body, worldSimulation);
+        }
+    }
+
     public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
@@ -130,47 +141,38 @@ public class SimulationManager {
         return false;
     }
 
-    private Array<Vector2> rectFromLine(Array<Vector2> line, float width) {
-        Array<Vector2> polygon = new Array<>();
-        for (Vector2 vector : line) {
-            polygon.add(vector.cpy());
-        }
-        if (polygon.size == 2) {
-            double angle = atan2(polygon.get(0).y-polygon.get(1).y,polygon.get(0).x-polygon.get(1).x);
-            Vector2 point0 = new Vector2();
-            point0.x = (float) (polygon.get(0).x + (width/2)*sin(angle));
-            point0.y = (float) (polygon.get(0).y + (width/2)*cos(angle));
-            Vector2 point1 = new Vector2();
-            point1.x = (float) (polygon.get(0).x + (width/2)*sin(angle-PI));
-            point1.y = (float) (polygon.get(0).y + (width/2)*cos(angle-PI));
-            Vector2 point2 = new Vector2();
-            point2.x = (float) (polygon.get(1).x + (width/2)*sin(angle));
-            point2.y = (float) (polygon.get(1).y + (width/2)*cos(angle));
-            Vector2 point3 = new Vector2();
-            point3.x = (float) (polygon.get(1).x + (width/2)*sin(angle-PI));
-            point3.y = (float) (polygon.get(1).y + (width/2)*cos(angle-PI));
-            polygon.clear();
-            polygon.add(point0);
-            polygon.add(point1);
-            polygon.add(point2);
-            polygon.add(point3);
-        }
-        return polygon;
-    }
+    private void copyBody(Body body, World world) {
+        Object obj = body.getUserData();
 
-    private boolean pointIsOnLine(Vector2 start, Vector2 end, Vector2 point) {
-        return start.dst(point) + end.dst(point) == start.dst(end);
-    }
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = obj instanceof GhostCircle ? BodyDef.BodyType.StaticBody : body.getType();
 
-    public void resetSimulation(CollisionListener collisionListener, World copyWorld) {
-        //if (worldSimulation != null) { worldSimulation.dispose(); }
-        worldSimulation = new World(new Vector2(0, 0), false);;
-        worldSimulation.setContactListener(collisionListener);
-        Array<Body> bodies = new Array<>();
-        copyWorld.getBodies(bodies);
-        for (Body body : bodies) {
-            copyBody(body, worldSimulation);
-        }
+        Body newBody = world.createBody(bodyDef);
+        newBody.setUserData(obj);
+        newBody.setTransform(body.getPosition(), body.getAngle());
+        newBody.setLinearVelocity(body.getLinearVelocity());
+
+        Fixture fixture = body.getFixtureList().get(0);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = fixture.getShape();
+        fixtureDef.density = fixture.getDensity();
+        fixtureDef.restitution = fixture.getRestitution();
+        fixtureDef.friction = fixture.getFriction();
+
+        newBody.createFixture(fixtureDef);
+
+        newBody.getFixtureList().get(0).setDensity(body.getFixtureList().get(0).getDensity());
+        newBody.resetMassData();
+        MassData md = new MassData();
+        md.mass = body.getMassData().mass;
+        newBody.setMassData(md);
+
+        newBody.getFixtureList().get(0).setSensor(!(body.getUserData() instanceof GhostCircle) && body.getFixtureList().get(0).isSensor());
+
+        newBody.setFixedRotation(body.isFixedRotation());
+        newBody.setGravityScale(body.getGravityScale());
+        newBody.setLinearDamping(body.getLinearDamping());
+        newBody.setAngularDamping(body.getAngularDamping());
     }
 
     private double applyBodyRadius(Body body, double radius, boolean mergingAway, boolean freshShard, ColorType colorType) {
@@ -251,38 +253,32 @@ public class SimulationManager {
         }
     }
 
-    private void copyBody(Body body, World world) {
-        Object obj = body.getUserData();
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = obj instanceof GhostCircle ? BodyDef.BodyType.StaticBody : body.getType();
-
-        Body newBody = world.createBody(bodyDef);
-        newBody.setUserData(obj);
-        newBody.setTransform(body.getPosition(), body.getAngle());
-        newBody.setLinearVelocity(body.getLinearVelocity());
-
-        Fixture fixture = body.getFixtureList().get(0);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = fixture.getShape();
-        fixtureDef.density = fixture.getDensity();
-        fixtureDef.restitution = fixture.getRestitution();
-        fixtureDef.friction = fixture.getFriction();
-
-        newBody.createFixture(fixtureDef);
-
-        newBody.getFixtureList().get(0).setDensity(body.getFixtureList().get(0).getDensity());
-        newBody.resetMassData();
-        MassData md = new MassData();
-        md.mass = body.getMassData().mass;
-        newBody.setMassData(md);
-
-        newBody.getFixtureList().get(0).setSensor(!(body.getUserData() instanceof GhostCircle) && body.getFixtureList().get(0).isSensor());
-
-        newBody.setFixedRotation(body.isFixedRotation());
-        newBody.setGravityScale(body.getGravityScale());
-        newBody.setLinearDamping(body.getLinearDamping());
-        newBody.setAngularDamping(body.getAngularDamping());
+    private Array<Vector2> rectFromLine(Array<Vector2> line, float width) {
+        Array<Vector2> polygon = new Array<>();
+        for (Vector2 vector : line) {
+            polygon.add(vector.cpy());
+        }
+        if (polygon.size == 2) {
+            double angle = atan2(polygon.get(0).y-polygon.get(1).y,polygon.get(0).x-polygon.get(1).x);
+            Vector2 point0 = new Vector2();
+            point0.x = (float) (polygon.get(0).x + (width/2)*sin(angle));
+            point0.y = (float) (polygon.get(0).y + (width/2)*cos(angle));
+            Vector2 point1 = new Vector2();
+            point1.x = (float) (polygon.get(0).x + (width/2)*sin(angle-PI));
+            point1.y = (float) (polygon.get(0).y + (width/2)*cos(angle-PI));
+            Vector2 point2 = new Vector2();
+            point2.x = (float) (polygon.get(1).x + (width/2)*sin(angle));
+            point2.y = (float) (polygon.get(1).y + (width/2)*cos(angle));
+            Vector2 point3 = new Vector2();
+            point3.x = (float) (polygon.get(1).x + (width/2)*sin(angle-PI));
+            point3.y = (float) (polygon.get(1).y + (width/2)*cos(angle-PI));
+            polygon.clear();
+            polygon.add(point0);
+            polygon.add(point1);
+            polygon.add(point2);
+            polygon.add(point3);
+        }
+        return polygon;
     }
 
 }
