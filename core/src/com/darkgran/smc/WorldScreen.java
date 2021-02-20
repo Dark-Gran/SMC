@@ -155,10 +155,10 @@ public class WorldScreen implements Screen {
             camera.update();
 
             shapeRenderer.setProjectionMatrix(camera.combined);
+            levelStage.drawShapes(shapeRenderer);
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !levelStage.isCompleted()) {
                 simulationManager.drawSimulation(shapeRenderer, collisionListener, world, debugRenderer, new Matrix4(camera.combined));
             }
-            levelStage.drawShapes(shapeRenderer);
 
             smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
 
