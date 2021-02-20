@@ -87,7 +87,16 @@ public class SimulationManager {
                         if (!circle.isStuck()) {
                             Vector2[] checkPoints = getExtendedMidPoints(circle.getCircleBody().getBody().getPosition(), (float) circle.getRadius() / 4);
                             Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
-                            if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
+                            if (otherBody.getUserData() instanceof PlayerCircle) {
+                                boolean overlap = false;
+                                for (float f : manifold.getSeparations()) {
+                                    if (f < 0f) {
+                                        overlap = true;
+                                        break;
+                                    }
+                                }
+                                circle.setStuck(overlap);
+                            } else if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
                                 ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
                                 Array<Vector2> polygon = new Array();
                                 polygon.add(new Vector2(otherBody.getPosition().x - cbo.getWidth(), otherBody.getPosition().y - cbo.getHeight()));
