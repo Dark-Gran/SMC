@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -44,8 +45,8 @@ public class SimulationManager {
     public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
-        markStuckCircles();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        markStuckCircles();
         for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
@@ -82,23 +83,22 @@ public class SimulationManager {
                 //atm checking only for circle vs non-circle:
                 if ((contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle)) || (contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle))) {
                     WorldManifold manifold = contact.getWorldManifold();
-                    if (manifold.getPoints().length > 0) {
+                    //if (manifold.getPoints().length > 0) {
                         ColoredCircle circle = contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle ? (ColoredCircle) contact.getFixtureA().getBody().getUserData() : (ColoredCircle) contact.getFixtureB().getBody().getUserData();
                         if (!circle.isStuck()) {
                             Vector2[] checkPoints = getExtendedMidPoints(circle.getCircleBody().getBody().getPosition(), (float) circle.getRadius() / 4);
                             Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+                            Array<Vector2> polygon = new Array();
                             if (otherBody.getUserData() instanceof PlayerCircle) {
                                 boolean overlap = false;
-                                for (float f : manifold.getSeparations()) {
+                                for (float f : manifold.getSeparations()) { //standard overlap
                                     if (f < 0f) {
                                         overlap = true;
-                                        break;
                                     }
                                 }
                                 circle.setStuck(overlap);
                             } else if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
                                 ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
-                                Array<Vector2> polygon = new Array();
                                 polygon.add(new Vector2(otherBody.getPosition().x - cbo.getWidth(), otherBody.getPosition().y - cbo.getHeight()));
                                 polygon.add(new Vector2(otherBody.getPosition().x - cbo.getWidth(), otherBody.getPosition().y + cbo.getHeight()));
                                 polygon.add(new Vector2(otherBody.getPosition().x + cbo.getWidth(), otherBody.getPosition().y + cbo.getHeight()));
@@ -126,12 +126,20 @@ public class SimulationManager {
                                 }
                             }
                         }
-                    }
+                    //}
                 }
             }
         }
         for (Map.Entry<ColoredCircle, ArrayList<Vector2>> entry : circles.entrySet()) {
             ColoredCircle circle = entry.getKey();
+            if (!circle.isStuck() && worldScreen.getLevelStage().getPlayerCircle() != null) {
+                //in-future: check for other bodies than PlayerCircle that may get "teleported" inside a circle
+                //in-future: precise compare? (instead of AABBs comparison?)
+                Rectangle cR = new Rectangle((float) (circle.getCircleBody().getBody().getPosition().x-circle.getRadius()), (float) (circle.getCircleBody().getBody().getPosition().y-circle.getRadius()), (float) circle.getRadius()*2, (float) circle.getRadius()*2);
+                if (cR.contains(worldScreen.getLevelStage().getPlayerCircle().getCircleBody().getBody().getPosition().x, worldScreen.getLevelStage().getPlayerCircle().getCircleBody().getBody().getPosition().y)) {
+                    circle.setStuck(true);
+                }
+            }
             if (!circle.isStuck()) {
                 ArrayList<Vector2> breakPoints = entry.getValue();
                 if (breakPoints.size() > 1) {

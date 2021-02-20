@@ -298,4 +298,8 @@ public class WorldScreen implements Screen {
     public float getSTEP_TIME() {
         return STEP_TIME;
     }
+
+    public LevelStage getLevelStage() {
+        return levelStage;
+    }
 }
