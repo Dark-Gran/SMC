@@ -25,7 +25,7 @@ public abstract class ChainBodyObject {
             vertex.y -= centroid.y;
         }
         chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, vertices, restitution, BodyDef.BodyType.StaticBody);
-        chainBody.getBody().setTransform(x, y, (float) (angle* WorldScreen.DEGREES_TO_RADIANS));
+        chainBody.getBody().setTransform(x, y, angle);
         System.out.println(getChainBody().getBody().getPosition());
     }
 

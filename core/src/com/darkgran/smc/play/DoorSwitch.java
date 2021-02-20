@@ -10,7 +10,7 @@ import com.darkgran.smc.WorldScreen;
 
 public class DoorSwitch extends Actor {
     private final LevelStage levelStage;
-    private final ChainBoxBody chainBoxBody;
+    private final ChainBody chainBody;
     private final BareDoor[] doors;
     private SwitchType switchType;
     private final Sprite sprite;
@@ -18,9 +18,9 @@ public class DoorSwitch extends Actor {
     public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, BareDoor[] doors, SwitchType switchType, Texture texture) {
         this.levelStage = levelStage;
         this.switchType = switchType;
-        chainBoxBody = new ChainBoxBody(levelStage.getWorldScreen().getWorld(), this, width, height, 0f, BodyDef.BodyType.StaticBody);
-        chainBoxBody.getBody().setTransform(new Vector2(x, y), angle);
-        chainBoxBody.getBody().getFixtureList().get(0).setSensor(true);
+        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, (new Vector2[]{new Vector2(-width, -height), new Vector2(-width, +height), new Vector2(+width, +height), new Vector2(+width, -height)}), 0f, BodyDef.BodyType.StaticBody);
+        chainBody.getBody().setTransform(new Vector2(x, y), angle);
+        chainBody.getBody().getFixtureList().get(0).setSensor(true);
         this.setBounds(x-width, y-height, width*2, height*2);
         this.doors = doors;
         sprite = new Sprite(texture);
@@ -47,8 +47,8 @@ public class DoorSwitch extends Actor {
         }
     }
 
-    public ChainBoxBody getChainBody() {
-        return chainBoxBody;
+    public ChainBody getChainBody() {
+        return chainBody;
     }
 
     public Sprite getSprite() {

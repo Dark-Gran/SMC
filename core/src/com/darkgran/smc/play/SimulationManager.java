@@ -97,8 +97,8 @@ public class SimulationManager {
                                     }
                                 }
                                 circle.setStuck(overlap);
-                            } else if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
-                                ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
+                            } else if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxBodyObject) {
+                                ChainBoxBodyObject cbo = (ChainBoxBodyObject) otherBody.getUserData();
                                 polygon.add(new Vector2(otherBody.getPosition().x - cbo.getWidth(), otherBody.getPosition().y - cbo.getHeight()));
                                 polygon.add(new Vector2(otherBody.getPosition().x - cbo.getWidth(), otherBody.getPosition().y + cbo.getHeight()));
                                 polygon.add(new Vector2(otherBody.getPosition().x + cbo.getWidth(), otherBody.getPosition().y + cbo.getHeight()));

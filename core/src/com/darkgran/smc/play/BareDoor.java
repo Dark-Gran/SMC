@@ -1,6 +1,6 @@
 package com.darkgran.smc.play;
 
-public abstract class BareDoor extends ChainBoxObject {
+public abstract class BareDoor extends ChainBoxBodyObject {
     private boolean closed;
 
     public BareDoor(LevelStage levelStage, float x, float y, float width, float height, float angle, boolean state, float restitution) {

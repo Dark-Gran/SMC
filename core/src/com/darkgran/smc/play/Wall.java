@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.darkgran.smc.WorldScreen;
 
-public class Wall extends ChainBoxObject {
+public class Wall extends ChainBoxBodyObject {
     private final ColorType colorType;
     private final Sprite sprite;
 
