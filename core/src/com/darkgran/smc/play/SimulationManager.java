@@ -39,7 +39,7 @@ public class SimulationManager {
                 float rad = 2f;
                 if (body.getUserData() instanceof ColoredCircle) {
                     ColoredCircle circle = (ColoredCircle) body.getUserData();
-                    if (!circleStuck(circle, shapeRenderer)) {
+                    if (!circleStuck(circle)) {
                         applyCircleUpdate(circle, body);
                         boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
                         if (bodyInsideRad) {
@@ -61,7 +61,7 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
+    private boolean circleStuck(ColoredCircle circle) {
         ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.getFixtureA().getBody().getWorld() == contact.getFixtureB().getBody().getWorld()) {
