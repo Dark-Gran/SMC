@@ -301,6 +301,9 @@ public class LevelStage extends Stage {
             worldScreen.destroyBody(doorSwitch.getChainBody().getBody());
         }
         switches.clear();
+        for (RotatableChainObject rotatable : rotatables) {
+            worldScreen.destroyBody(rotatable.getChainBody().getBody());
+        }
         rotatables.clear();
         if (playerCircle != null) {
             worldScreen.destroyBody(playerCircle.getCircleBody().getBody());

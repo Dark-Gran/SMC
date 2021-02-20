@@ -16,8 +16,7 @@ public class ChainBody {
         ChainShape shape = new ChainShape();
 
         for (Vector2 vertex : vertices) {
-            vertex.x += x;
-            vertex.y += y;
+            vertex = new Vector2(vertex.x+x, vertex.y+y);
         }
 
         shape.createLoop(vertices);
