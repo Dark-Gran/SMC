@@ -28,6 +28,7 @@ public class ChainBody {
             MassData md = body.getMassData();
             md.center.set(massCenter);
             body.setMassData(md);
+            body.resetMassData();
         }
 
         body.setFixedRotation(false);

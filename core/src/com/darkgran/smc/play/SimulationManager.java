@@ -218,6 +218,7 @@ public class SimulationManager {
         MassData md = new MassData();
         md.mass = 0.1f*(float) radius;
         body.setMassData(md);
+        body.resetMassData();
         return radius;
     }
 

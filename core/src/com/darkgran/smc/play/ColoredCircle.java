@@ -164,6 +164,7 @@ public class ColoredCircle extends CircleActor {
         MassData md = new MassData();
         md.mass = 0.1f*(float) radius;
         getCircleBody().getBody().setMassData(md);
+        getCircleBody().getBody().resetMassData();
         refreshActorBounds();
         speed = getSpeedLimit(colorType.getSpeed(), getRadius(), freshShard, growBuffer, colorType);
     }

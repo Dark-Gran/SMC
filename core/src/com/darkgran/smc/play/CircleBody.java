@@ -25,6 +25,7 @@ public class CircleBody {
         MassData md = new MassData();
         md.mass = 0.1f*(float) radius;
         body.setMassData(md);
+        body.resetMassData();
         //md.I = 1;
         //md.center = body.getLocalCenter();
 

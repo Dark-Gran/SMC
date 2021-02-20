@@ -216,6 +216,7 @@ public class LevelStage extends Stage {
             MassData md = new MassData();
             md.mass = 0.1f*(float) ACTUAL_MIN_RADIUS;
             circle.getCircleBody().getBody().setMassData(md);
+            circle.getCircleBody().getBody().resetMassData();
             circles.get(circle.getColorType()).add(circle);
             if (additive) { colorPowers.put(circle.getColorType(), colorPowers.get(circle.getColorType())+(float) circle.getRadius()); }
             addActor(circle);
