@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class ChainBody {
     private final Body body;
 
-    public ChainBody(final World world, final Object object, Vector2[] vertices, float restitution, BodyDef.BodyType bodyType) {
+    public ChainBody(final World world, final Object object, Vector2[] vertices, float restitution, BodyDef.BodyType bodyType, Vector2 massCenter) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = bodyType;
 
@@ -24,7 +24,16 @@ public class ChainBody {
         boxFixtureDef.restitution = restitution;
         body.createFixture(boxFixtureDef);
 
+        if (massCenter != null) {
+            MassData md = body.getMassData();
+            md.center.set(massCenter);
+            body.setMassData(md);
+        }
+
         body.setFixedRotation(false);
+        body.setGravityScale(0f);
+        body.setLinearDamping(0f);
+        body.setAngularDamping(0f);
 
         shape.dispose();
     }

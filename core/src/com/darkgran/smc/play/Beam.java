@@ -2,12 +2,13 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class Beam extends BareDoor {
     private ColorType type;
 
     public Beam(LevelStage levelStage, float x, float y, float width, float height, float angle, ColorType colorType, boolean state) {
-        super(levelStage, x, y, width, height, angle, state, 0f);
+        super(levelStage, x, y, width, height, angle, state, 0f, BodyDef.BodyType.StaticBody);
         this.type = colorType;
     }
 

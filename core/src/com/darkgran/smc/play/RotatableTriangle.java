@@ -10,7 +10,7 @@ public class RotatableTriangle extends RotatableChainObject {
     }
 
     @Override
-    public void createChainBody(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution) {
+    public void createChainBody(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution, BodyDef.BodyType bodyType) {
         if (vertices.length == 3) {
             float[] polygon = new float[vertices.length * 2];
             int i = 0;
@@ -26,10 +26,10 @@ public class RotatableTriangle extends RotatableChainObject {
                 vertex.y -= boxMid.y;
             }
 
-            setChainBody(new ChainBody(levelStage.getWorldScreen().getWorld(), this, vertices, restitution, BodyDef.BodyType.StaticBody));
+            setChainBody(new ChainBody(levelStage.getWorldScreen().getWorld(), this, vertices, restitution, bodyType, boxMid));
             getChainBody().getBody().setTransform(x, y, angle);
         } else {
-            super.createChainBody(levelStage, x, y, vertices, angle, restitution);
+            super.createChainBody(levelStage, x, y, vertices, angle, restitution, bodyType);
         }
     }
 

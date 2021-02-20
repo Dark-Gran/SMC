@@ -433,6 +433,9 @@ public class LevelStage extends Stage {
         for (StandardSwitch standardSwitch : switches) {
             standardSwitch.updateSprite();
         }
+        for (RotatableChainObject rotatable : rotatables) {
+            rotatable.update();
+        }
         //New Circles
         if (circlesToAdd.size() > 0) {
             for (Map.Entry<CircleInfo, Boolean> entry : circlesToAdd.entrySet()) {

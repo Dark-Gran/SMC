@@ -19,7 +19,7 @@ public class StandardSwitch extends Actor {
     public StandardSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, Switchable[] beams, Switchable[] rotatables, SwitchType switchType, Texture texture) {
         this.levelStage = levelStage;
         this.switchType = switchType;
-        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, (new Vector2[]{new Vector2(-width, -height), new Vector2(-width, +height), new Vector2(+width, +height), new Vector2(+width, -height)}), 0f, BodyDef.BodyType.StaticBody);
+        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, (new Vector2[]{new Vector2(-width, -height), new Vector2(-width, +height), new Vector2(+width, +height), new Vector2(+width, -height)}), 0f, BodyDef.BodyType.StaticBody, null);
         chainBody.getBody().setTransform(new Vector2(x, y), angle);
         chainBody.getBody().getFixtureList().get(0).setSensor(true);
         this.setBounds(x-width, y-height, width*2, height*2);
