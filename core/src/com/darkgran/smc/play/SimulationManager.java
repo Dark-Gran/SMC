@@ -61,14 +61,14 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
+    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) { //TODO
         ArrayList<Contact> contacts = new ArrayList<>();
-        for (Contact contact : worldSimulation.getContactList()) {
-            //if (contact.getFixtureA().getBody().getWorld() == contact.getFixtureB().getBody().getWorld()) {
+        for (Contact contact : worldScreen.getWorld().getContactList()) {
+            if (contact.getFixtureA().getBody().getWorld() == contact.getFixtureB().getBody().getWorld()) {
                 if ((contact.getFixtureA().getBody().getUserData() == circle && !(contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle)) || (contact.getFixtureB().getBody().getUserData() == circle && !(contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle))) {
                     contacts.add(contact);
                 }
-            //}
+            }
         }
         for (Contact contact : contacts) {
             WorldManifold manifold = contact.getWorldManifold();
@@ -76,32 +76,25 @@ public class SimulationManager {
                 Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
                 if (otherBody.getUserData() instanceof ChainBoxObject) {
                     ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
-                    Vector2 start = manifold.getPoints()[0];
-                    Vector2 end = manifold.getPoints()[1];
-                    Vector2 mid = new Vector2((start.x - end.x) / 2, (start.y - end.y) / 2);
-                    ChainShape chainShape = (ChainShape) otherBody.getFixtureList().get(0).getShape();
                     Array<Vector2> polygon = new Array();
-                    polygon.add(new Vector2(otherBody.getPosition().x, otherBody.getPosition().y));
-                    polygon.add(new Vector2(otherBody.getPosition().x, otherBody.getPosition().y+1));
-                    polygon.add(new Vector2(otherBody.getPosition().x+1, otherBody.getPosition().y+1));
-                    polygon.add(new Vector2(otherBody.getPosition().x+1, otherBody.getPosition().y-1));
+                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
+                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
+                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
+                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
 
-                    float[] vertices = new float[8];
-                    vertices[0] = polygon.get(0).x;
-                    vertices[1] = polygon.get(0).y;
-                    vertices[2] = polygon.get(1).x;
-                    vertices[3] = polygon.get(1).y;
-                    vertices[4] = polygon.get(2).x;
-                    vertices[5] = polygon.get(2).y;
-                    vertices[6] = polygon.get(3).x;
-                    vertices[7] = polygon.get(3).y;
+                    //float[] vertices = new float[8];
+                    //vertices[0] = polygon.get(0).x;
+                    //vertices[1] = polygon.get(0).y;
+                    //vertices[2] = polygon.get(1).x;
+                    //vertices[3] = polygon.get(1).y;
+                    //vertices[4] = polygon.get(2).x;
+                    //vertices[5] = polygon.get(2).y;
+                    //vertices[6] = polygon.get(3).x;
+                    //vertices[7] = polygon.get(3).y;
+                    //shapeRenderer.setColor(Color.WHITE);
+                    //shapeRenderer.polygon(vertices);
 
-                    //shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.setColor(Color.WHITE);
-                    shapeRenderer.polygon(vertices);
-                    //shapeRenderer.end();
-
-                    if (Intersector.isPointInPolygon(polygon, mid)) { // || Intersector.isPointInPolygon(polygon, start) || Intersector.isPointInPolygon(polygon, end)
+                    if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
                         System.out.println("STUCK!");
                         return true;
                     }
