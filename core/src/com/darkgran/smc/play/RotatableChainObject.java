@@ -3,12 +3,10 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class RotatableChainObject extends ChainBodyObject {
-    private final boolean selfSwitch;
     private float angle;
 
-    public RotatableChainObject(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution, boolean selfSwitch) {
+    public RotatableChainObject(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution) {
         super(levelStage, x, y, vertices, angle, restitution);
-        this.selfSwitch = selfSwitch;
         this.angle = angle;
     }
 

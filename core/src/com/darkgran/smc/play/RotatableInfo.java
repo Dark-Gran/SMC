@@ -7,7 +7,6 @@ public class RotatableInfo extends PositionInfo {
     private PolygonType polygon;
     private float angle;
     private Vector2[] vertices;
-    private boolean selfSwitch;
 
     public float getAngle() {
         return angle;
@@ -23,9 +22,5 @@ public class RotatableInfo extends PositionInfo {
 
     public PolygonType getPolygon() {
         return polygon;
-    }
-
-    public boolean isSelfSwitch() {
-        return selfSwitch;
     }
 }

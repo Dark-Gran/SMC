@@ -189,7 +189,7 @@ public class LevelStage extends Stage {
                 for (RotatableInfo rotatableInfo : levelInfo.getRotatables()) {
                     switch (rotatableInfo.getPolygon()) {
                         case TRIANGLE:
-                            rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), rotatableInfo.getAngle(), rotatableInfo.isSelfSwitch()));
+                            rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), rotatableInfo.getAngle()));
                             break;
                     }
                 }
