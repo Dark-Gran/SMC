@@ -1,6 +1,7 @@
 package com.darkgran.smc.play;
 
 import com.badlogic.gdx.math.Vector2;
+import com.darkgran.smc.WorldScreen;
 
 public abstract class RotatableChainObject extends ChainBodyObject implements Switchable {
     private float angle;
@@ -12,7 +13,8 @@ public abstract class RotatableChainObject extends ChainBodyObject implements Sw
 
     @Override
     public void switchState() {
-        rotate(90);
+        this.angle = angle+(float) (90* WorldScreen.DEGREES_TO_RADIANS);
+        rotate(angle);
     }
 
     @Override

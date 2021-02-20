@@ -161,14 +161,27 @@ public class LevelStage extends Stage {
                 for (BeamInfo beamInfo : levelInfo.getBeams()) {
                     beams.add(new Beam(this, beamInfo.getX(), beamInfo.getY(), beamInfo.getWidth()/2, beamInfo.getHeight()/2, beamInfo.getAngle(), beamInfo.getColorType(), beamInfo.isActive()));
                 }
+                for (RotatableInfo rotatableInfo : levelInfo.getRotatables()) {
+                    switch (rotatableInfo.getPolygon()) {
+                        case TRIANGLE:
+                            rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), (float) (rotatableInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS)));
+                            break;
+                    }
+                }
                 for (SwitchInfo switchInfo : levelInfo.getSwitches()) {
-                    Switchable[] switchables = new Switchable[switchInfo.getBeams().length];
-                    for (int i = 0; i < switchables.length; i++) {
+                    Switchable[] b = new Switchable[switchInfo.getBeams().length];
+                    for (int i = 0; i < b.length; i++) {
                         if (beams.get(switchInfo.getBeams()[i]) != null) {
-                            switchables[i] = beams.get(switchInfo.getBeams()[i]);
+                            b[i] = beams.get(switchInfo.getBeams()[i]);
                         }
                     }
-                    StandardSwitch standardSwitch = new StandardSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), switchables, switchInfo.getSwitchType(), soTex);
+                    Switchable[] r = new Switchable[switchInfo.getRotatables().length];
+                    for (int i = 0; i < r.length; i++) {
+                        if (rotatables.get(switchInfo.getRotatables()[i]) != null) {
+                            r[i] = rotatables.get(switchInfo.getRotatables()[i]);
+                        }
+                    }
+                    StandardSwitch standardSwitch = new StandardSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), b, r, switchInfo.getSwitchType(), soTex);
                     switches.add(standardSwitch);
                     this.addActor(standardSwitch);
                     standardSwitch.addListener(new ClickListener() {
@@ -184,13 +197,6 @@ public class LevelStage extends Stage {
                             lastTouch = null;
                         }
                     });
-                }
-                for (RotatableInfo rotatableInfo : levelInfo.getRotatables()) {
-                    switch (rotatableInfo.getPolygon()) {
-                        case TRIANGLE:
-                            rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), (float) (rotatableInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS)));
-                            break;
-                    }
                 }
                 //Finish
                 introMessage = levelInfo.getIntro();
