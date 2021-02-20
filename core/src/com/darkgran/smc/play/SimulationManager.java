@@ -61,7 +61,7 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
+    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) { //TODO
         ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
@@ -102,18 +102,18 @@ public class SimulationManager {
                 }
             } else {
                 Array<Vector2> polygon = new Array();
-                //float[] vertices = new float[breakPoints.size()*2];
-                //int r = 0;
+                float[] vertices = new float[breakPoints.size()*2];
+                int r = 0;
                 for (int i = 0; i < breakPoints.size(); i++) {
                     float x = circle.getCircleBody().getBody().getPosition().x + breakPoints.get(i).x*WorldScreen.getMMP();
                     float y = circle.getCircleBody().getBody().getPosition().y + breakPoints.get(i).y*WorldScreen.getMMP();
                     polygon.add(new Vector2(x, y));
-                    //vertices[r] = x;
-                    //vertices[r+1] = y;
-                    //r += 2;
+                    vertices[r] = x;
+                    vertices[r+1] = y;
+                    r += 2;
                 }
-                //shapeRenderer.setColor(Color.RED);
-                //shapeRenderer.polygon(vertices);
+                shapeRenderer.setColor(Color.RED);
+                shapeRenderer.polygon(vertices);
                 if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
                     return true;
                 }
