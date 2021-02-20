@@ -61,7 +61,7 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) { //TODO
+    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
         ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.getFixtureA().getBody().getWorld() == contact.getFixtureB().getBody().getWorld()) {
