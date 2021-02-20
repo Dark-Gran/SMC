@@ -3,6 +3,7 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.utils.Array;
@@ -72,7 +73,12 @@ public class GhostCircle extends CircleSensor {
         for (Contact contact : contacts) {
             if (contact.getFixtureA().getBody() == getCircleBody().getBody() || contact.getFixtureB().getBody() == getCircleBody().getBody()) {
                 if (contact.isTouching()) {
-                    return false;
+                    Body other = getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+                    if (other.getUserData() instanceof BareDoor) {
+                        return !((BareDoor) other.getUserData()).isClosed();
+                    } else {
+                        return false;
+                    }
                 }
             }
         }
