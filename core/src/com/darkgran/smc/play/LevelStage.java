@@ -140,6 +140,7 @@ public class LevelStage extends Stage {
                         switch (wallInfo.getType()) {
                             default:
                                 tex = texMediumWall;
+                                break;
                             case WHITE:
                                 tex = texMediumWallW;
                                 break;
@@ -148,6 +149,7 @@ public class LevelStage extends Stage {
                         switch (wallInfo.getType()) {
                             default:
                                 tex = texBigWall;
+                                break;
                             case WHITE:
                                 tex = texBigWallW;
                                 break;
