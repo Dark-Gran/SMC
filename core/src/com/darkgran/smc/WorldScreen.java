@@ -156,15 +156,12 @@ public class WorldScreen implements Screen {
 
             shapeRenderer.setProjectionMatrix(camera.combined);
             levelStage.drawShapes(shapeRenderer);
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !levelStage.isCompleted()) {
-                simulationManager.drawSimulation(shapeRenderer, collisionListener, world, debugRenderer, new Matrix4(camera.combined));
-            }
 
             smc.batch.setProjectionMatrix((new Matrix4(camera.combined)).scale(WorldScreen.getMMP(), WorldScreen.getMMP(), 1));
 
             smc.batch.begin();
             smc.batch.setColor(1, 1, 1, 1f);
-            //levelStage.drawSprites(smc.batch);
+            levelStage.drawSprites(smc.batch);
             smc.batch.end();
 
             Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -193,6 +190,9 @@ public class WorldScreen implements Screen {
             levelStage.update();
             reapWorld();
             world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !levelStage.isCompleted()) {
+                simulationManager.drawSimulation(shapeRenderer, collisionListener, world, debugRenderer, new Matrix4(camera.combined));
+            }
         }
     }
 
