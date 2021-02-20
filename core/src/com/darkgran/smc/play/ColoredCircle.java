@@ -121,7 +121,7 @@ public class ColoredCircle extends CircleActor {
             double speedY = speed * sin(angle);
             body.setLinearVelocity((float) speedX, (float) speedY);
         }
-        //Screen Edge
+        //Screen Edge - in-future: rework
         if (body.getPosition().x-getRadius() >= WorldScreen.WORLD_WIDTH || body.getPosition().x+getRadius() <= 0 || body.getPosition().y-getRadius() >= WorldScreen.WORLD_HEIGHT || body.getPosition().y+getRadius() <= 0) {
             double newX = body.getPosition().x;
             double newY = body.getPosition().y;
