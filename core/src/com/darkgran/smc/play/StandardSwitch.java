@@ -8,14 +8,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.darkgran.smc.WorldScreen;
 
-public class DoorSwitch extends Actor {
+public class StandardSwitch extends Actor {
     private final LevelStage levelStage;
     private final ChainBody chainBody;
     private final Switchable[] doors;
     private SwitchType switchType;
     private final Sprite sprite;
 
-    public DoorSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, Switchable[] doors, SwitchType switchType, Texture texture) {
+    public StandardSwitch(LevelStage levelStage, float x, float y, float width, float height, float angle, Switchable[] doors, SwitchType switchType, Texture texture) {
         this.levelStage = levelStage;
         this.switchType = switchType;
         chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, (new Vector2[]{new Vector2(-width, -height), new Vector2(-width, +height), new Vector2(+width, +height), new Vector2(+width, -height)}), 0f, BodyDef.BodyType.StaticBody);

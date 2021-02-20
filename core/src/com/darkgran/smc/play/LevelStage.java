@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,7 +35,7 @@ public class LevelStage extends Stage {
     private final EnumMap<ColorType, Double> colorPowers = new EnumMap<>(ColorType.class);
     private final ArrayList<Wall> walls = new ArrayList<>();
     private final ArrayList<Beam> beams = new ArrayList<>();
-    private final ArrayList<DoorSwitch> switches = new ArrayList<>();
+    private final ArrayList<StandardSwitch> switches = new ArrayList<>();
     private final ArrayList<RotatableChainObject> rotatables = new ArrayList<>();
     private ColoredCircle lastTouch;
     private int currentLevel = -1;
@@ -169,14 +168,14 @@ public class LevelStage extends Stage {
                             switchables[i] = beams.get(switchInfo.getBeams()[i]);
                         }
                     }
-                    DoorSwitch doorSwitch = new DoorSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), switchables, switchInfo.getSwitchType(), soTex);
-                    switches.add(doorSwitch);
-                    this.addActor(doorSwitch);
-                    doorSwitch.addListener(new ClickListener() {
+                    StandardSwitch standardSwitch = new StandardSwitch(this, switchInfo.getX(), switchInfo.getY(), switchInfo.getWidth()/2, switchInfo.getHeight()/2, switchInfo.getAngle(), switchables, switchInfo.getSwitchType(), soTex);
+                    switches.add(standardSwitch);
+                    this.addActor(standardSwitch);
+                    standardSwitch.addListener(new ClickListener() {
                         @Override
                         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                            if (event.getTarget() instanceof DoorSwitch) {
-                                ((DoorSwitch) event.getTarget()).click();
+                            if (event.getTarget() instanceof StandardSwitch) {
+                                ((StandardSwitch) event.getTarget()).click();
                             }
                             return true;
                         }
@@ -297,12 +296,12 @@ public class LevelStage extends Stage {
             worldScreen.destroyBody(beam.getChainBody().getBody());
         }
         beams.clear();
-        for (DoorSwitch doorSwitch : switches) {
-            if (doorSwitch.getListeners().size > 0) {
-                doorSwitch.removeListener(doorSwitch.getListeners().get(0));
+        for (StandardSwitch standardSwitch : switches) {
+            if (standardSwitch.getListeners().size > 0) {
+                standardSwitch.removeListener(standardSwitch.getListeners().get(0));
             }
-            doorSwitch.remove();
-            worldScreen.destroyBody(doorSwitch.getChainBody().getBody());
+            standardSwitch.remove();
+            worldScreen.destroyBody(standardSwitch.getChainBody().getBody());
         }
         switches.clear();
         for (RotatableChainObject rotatable : rotatables) {
@@ -425,8 +424,8 @@ public class LevelStage extends Stage {
         for (Wall wall : walls) {
             wall.updateSprite();
         }
-        for (DoorSwitch doorSwitch : switches) {
-            doorSwitch.updateSprite();
+        for (StandardSwitch standardSwitch : switches) {
+            standardSwitch.updateSprite();
         }
         //New Circles
         if (circlesToAdd.size() > 0) {
@@ -521,8 +520,8 @@ public class LevelStage extends Stage {
         for (Wall wall : walls) {
             wall.getSprite().draw(batch);
         }
-        for (DoorSwitch doorSwitch :switches) {
-            doorSwitch.getSprite().draw(batch);
+        for (StandardSwitch standardSwitch :switches) {
+            standardSwitch.getSprite().draw(batch);
         }
         //PlayerCircle
         if (playerCircle != null) {
