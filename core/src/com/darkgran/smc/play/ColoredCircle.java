@@ -16,6 +16,7 @@ public class ColoredCircle extends CircleActor {
     private boolean freshShard = false;
     private SimpleCounter interactionLock = new SimpleCounter(false, 30, 0);
     private SimpleCounter breakLock = new SimpleCounter(false, 60, 0);
+    private boolean stuck = false;
 
     public ColoredCircle(final LevelStage levelStage, float x, float y, double radius, float degrees, ColorType colorType) {
         super(levelStage, x, y, radius, BodyDef.BodyType.DynamicBody);
@@ -77,6 +78,7 @@ public class ColoredCircle extends CircleActor {
     public void update() {
         Body body = getCircleBody().getBody();
         //Locks against interactions etc.
+        stuck = false;
         interactionLock.update();
         breakLock.update();
         //Size Change
@@ -218,5 +220,13 @@ public class ColoredCircle extends CircleActor {
 
     public double getGrowBuffer() {
         return growBuffer;
+    }
+
+    public boolean isStuck() {
+        return stuck;
+    }
+
+    public void setStuck(boolean stuck) {
+        this.stuck = stuck;
     }
 }

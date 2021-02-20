@@ -42,16 +42,16 @@ public class SimulationManager {
     public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
+        markStuckCircles();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
-            disableStuckCircles();
             for (Body body : bodies) {
-                if (!body.getFixtureList().get(0).isSensor()) {
-                    float rad = 2f;
-                    if (body.getUserData() instanceof ColoredCircle) {
-                        ColoredCircle circle = (ColoredCircle) body.getUserData();
+                float rad = 2f;
+                if (body.getUserData() instanceof ColoredCircle) {
+                    ColoredCircle circle = (ColoredCircle) body.getUserData();
+                    if (!circle.isStuck()) {
                         applyCircleUpdate(circle, body);
                         boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
                         if (bodyInsideRad) {
@@ -60,6 +60,8 @@ public class SimulationManager {
                                 shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
                             }
                         }
+                    } else {
+                        body.getFixtureList().get(0).setSensor(true);
                     }
                 }
             }
@@ -71,7 +73,7 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private void disableStuckCircles() {
+    private void markStuckCircles() {
         ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
@@ -103,7 +105,7 @@ public class SimulationManager {
                     polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
                     for (Vector2 checkPoint : checkPoints) {
                         if (Intersector.isPointInPolygon(polygon, checkPoint)) {
-                            return true;
+                            //stuck true
                         }
                     }
                     for (Vector2 point : manifold.getPoints()) {
@@ -134,11 +136,11 @@ public class SimulationManager {
             }*/
             for (Vector2 checkPoint : checkPoints) {
                 if (Intersector.isPointInPolygon(polygon, checkPoint)) {
-                    //sensor true
+                    //stuck true
                 }
             }
         }
-        //sensor false
+        //stuck false
     }
 
     private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
