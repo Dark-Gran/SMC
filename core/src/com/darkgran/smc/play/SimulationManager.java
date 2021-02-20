@@ -2,6 +2,7 @@ package com.darkgran.smc.play;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -30,7 +31,7 @@ public class SimulationManager {
     public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
@@ -38,7 +39,7 @@ public class SimulationManager {
                 float rad = 2f;
                 if (body.getUserData() instanceof ColoredCircle) {
                     ColoredCircle circle = (ColoredCircle) body.getUserData();
-                    if (!circleStuck(circle)) {
+                    if (!circleStuck(circle, shapeRenderer)) {
                         applyCircleUpdate(circle, body);
                         boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
                         if (bodyInsideRad) {
@@ -56,22 +57,53 @@ public class SimulationManager {
         }
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
-        //debugRenderer.setDrawBodies(true);
-        //debugRenderer.render(worldSimulation, matrix);
+        debugRenderer.setDrawBodies(true);
+        debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle) {
-        ArrayList<WorldManifold> manifolds = new ArrayList<>();
+    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
+        ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldSimulation.getContactList()) {
-            if (contact.getFixtureA().getBody().getUserData() == circle || contact.getFixtureB().getBody().getUserData() == circle) {
-                manifolds.add(contact.getWorldManifold());
-            }
+            //if (contact.getFixtureA().getBody().getWorld() == contact.getFixtureB().getBody().getWorld()) {
+                if ((contact.getFixtureA().getBody().getUserData() == circle && !(contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle)) || (contact.getFixtureB().getBody().getUserData() == circle && !(contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle))) {
+                    contacts.add(contact);
+                }
+            //}
         }
-        for (WorldManifold manifoldA : manifolds) {
-            if (manifoldA.getPoints().length > 0) {
-                for (WorldManifold manifoldB : manifolds) {
-                    if (manifoldA != manifoldB && manifoldB.getPoints().length > 0) {
-                        //TODO
+        for (Contact contact : contacts) {
+            WorldManifold manifold = contact.getWorldManifold();
+            if (manifold.getPoints().length == 2) {
+                Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+                if (otherBody.getUserData() instanceof ChainBoxObject) {
+                    ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
+                    Vector2 start = manifold.getPoints()[0];
+                    Vector2 end = manifold.getPoints()[1];
+                    Vector2 mid = new Vector2((start.x - end.x) / 2, (start.y - end.y) / 2);
+                    ChainShape chainShape = (ChainShape) otherBody.getFixtureList().get(0).getShape();
+                    Array<Vector2> polygon = new Array();
+                    polygon.add(new Vector2(otherBody.getPosition().x, otherBody.getPosition().y));
+                    polygon.add(new Vector2(otherBody.getPosition().x, otherBody.getPosition().y+1));
+                    polygon.add(new Vector2(otherBody.getPosition().x+1, otherBody.getPosition().y+1));
+                    polygon.add(new Vector2(otherBody.getPosition().x+1, otherBody.getPosition().y-1));
+
+                    float[] vertices = new float[8];
+                    vertices[0] = polygon.get(0).x;
+                    vertices[1] = polygon.get(0).y;
+                    vertices[2] = polygon.get(1).x;
+                    vertices[3] = polygon.get(1).y;
+                    vertices[4] = polygon.get(2).x;
+                    vertices[5] = polygon.get(2).y;
+                    vertices[6] = polygon.get(3).x;
+                    vertices[7] = polygon.get(3).y;
+
+                    //shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.setColor(Color.WHITE);
+                    shapeRenderer.polygon(vertices);
+                    //shapeRenderer.end();
+
+                    if (Intersector.isPointInPolygon(polygon, mid)) { // || Intersector.isPointInPolygon(polygon, start) || Intersector.isPointInPolygon(polygon, end)
+                        System.out.println("STUCK!");
+                        return true;
                     }
                 }
             }
