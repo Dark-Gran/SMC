@@ -71,9 +71,17 @@ public class SimulationManager {
             }
         }
         ArrayList<Vector2> breakPoints = new ArrayList<>();
+        Vector2[] checkPoints = new Vector2[5];
+        Vector2 mid = circle.getCircleBody().getBody().getPosition();
+        float offset = (float) circle.getRadius()/4;
+        checkPoints[0] = mid;
+        checkPoints[1] = new Vector2(mid.x+offset, mid.y+offset);
+        checkPoints[2] = new Vector2(mid.x-offset, mid.y-offset);
+        checkPoints[3] = new Vector2(mid.x-offset, mid.y+offset);
+        checkPoints[4] = new Vector2(mid.x+offset, mid.y-offset);
         for (Contact contact : contacts) {
             WorldManifold manifold = contact.getWorldManifold();
-            if (manifold.getPoints().length == 2) {
+            if (manifold.getPoints().length > 0) {
                 Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
                 if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
                     ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
@@ -82,17 +90,17 @@ public class SimulationManager {
                     polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
                     polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
                     polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
-                    if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
-                        return true;
-                    } else {
-                        for (Vector2 point : manifold.getPoints()) {
-                            if (!breakPoints.contains(point)) {
-                                breakPoints.add(point);
-                            }
+                    for (Vector2 checkPoint : checkPoints) {
+                        if (Intersector.isPointInPolygon(polygon, checkPoint)) {
+                            return true;
+                        }
+                    }
+                    for (Vector2 point : manifold.getPoints()) {
+                        if (!breakPoints.contains(point)) {
+                            breakPoints.add(point);
                         }
                     }
                 }
-
             }
         }
         while (breakPoints.contains(new Vector2(0, 0))) {
@@ -107,20 +115,12 @@ public class SimulationManager {
                 }
             }
             if (polygon.size == 2) {
-                polygon = rectFromLine(polygon);
+                polygon = rectFromLine(polygon, 0.05f);
             }
-            for (Vector2 vector : polygon) {
+            for (Vector2 vector : polygon) { //"debugRender"
                 shapeRenderer.setColor(Color.RED);
                 shapeRenderer.circle(vector.x, vector.y, 0.01f, 10);
             }
-            Vector2[] checkPoints = new Vector2[5];
-            Vector2 mid = circle.getCircleBody().getBody().getPosition();
-            float offset = (float) circle.getRadius()/4;
-            checkPoints[0] = mid;
-            checkPoints[1] = new Vector2(mid.x+offset, mid.y+offset);
-            checkPoints[2] = new Vector2(mid.x-offset, mid.y-offset);
-            checkPoints[3] = new Vector2(mid.x-offset, mid.y+offset);
-            checkPoints[4] = new Vector2(mid.x+offset, mid.y-offset);
             for (Vector2 checkPoint : checkPoints) {
                 if (Intersector.isPointInPolygon(polygon, checkPoint)) {
                     return true;
@@ -130,7 +130,7 @@ public class SimulationManager {
         return false;
     }
 
-    private Array<Vector2> rectFromLine(Array<Vector2> line) {
+    private Array<Vector2> rectFromLine(Array<Vector2> line, float width) {
         Array<Vector2> polygon = new Array<>();
         for (Vector2 vector : line) {
             polygon.add(vector.cpy());
@@ -138,17 +138,17 @@ public class SimulationManager {
         if (polygon.size == 2) {
             double angle = atan2(polygon.get(0).y-polygon.get(1).y,polygon.get(0).x-polygon.get(1).x);
             Vector2 point0 = new Vector2();
-            point0.x = (float) (polygon.get(0).x + 0.05f*sin(angle));
-            point0.y = (float) (polygon.get(0).y + 0.05f*cos(angle));
+            point0.x = (float) (polygon.get(0).x + (width/2)*sin(angle));
+            point0.y = (float) (polygon.get(0).y + (width/2)*cos(angle));
             Vector2 point1 = new Vector2();
-            point1.x = (float) (polygon.get(0).x + 0.05f*sin(angle-PI));
-            point1.y = (float) (polygon.get(0).y + 0.05f*cos(angle-PI));
+            point1.x = (float) (polygon.get(0).x + (width/2)*sin(angle-PI));
+            point1.y = (float) (polygon.get(0).y + (width/2)*cos(angle-PI));
             Vector2 point2 = new Vector2();
-            point2.x = (float) (polygon.get(1).x + 0.05f*sin(angle));
-            point2.y = (float) (polygon.get(1).y + 0.05f*cos(angle));
+            point2.x = (float) (polygon.get(1).x + (width/2)*sin(angle));
+            point2.y = (float) (polygon.get(1).y + (width/2)*cos(angle));
             Vector2 point3 = new Vector2();
-            point3.x = (float) (polygon.get(1).x + 0.05f*sin(angle-PI));
-            point3.y = (float) (polygon.get(1).y + 0.05f*cos(angle-PI));
+            point3.x = (float) (polygon.get(1).x + (width/2)*sin(angle-PI));
+            point3.y = (float) (polygon.get(1).y + (width/2)*cos(angle-PI));
             polygon.clear();
             polygon.add(point0);
             polygon.add(point1);
