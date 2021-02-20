@@ -79,6 +79,7 @@ public class SimulationManager {
         HashMap<ColoredCircle, ArrayList<Vector2>> circles = new HashMap<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
+                //atm checking only for circle vs non-circle:
                 if ((contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle)) || (contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle))) {
                     WorldManifold manifold = contact.getWorldManifold();
                     if (manifold.getPoints().length > 0) {
