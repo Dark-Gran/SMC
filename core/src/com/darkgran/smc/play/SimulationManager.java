@@ -46,11 +46,12 @@ public class SimulationManager {
         for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
+            disableStuckCircles();
             for (Body body : bodies) {
-                float rad = 2f;
-                if (body.getUserData() instanceof ColoredCircle) {
-                    ColoredCircle circle = (ColoredCircle) body.getUserData();
-                    if (!circleStuck(circle, shapeRenderer)) {
+                if (!body.getFixtureList().get(0).isSensor()) {
+                    float rad = 2f;
+                    if (body.getUserData() instanceof ColoredCircle) {
+                        ColoredCircle circle = (ColoredCircle) body.getUserData();
                         applyCircleUpdate(circle, body);
                         boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
                         if (bodyInsideRad) {
@@ -59,8 +60,6 @@ public class SimulationManager {
                                 shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
                             }
                         }
-                    } else {
-                        body.getFixtureList().get(0).setSensor(true); //= Do not simulate projections of stuck circles (too heavy on performance)
                     }
                 }
             }
@@ -70,6 +69,76 @@ public class SimulationManager {
         shapeRenderer.end();
         debugRenderer.setDrawBodies(true);
         debugRenderer.render(worldSimulation, matrix);
+    }
+
+    private void disableStuckCircles() {
+        ArrayList<Contact> contacts = new ArrayList<>();
+        for (Contact contact : worldScreen.getWorld().getContactList()) {
+            if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
+                //in-future: atm we check only circles against non-circles - but how about "multi circle stucks" (can these happen?)?
+                if ((contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle)) || (contact.getFixtureB().getBody().getUserData() instanceof ColoredCircle && !(contact.getFixtureA().getBody().getUserData() instanceof ColoredCircle))) {
+                    contacts.add(contact);
+                }
+            }
+        }
+        ArrayList<Vector2> breakPoints = new ArrayList<>(); //TODO
+        Vector2[] checkPoints = new Vector2[5];
+        /*Vector2 mid = circle.getCircleBody().getBody().getPosition();
+        float offset = (float) circle.getRadius()/4;
+        checkPoints[0] = mid;
+        checkPoints[1] = new Vector2(mid.x+offset, mid.y+offset);
+        checkPoints[2] = new Vector2(mid.x-offset, mid.y-offset);
+        checkPoints[3] = new Vector2(mid.x-offset, mid.y+offset);
+        checkPoints[4] = new Vector2(mid.x+offset, mid.y-offset);*/
+        for (Contact contact : contacts) {
+            WorldManifold manifold = contact.getWorldManifold();
+            if (manifold.getPoints().length > 0) {
+                /*Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+                if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
+                    ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
+                    Array<Vector2> polygon = new Array();
+                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
+                    polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
+                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
+                    polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
+                    for (Vector2 checkPoint : checkPoints) {
+                        if (Intersector.isPointInPolygon(polygon, checkPoint)) {
+                            return true;
+                        }
+                    }
+                    for (Vector2 point : manifold.getPoints()) {
+                        if (!breakPoints.contains(point)) {
+                            breakPoints.add(point);
+                        }
+                    }
+                }*/
+            }
+        }
+        while (breakPoints.contains(new Vector2(0, 0))) {
+            breakPoints.remove(new Vector2(0, 0));
+        }
+        if (breakPoints.size() > 1) {
+            Array<Vector2> polygon = new Array();
+            for (int i = 0; i < breakPoints.size(); i++) {
+                Vector2 newVector = new Vector2(breakPoints.get(i).x, breakPoints.get(i).y);
+                if (!(polygon.contains(newVector, false))) {
+                    polygon.add(newVector);
+                }
+            }
+            if (polygon.size == 2) {
+                polygon = rectFromLine(polygon, 0.05f);
+            }
+            /*for (Vector2 vector : polygon) { //"debugRender"
+                shapeRenderer.setColor(Color.RED);
+                shapeRenderer.circle(vector.x, vector.y, 0.01f, 10);
+            }*/
+            for (Vector2 checkPoint : checkPoints) {
+                if (Intersector.isPointInPolygon(polygon, checkPoint)) {
+                    //sensor true
+                }
+            }
+        }
+        //sensor false
     }
 
     private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
