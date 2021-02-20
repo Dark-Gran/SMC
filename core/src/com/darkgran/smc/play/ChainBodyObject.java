@@ -3,7 +3,6 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.math.GeometryUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.darkgran.smc.WorldScreen;
 
 public abstract class ChainBodyObject {
     private final LevelStage levelStage;
@@ -26,7 +25,6 @@ public abstract class ChainBodyObject {
         }
         chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, vertices, restitution, BodyDef.BodyType.StaticBody);
         chainBody.getBody().setTransform(x, y, angle);
-        System.out.println(getChainBody().getBody().getPosition());
     }
 
     public ChainBody getChainBody() {
