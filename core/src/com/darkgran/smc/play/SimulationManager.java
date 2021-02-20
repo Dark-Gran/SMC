@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.darkgran.smc.WorldScreen;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.*;
 
 public class SimulationManager {
@@ -36,13 +38,17 @@ public class SimulationManager {
                 float rad = 2f;
                 if (body.getUserData() instanceof ColoredCircle) {
                     ColoredCircle circle = (ColoredCircle) body.getUserData();
-                    applyCircleUpdate(circle, body);
-                    boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
-                    if (bodyInsideRad) {
-                        if (i % 10 == 0 && !circle.isFreshShard() && !circle.isMergingAway() && !circle.isGone()) {
-                            shapeRenderer.setColor(circle.getColorType().getColor().r, circle.getColorType().getColor().g, circle.getColorType().getColor().b, 0.7f);
-                            shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
+                    if (!circleStuck(circle)) {
+                        applyCircleUpdate(circle, body);
+                        boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
+                        if (bodyInsideRad) {
+                            if (i % 10 == 0 && !circle.isFreshShard() && !circle.isMergingAway() && !circle.isGone()) {
+                                shapeRenderer.setColor(circle.getColorType().getColor().r, circle.getColorType().getColor().g, circle.getColorType().getColor().b, 0.7f);
+                                shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
+                            }
                         }
+                    } else {
+                        body.getFixtureList().get(0).setSensor(true);
                     }
                 }
             }
@@ -52,6 +58,25 @@ public class SimulationManager {
         shapeRenderer.end();
         //debugRenderer.setDrawBodies(true);
         //debugRenderer.render(worldSimulation, matrix);
+    }
+
+    private boolean circleStuck(ColoredCircle circle) {
+        ArrayList<WorldManifold> manifolds = new ArrayList<>();
+        for (Contact contact : worldSimulation.getContactList()) {
+            if (contact.getFixtureA().getBody().getUserData() == circle || contact.getFixtureB().getBody().getUserData() == circle) {
+                manifolds.add(contact.getWorldManifold());
+            }
+        }
+        for (WorldManifold manifoldA : manifolds) {
+            if (manifoldA.getPoints().length > 0) {
+                for (WorldManifold manifoldB : manifolds) {
+                    if (manifoldA != manifoldB && manifoldB.getPoints().length > 0) {
+                        //TODO
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void resetSimulation(CollisionListener collisionListener, World copyWorld) {
