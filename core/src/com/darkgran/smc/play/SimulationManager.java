@@ -74,6 +74,7 @@ public class SimulationManager {
             WorldManifold manifold = contact.getWorldManifold();
             if (manifold.getPoints().length == 2) {
                 Body otherBody = circle.getCircleBody().getBody() == contact.getFixtureA().getBody() ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+                //One-Body Check
                 if (!otherBody.getFixtureList().get(0).isSensor() && otherBody.getUserData() instanceof ChainBoxObject) {
                     ChainBoxObject cbo = (ChainBoxObject) otherBody.getUserData();
                     Array<Vector2> polygon = new Array();
@@ -81,7 +82,6 @@ public class SimulationManager {
                     polygon.add(new Vector2(otherBody.getPosition().x-cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
                     polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y+cbo.getHeight()));
                     polygon.add(new Vector2(otherBody.getPosition().x+cbo.getWidth(), otherBody.getPosition().y-cbo.getHeight()));
-
                     //float[] vertices = new float[8];
                     //vertices[0] = polygon.get(0).x;
                     //vertices[1] = polygon.get(0).y;
@@ -93,14 +93,32 @@ public class SimulationManager {
                     //vertices[7] = polygon.get(3).y;
                     //shapeRenderer.setColor(Color.WHITE);
                     //shapeRenderer.polygon(vertices);
-
                     if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
                         return true;
                     }
                 }
+                //Multiple-Bodies Check TODO
+                /*for (Contact contactB : contacts) {
+                    WorldManifold manifoldB = contact.getWorldManifold();
+                    if (manifoldB.getPoints().length > 0) {
+                        Vector2 start = manifoldB.getPoints()[0];
+                        for (WorldManifold manifoldB : manifolds) {
+                            if (manifoldA != manifoldB && manifoldB.getPoints().length > 0) {
+                                Vector2 end = manifoldB.getPoints()[0];
+                                if (pointIsOnLine(start, end, getCircleBody().getBody().getPosition())) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }*/
             }
         }
         return false;
+    }
+
+    private boolean pointIsOnLine(Vector2 start, Vector2 end, Vector2 point) {
+        return start.dst(point) + end.dst(point) == start.dst(end);
     }
 
     public void resetSimulation(CollisionListener collisionListener, World copyWorld) {
