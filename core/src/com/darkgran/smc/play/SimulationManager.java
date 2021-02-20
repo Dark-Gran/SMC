@@ -71,8 +71,8 @@ public class SimulationManager {
         }
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
-        debugRenderer.setDrawBodies(true);
-        debugRenderer.render(worldSimulation, matrix);
+        //debugRenderer.setDrawBodies(true);
+        //debugRenderer.render(worldSimulation, matrix);
     }
 
     private void markStuckCircles() {
