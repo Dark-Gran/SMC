@@ -3,10 +3,10 @@ package com.darkgran.smc.play;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-public class ChainBody {
+public class ChainBoxBody {
     private final Body body;
 
-    public ChainBody(final World world, final Object object, float width, float height, float restitution, BodyDef.BodyType bodyType) {
+    public ChainBoxBody(final World world, final Object object, float width, float height, float restitution, BodyDef.BodyType bodyType) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = bodyType;
 

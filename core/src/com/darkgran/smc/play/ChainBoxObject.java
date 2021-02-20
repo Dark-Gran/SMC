@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public abstract class ChainBoxObject {
     private final LevelStage levelStage;
-    private final ChainBody chainBody;
+    private final ChainBoxBody chainBoxBody;
     private float width;
     private float height;
 
@@ -13,12 +13,12 @@ public abstract class ChainBoxObject {
         this.levelStage = levelStage;
         this.width = width;
         this.height = height;
-        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, width, height, restitution, BodyDef.BodyType.StaticBody);
-        chainBody.getBody().setTransform(new Vector2(x, y), angle);
+        chainBoxBody = new ChainBoxBody(levelStage.getWorldScreen().getWorld(), this, width, height, restitution, BodyDef.BodyType.StaticBody);
+        chainBoxBody.getBody().setTransform(new Vector2(x, y), angle);
     }
 
-    public ChainBody getChainBody() {
-        return chainBody;
+    public ChainBoxBody getChainBody() {
+        return chainBoxBody;
     }
 
     public float getWidth() {
