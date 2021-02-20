@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class ChainBoxBody {
     private final Body body;
 
+    //in-future: replace all uses with ChainBody (incl. rewriting the "circle stuck" checks in SimulationManager)
     public ChainBoxBody(final World world, final Object object, float width, float height, float restitution, BodyDef.BodyType bodyType) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = bodyType;
