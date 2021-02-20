@@ -164,7 +164,7 @@ public class WorldScreen implements Screen {
 
             smc.batch.begin();
             smc.batch.setColor(1, 1, 1, 1f);
-            levelStage.drawSprites(smc.batch);
+            //levelStage.drawSprites(smc.batch);
             smc.batch.end();
 
             Gdx.gl.glDisable(GL20.GL_BLEND);

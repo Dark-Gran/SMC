@@ -31,7 +31,7 @@ public class SimulationManager {
     public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i <= 180; i++) {
             bodies = new Array<>();
             worldSimulation.getBodies(bodies);
@@ -61,7 +61,7 @@ public class SimulationManager {
         debugRenderer.render(worldSimulation, matrix);
     }
 
-    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) { //TODO 1. Debug 2. "First check all circles, then run through bodies (and then world-step)"
+    private boolean circleStuck(ColoredCircle circle, ShapeRenderer shapeRenderer) {
         ArrayList<Contact> contacts = new ArrayList<>();
         for (Contact contact : worldScreen.getWorld().getContactList()) {
             if (contact.isTouching() && contact.getFixtureA().getBody().getUserData() != contact.getFixtureB().getBody().getUserData()) {
@@ -85,43 +85,77 @@ public class SimulationManager {
                     if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
                         return true;
                     } else {
-                        /*for (Vector2 point : manifold.getPoints()) {
+                        for (Vector2 point : manifold.getPoints()) {
                             if (!breakPoints.contains(point)) {
                                 breakPoints.add(point);
                             }
-                        }*/
+                        }
                     }
                 }
 
             }
         }
-        /*if (breakPoints.size() > 1) {
-            if (breakPoints.size() == 2) {
-                if (pointIsOnLine(breakPoints.get(0), breakPoints.get(1), circle.getCircleBody().getBody().getPosition())) {
-                    return true;
+        while (breakPoints.contains(new Vector2(0, 0))) {
+            breakPoints.remove(new Vector2(0, 0));
+        }
+        if (breakPoints.size() > 1) {
+            Array<Vector2> polygon = new Array();
+            for (int i = 0; i < breakPoints.size(); i++) {
+                Vector2 newVector = new Vector2(breakPoints.get(i).x, breakPoints.get(i).y);
+                if (!(polygon.contains(newVector, false))) {
+                    polygon.add(newVector);
                 }
-            } else {
-                Array<Vector2> polygon = new Array();
-                for (int i = 0; i < breakPoints.size(); i++) {
-                    float x = circle.getCircleBody().getBody().getWorldCenter().x + breakPoints.get(i).x*WorldScreen.getMMP();
-                    float y = circle.getCircleBody().getBody().getWorldCenter().y + breakPoints.get(i).y*WorldScreen.getMMP();
-                    Vector2 newVector = new Vector2(x, y);
-                    if (!(polygon.contains(newVector, false))) {
-                        polygon.add(newVector);
-                    }
-                    System.out.println(breakPoints.get(i).x*WorldScreen.getMMP()+","+breakPoints.get(i).y*WorldScreen.getMMP());
-                }
-
-                for (Vector2 vector : polygon) {
-                    shapeRenderer.setColor(Color.RED);
-                    shapeRenderer.circle(vector.x, vector.y, 0.01f, 10);
-                }
-                if (Intersector.isPointInPolygon(polygon, circle.getCircleBody().getBody().getPosition())) {
+            }
+            if (polygon.size == 2) {
+                polygon = rectFromLine(polygon);
+            }
+            for (Vector2 vector : polygon) {
+                shapeRenderer.setColor(Color.RED);
+                shapeRenderer.circle(vector.x, vector.y, 0.01f, 10);
+            }
+            Vector2[] checkPoints = new Vector2[5];
+            Vector2 mid = circle.getCircleBody().getBody().getPosition();
+            float offset = (float) circle.getRadius()/4;
+            checkPoints[0] = mid;
+            checkPoints[1] = new Vector2(mid.x+offset, mid.y+offset);
+            checkPoints[2] = new Vector2(mid.x-offset, mid.y-offset);
+            checkPoints[3] = new Vector2(mid.x-offset, mid.y+offset);
+            checkPoints[4] = new Vector2(mid.x+offset, mid.y-offset);
+            for (Vector2 checkPoint : checkPoints) {
+                if (Intersector.isPointInPolygon(polygon, checkPoint)) {
                     return true;
                 }
             }
-        }*/
+        }
         return false;
+    }
+
+    private Array<Vector2> rectFromLine(Array<Vector2> line) {
+        Array<Vector2> polygon = new Array<>();
+        for (Vector2 vector : line) {
+            polygon.add(vector.cpy());
+        }
+        if (polygon.size == 2) {
+            double angle = atan2(polygon.get(0).y-polygon.get(1).y,polygon.get(0).x-polygon.get(1).x);
+            Vector2 point0 = new Vector2();
+            point0.x = (float) (polygon.get(0).x + 0.05f*sin(angle));
+            point0.y = (float) (polygon.get(0).y + 0.05f*cos(angle));
+            Vector2 point1 = new Vector2();
+            point1.x = (float) (polygon.get(0).x + 0.05f*sin(angle-PI));
+            point1.y = (float) (polygon.get(0).y + 0.05f*cos(angle-PI));
+            Vector2 point2 = new Vector2();
+            point2.x = (float) (polygon.get(1).x + 0.05f*sin(angle));
+            point2.y = (float) (polygon.get(1).y + 0.05f*cos(angle));
+            Vector2 point3 = new Vector2();
+            point3.x = (float) (polygon.get(1).x + 0.05f*sin(angle-PI));
+            point3.y = (float) (polygon.get(1).y + 0.05f*cos(angle-PI));
+            polygon.clear();
+            polygon.add(point0);
+            polygon.add(point1);
+            polygon.add(point2);
+            polygon.add(point3);
+        }
+        return polygon;
     }
 
     private boolean pointIsOnLine(Vector2 start, Vector2 end, Vector2 point) {
