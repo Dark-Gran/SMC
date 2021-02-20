@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class ChainBody {
     private final Body body;
 
-    public ChainBody(final World world, final Object object, float x, float y, Vector2[] vertices, float restitution, BodyDef.BodyType bodyType) {
+    public ChainBody(final World world, final Object object, Vector2[] vertices, float restitution, BodyDef.BodyType bodyType) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = bodyType;
 
@@ -14,10 +14,6 @@ public class ChainBody {
         body.setUserData(object);
 
         ChainShape shape = new ChainShape();
-
-        for (Vector2 vertex : vertices) {
-            vertex = new Vector2(vertex.x+x, vertex.y+y);
-        }
 
         shape.createLoop(vertices);
 

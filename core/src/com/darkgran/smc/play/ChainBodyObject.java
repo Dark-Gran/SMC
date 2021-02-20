@@ -1,5 +1,6 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.math.GeometryUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
@@ -9,8 +10,21 @@ public abstract class ChainBodyObject {
 
     public ChainBodyObject(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution) {
         this.levelStage = levelStage;
-        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, x, y, vertices, restitution, BodyDef.BodyType.StaticBody);
-        chainBody.getBody().setTransform(new Vector2(x, y), angle);
+        float[] polygon = new float[vertices.length*2];
+        int i = 0;
+        for (Vector2 vertex : vertices) {
+            polygon[i] = vertex.x;
+            polygon[i+1] = vertex.y;
+            i += 2;
+        }
+        Vector2 centroid = new Vector2();
+        GeometryUtils.polygonCentroid(polygon, 0, polygon.length, centroid);
+        for (Vector2 vertex : vertices) {
+            vertex.x -= centroid.x - x;
+            vertex.y -= centroid.y - y;
+        }
+        chainBody = new ChainBody(levelStage.getWorldScreen().getWorld(), this, vertices, restitution, BodyDef.BodyType.StaticBody);
+        chainBody.getBody().setTransform(chainBody.getBody().getPosition(), angle);
     }
 
     public ChainBody getChainBody() {
