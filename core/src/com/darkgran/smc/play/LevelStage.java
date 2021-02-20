@@ -187,7 +187,11 @@ public class LevelStage extends Stage {
                     });
                 }
                 for (RotatableInfo rotatableInfo : levelInfo.getRotatables()) {
-                    rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), rotatableInfo.getAngle()));
+                    switch (rotatableInfo.getPolygon()) {
+                        case TRIANGLE:
+                            rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), rotatableInfo.getAngle()));
+                            break;
+                    }
                 }
                 //Finish
                 introMessage = levelInfo.getIntro();
