@@ -6,10 +6,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public abstract class ChainBodyObject {
     private final LevelStage levelStage;
-    private final ChainBody chainBody;
+    private ChainBody chainBody;
 
     public ChainBodyObject(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution) {
         this.levelStage = levelStage;
+        createChainBody(levelStage, x, y, vertices, angle, restitution);
+    }
+
+    public void createChainBody(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution) {
         float[] polygon = new float[vertices.length*2];
         int i = 0;
         for (Vector2 vertex : vertices) {
@@ -31,4 +35,7 @@ public abstract class ChainBodyObject {
         return chainBody;
     }
 
+    protected void setChainBody(ChainBody chainBody) {
+        this.chainBody = chainBody;
+    }
 }
