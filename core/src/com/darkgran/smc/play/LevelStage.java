@@ -52,8 +52,12 @@ public class LevelStage extends Stage {
     private final Texture texWallG = new Texture("images/wallG.png");
     private final Texture texMediumWall = new Texture("images/mediumWall.png");
     private final Texture texMediumWallW = new Texture("images/mediumWallW.png");
+    private final Texture texMediumWallB = new Texture("images/mediumWallB.png");
+    private final Texture texMediumWallG = new Texture("images/mediumWallG.png");
     private final Texture texBigWall = new Texture("images/bigWall.png");
     private final Texture texBigWallW = new Texture("images/bigWallW.png");
+    private final Texture texBigWallB = new Texture("images/bigWallB.png");
+    private final Texture texBigWallG = new Texture("images/bigWallG.png");
     private final Texture texTriangle = new Texture("images/triangle.png");
     private final Texture soTex = new Texture("images/switch_over.png");
     private final Texture pcTex = new Texture("images/circle.png");
@@ -146,6 +150,12 @@ public class LevelStage extends Stage {
                             case WHITE:
                                 tex = texMediumWallW;
                                 break;
+                            case BLUE:
+                                tex = texMediumWallB;
+                                break;
+                            case GREEN:
+                                tex = texMediumWallG;
+                                break;
                         }
                     } else {
                         switch (wallInfo.getType()) {
@@ -154,6 +164,12 @@ public class LevelStage extends Stage {
                                 break;
                             case WHITE:
                                 tex = texBigWallW;
+                                break;
+                            case BLUE:
+                                tex = texBigWallB;
+                                break;
+                            case GREEN:
+                                tex = texBigWallG;
                                 break;
                         }
                     }
@@ -569,12 +585,16 @@ public class LevelStage extends Stage {
         disableContinue();
         texBigWall.dispose();
         texBigWallW.dispose();
+        texBigWallB.dispose();
+        texBigWallG.dispose();
         texWall.dispose();
         texWallW.dispose();
         texWallB.dispose();
         texWallG.dispose();
         texMediumWall.dispose();
         texMediumWallW.dispose();
+        texMediumWallB.dispose();
+        texMediumWallG.dispose();
         texTriangle.dispose();
         soTex.dispose();
         pcTex.dispose();
