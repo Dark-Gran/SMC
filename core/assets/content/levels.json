@@ -204,5 +204,44 @@
     "beams": [],
     "switches": [],
     "rotatables": []
+  },
+  {
+    "id": 9,
+    "intro": "Wise Tread Lightly.",
+    "circles": [
+      { "type": "WHITE", "x": 3, "y": 3, "radius": 0.15, "angle": 250 },
+      { "type": "WHITE", "x": 3, "y": 1, "radius": 0.15, "angle": 70 },
+      { "type": "WHITE", "x": 6.5, "y": 4, "radius": 0.15, "angle": 340 },
+      { "type": "WHITE", "x": 4.5, "y": 4, "radius": 0.15, "angle": 200 },
+      { "type": "WHITE", "x": 8.5, "y": 1.5, "radius": 0.2, "angle": 160 },
+      { "type": "BLUE", "x": 6, "y": 4, "radius": 0.1, "angle": 30 },
+      { "type": "BLUE", "x": 2, "y": 4, "radius": 0.1, "angle": 330 },
+      { "type": "BLUE", "x": 6, "y": 2, "radius": 0.2, "angle": 160 },
+      { "type": "BLUE", "x": 7, "y": 1, "radius": 0.1, "angle": 345 },
+      { "type": "BLUE", "x": 2, "y": 1.5, "radius": 0.1, "angle": 30 },
+      { "type": "GREEN", "x": 7, "y": 4.5, "radius": 0.1, "angle": 350 },
+      { "type": "GREEN", "x": 4, "y": 2, "radius": 0.1, "angle": 130 },
+      { "type": "GREEN", "x": 2, "y": 3, "radius": 0.15, "angle": 45 },
+      { "type": "GREEN", "x": 7, "y": 0.5, "radius": 0.1, "angle": 10 },
+      { "type": "GREEN", "x": 2, "y": 1, "radius": 0.1, "angle": 200 }
+    ],
+    "walls": [
+      { "type": "BLUE", "x": 0, "y": 2.4, "width": 0.49, "height": 10, "angle": 0 },
+      { "type": "BLUE", "x": 9.6, "y": 2.4, "width": 0.49, "height": 10, "angle": 0 },
+      { "type": "BLUE", "x": 4.8, "y": 4.8, "width": 0.49, "height": 10, "angle": 90 },
+      { "type": "BLUE", "x": 4.8, "y": 0, "width": 0.49, "height": 10, "angle": 90 },
+      { "type": "GREEN", "x": 4.8, "y": 2.4, "width": 0.49, "height": 2, "angle": 0 },
+      { "type": "GREEN", "x": 4.8, "y": 2.4, "width": 0.49, "height": 2, "angle": 90 }
+    ],
+    "beams": [
+      { "type": "GREEN", "active": "true", "x": 2, "y": 2.4, "width": 3.65, "height": 0.4, "angle": 0 },
+      { "type": "GREEN", "active": "true", "x": 7.6, "y": 2.4, "width": 3.65, "height": 0.4, "angle": 0 },
+      { "type": "BLUE", "active": "true", "x": 4.8, "y": 0.8, "width": 0.4, "height": 1.25, "angle": 0 },
+      { "type": "BLUE", "active": "true", "x": 4.8, "y": 4, "width": 0.4, "height": 1.25, "angle": 0 }
+    ],
+    "switches": [
+      { "x": 4.8, "y": 2.4, "width": 0.4, "height": 0.4, "angle": 0, "beams": [0, 1, 2, 3], "rotatables": [], "switchType": "COLORER" }
+    ],
+    "rotatables": []
   }
 ]
