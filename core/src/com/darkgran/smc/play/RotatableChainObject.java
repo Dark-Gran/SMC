@@ -30,7 +30,9 @@ public abstract class RotatableChainObject extends ChainBodyObject implements Sw
 
     @Override
     public void switchState() {
-        angle -= (float) (90* WorldScreen.DEGREES_TO_RADIANS);
+        if (closeEnough()) {
+            angle -= (float) (90* WorldScreen.DEGREES_TO_RADIANS);
+        }
     }
 
     public float getAngle() {
