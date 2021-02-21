@@ -14,7 +14,7 @@ public abstract class RotatableChainObject extends ChainBodyObject implements Sw
 
     public void update() {
         if (!closeEnough()) {
-            getChainBody().getBody().setAngularVelocity(1f);
+            getChainBody().getBody().setAngularVelocity(-1f);
         } else {
             getChainBody().getBody().setAngularVelocity(0f);
             getChainBody().getBody().setTransform(getChainBody().getBody().getPosition(), angle);
@@ -30,7 +30,7 @@ public abstract class RotatableChainObject extends ChainBodyObject implements Sw
 
     @Override
     public void switchState() {
-        angle += (float) (90* WorldScreen.DEGREES_TO_RADIANS);
+        angle -= (float) (90* WorldScreen.DEGREES_TO_RADIANS);
     }
 
     public float getAngle() {
