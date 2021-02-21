@@ -10,7 +10,11 @@ public abstract class ChainBodyObject {
 
     public ChainBodyObject(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution, BodyDef.BodyType bodyType) {
         this.levelStage = levelStage;
-        createChainBody(levelStage, x, y, vertices, angle, restitution, bodyType);
+        Vector2[] v = new Vector2[vertices.length];
+        for (int i = 0; i < v.length; i++) {
+            v[i] = vertices[i].cpy();
+        }
+        createChainBody(levelStage, x, y, v, angle, restitution, bodyType);
     }
 
     public void createChainBody(LevelStage levelStage, float x, float y, Vector2[] vertices, float angle, float restitution, BodyDef.BodyType bodyType) {
