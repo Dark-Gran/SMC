@@ -94,7 +94,7 @@
   },
   {
     "id": 5,
-    "intro": "...",
+    "intro": "Forth Is Up.",
     "circles": [
       { "type": "WHITE", "x": 2.8, "y": 2.4, "radius": 0.25, "angle": 80 },
       { "type": "WHITE", "x": 7, "y": 2.4, "radius": 0.17, "angle": 180 },
