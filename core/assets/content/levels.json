@@ -125,5 +125,84 @@
     "switches": [
       { "x": 5.61, "y": 1.585, "width": 0.4, "height": 0.4, "angle": 0, "beams": [], "rotatables": [0], "switchType": "ACTIVATOR" }
     ]
+  },
+  {
+    "id": 6,
+    "intro": "Loving Sky Brings Serene Dance.",
+    "circles": [
+      { "type": "WHITE", "x": 6.5, "y": 4, "radius": 0.3, "angle": 200 },
+      { "type": "WHITE", "x": 3.5, "y": 2, "radius": 0.15, "angle": 130 },
+      { "type": "WHITE", "x": 8, "y": 2.5, "radius": 0.15, "angle": 220 },
+      { "type": "WHITE", "x": 7, "y": 1.5, "radius": 0.15, "angle": 250 },
+      { "type": "WHITE", "x": 6, "y": 2.5, "radius": 0.15, "angle": 350 },
+      { "type": "WHITE", "x": 7, "y": 4, "radius": 0.15, "angle": 330 },
+      { "type": "WHITE", "x": 5, "y": 0, "radius": 0.25, "angle": 70 },
+      { "type": "WHITE", "x": 2.5, "y": 4, "radius": 0.25, "angle": 45 },
+      { "type": "WHITE", "x": 1, "y": 2, "radius": 0.15, "angle": 330 },
+      { "type": "BLUE", "x": 1, "y": 0, "radius": 0.15, "angle": 30 },
+      { "type": "BLUE", "x": 0, "y": 3, "radius": 0.1, "angle": 340 },
+      { "type": "BLUE", "x": 2, "y": 4, "radius": 0.25, "angle": 20 },
+      { "type": "BLUE", "x": 7, "y": 3.5, "radius": 0.1, "angle": 330 },
+      { "type": "BLUE", "x": 3.5, "y": 3, "radius": 0.2, "angle": 300 },
+      { "type": "BLUE", "x": 3, "y": 2, "radius": 0.1, "angle": 10 },
+      { "type": "BLUE", "x": 5.5, "y": 3.5, "radius": 0.1, "angle": 100 },
+      { "type": "BLUE", "x": 6, "y": 1.2, "radius": 0.1, "angle": 320 },
+      { "type": "BLUE", "x": 7, "y": 1.2, "radius": 0.2, "angle": 110 }
+    ],
+    "walls": [],
+    "beams": [],
+    "switches": [],
+    "rotatables": []
+  },
+  {
+    "id": 7,
+    "intro": "Many Ones Shine In Divinity.",
+    "circles": [
+      { "type": "WHITE", "x": 6.5, "y": 4, "radius": 0.3, "angle": 200 },
+      { "type": "WHITE", "x": 3.5, "y": 2, "radius": 0.15, "angle": 130 },
+      { "type": "WHITE", "x": 8, "y": 2.5, "radius": 0.15, "angle": 220 },
+      { "type": "WHITE", "x": 7, "y": 1.5, "radius": 0.15, "angle": 250 },
+      { "type": "WHITE", "x": 6, "y": 2.5, "radius": 0.15, "angle": 350 },
+      { "type": "WHITE", "x": 7, "y": 4, "radius": 0.15, "angle": 330 },
+      { "type": "WHITE", "x": 5, "y": 0, "radius": 0.25, "angle": 70 },
+      { "type": "WHITE", "x": 2.5, "y": 4, "radius": 0.25, "angle": 45 },
+      { "type": "WHITE", "x": 1, "y": 2, "radius": 0.15, "angle": 330 },
+      { "type": "GREEN", "x": 1, "y": 0, "radius": 0.15, "angle": 30 },
+      { "type": "GREEN", "x": 0, "y": 3, "radius": 0.1, "angle": 340 },
+      { "type": "GREEN", "x": 2, "y": 4, "radius": 0.25, "angle": 20 },
+      { "type": "GREEN", "x": 7, "y": 3.5, "radius": 0.1, "angle": 330 },
+      { "type": "GREEN", "x": 3.5, "y": 3, "radius": 0.2, "angle": 300 },
+      { "type": "GREEN", "x": 3, "y": 2, "radius": 0.1, "angle": 10 },
+      { "type": "GREEN", "x": 5.5, "y": 3.5, "radius": 0.1, "angle": 100 },
+      { "type": "GREEN", "x": 6, "y": 1.2, "radius": 0.1, "angle": 320 },
+      { "type": "GREEN", "x": 7, "y": 1.2, "radius": 0.2, "angle": 110 }
+    ],
+    "walls": [],
+    "beams": [],
+    "switches": [],
+    "rotatables": []
+  },
+  {
+    "id": 8,
+    "intro": "Forest Grows For Each Tree Known.",
+    "circles": [
+      { "type": "BLUE", "x": 3, "y": 1.5, "radius": 0.15, "angle": 190 },
+      { "type": "BLUE", "x": 3, "y": 2, "radius": 0.15, "angle": 190 },
+      { "type": "GREEN", "x": 3, "y": 3, "radius": 0.15, "angle": 170 },
+      { "type": "GREEN", "x": 3, "y": 3.5, "radius": 0.15, "angle": 170 },
+      { "type": "BLUE", "x": 6.6, "y": 1.5, "radius": 0.15, "angle": 350 },
+      { "type": "BLUE", "x": 6.6, "y": 2, "radius": 0.15, "angle": 350 },
+      { "type": "GREEN", "x": 6.6, "y": 3, "radius": 0.15, "angle": 10 },
+      { "type": "GREEN", "x": 6.6, "y": 3.5, "radius": 0.15, "angle": 10 },
+      { "type": "GREEN", "x": 5, "y": 3, "radius": 0.15, "angle": 90 },
+      { "type": "BLUE", "x": 4.6, "y": 3, "radius": 0.15, "angle": 270 }
+    ],
+    "walls": [
+      { "type": "GREEN", "x": 1.49, "y": 2.4, "width": 0.49, "height": 5, "angle": 0 },
+      { "type": "BLUE", "x": 8.11, "y": 2.4, "width": 0.49, "height": 5, "angle": 0 }
+    ],
+    "beams": [],
+    "switches": [],
+    "rotatables": []
   }
 ]

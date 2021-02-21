@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 public enum ColorType {
     NONE(Color.WHITE, 0f, 0.15),
     WHITE(Color.WHITE, 0.04f, 0.15),
-    BLUE(Color.BLUE, 0.04f, 0.15),
-    GREEN(Color.GREEN, 0.06f, 0.15),
-    RED(Color.RED, 0.08f, 0.15);
+    BLUE(Color.BLUE, 0.04f, 0.1),
+    GREEN(Color.GREEN, 0.08f, 0.05),
+    RED(Color.RED, 0.09f, 0.05);
 
     private final Color color;
     private final float speed;
