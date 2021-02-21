@@ -96,8 +96,12 @@
     "id": 5,
     "intro": "...",
     "circles": [
-      { "type": "WHITE", "x": 2.8, "y": 2.4, "radius": 0.25, "angle": 90 },
-      { "type": "WHITE", "x": 7, "y": 2.4, "radius": 0.25, "angle": 270 }
+      { "type": "WHITE", "x": 2.8, "y": 2.4, "radius": 0.25, "angle": 80 },
+      { "type": "WHITE", "x": 7, "y": 2.4, "radius": 0.17, "angle": 180 },
+      { "type": "WHITE", "x": 4.8, "y": 4, "radius": 0.18, "angle": 90 },
+      { "type": "WHITE", "x": 4.6, "y": 1.5, "radius": 0.2, "angle": 0 },
+      { "type": "WHITE", "x": 1, "y": 2.3, "radius": 0.16, "angle": 200 },
+      { "type": "WHITE", "x": 8, "y": 2.2, "radius": 0.19, "angle": 20 }
     ],
     "walls": [
       { "type": "NONE", "x": 1.745, "y": 1.6, "width": 0.49, "height": 5, "angle": 90 },
