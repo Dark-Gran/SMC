@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.darkgran.smc.WorldScreen;
 
-public class Wall extends ChainBoxBodyObject {
+public class Wall extends ChainBoxBodyObject implements Spriter {
     private final ColorType colorType;
     private final Sprite sprite;
 
@@ -16,11 +16,13 @@ public class Wall extends ChainBoxBodyObject {
         updateSprite();
     }
 
+    @Override
     public void updateSprite() {
         sprite.setPosition(getChainBody().getBody().getPosition().x* WorldScreen.PPM-sprite.getWidth()/2, getChainBody().getBody().getPosition().y*WorldScreen.PPM-sprite.getHeight()/2);
         sprite.setRotation((float) (getChainBody().getBody().getAngle() / WorldScreen.DEGREES_TO_RADIANS));
     }
 
+    @Override
     public Sprite getSprite() {
         return sprite;
     }

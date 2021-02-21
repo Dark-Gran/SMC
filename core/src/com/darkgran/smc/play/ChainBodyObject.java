@@ -38,4 +38,5 @@ public abstract class ChainBodyObject {
     protected void setChainBody(ChainBody chainBody) {
         this.chainBody = chainBody;
     }
+
 }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.darkgran.smc.WorldScreen;
 
-public class StandardSwitch extends Actor {
+public class StandardSwitch extends Actor implements Spriter {
     private final LevelStage levelStage;
     private final ChainBody chainBody;
     private final Switchable[] beams;
@@ -29,6 +29,7 @@ public class StandardSwitch extends Actor {
         sprite.setBounds((x-width)*WorldScreen.PPM, (y-height)*WorldScreen.PPM, width*WorldScreen.PPM*2, height*WorldScreen.PPM*2);
     }
 
+    @Override
     public void updateSprite() {
         sprite.setPosition(getChainBody().getBody().getPosition().x* WorldScreen.PPM-sprite.getWidth()/2, getChainBody().getBody().getPosition().y*WorldScreen.PPM-sprite.getHeight()/2);
         sprite.setRotation((float) (getChainBody().getBody().getAngle() / WorldScreen.DEGREES_TO_RADIANS));
@@ -60,6 +61,7 @@ public class StandardSwitch extends Actor {
         return chainBody;
     }
 
+    @Override
     public Sprite getSprite() {
         return sprite;
     }

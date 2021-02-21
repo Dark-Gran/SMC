@@ -54,6 +54,7 @@ public class LevelStage extends Stage {
     private final Texture texMediumWallW = new Texture("images/mediumWallW.png");
     private final Texture texBigWall = new Texture("images/bigWall.png");
     private final Texture texBigWallW = new Texture("images/bigWallW.png");
+    private final Texture texTriangle = new Texture("images/triangle.png");
     private final Texture soTex = new Texture("images/switch_over.png");
     private final Texture pcTex = new Texture("images/circle.png");
 
@@ -164,7 +165,7 @@ public class LevelStage extends Stage {
                 for (RotatableInfo rotatableInfo : levelInfo.getRotatables()) {
                     switch (rotatableInfo.getPolygon()) {
                         case TRIANGLE:
-                            rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), (float) (rotatableInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS)));
+                            rotatables.add(new RotatableTriangle(this, rotatableInfo.getX(), rotatableInfo.getY(), rotatableInfo.getVertices(), (float) (rotatableInfo.getAngle()*WorldScreen.DEGREES_TO_RADIANS), texTriangle));
                             break;
                     }
                 }
@@ -436,6 +437,9 @@ public class LevelStage extends Stage {
         }
         for (RotatableChainObject rotatable : rotatables) {
             rotatable.update();
+            if (rotatable instanceof Spriter) {
+                ((Spriter) rotatable).updateSprite();
+            }
         }
         //New Circles
         if (circlesToAdd.size() > 0) {
@@ -530,8 +534,13 @@ public class LevelStage extends Stage {
         for (Wall wall : walls) {
             wall.getSprite().draw(batch);
         }
-        for (StandardSwitch standardSwitch :switches) {
+        for (StandardSwitch standardSwitch : switches) {
             standardSwitch.getSprite().draw(batch);
+        }
+        for (RotatableChainObject rotatable : rotatables) {
+            if (rotatable instanceof Spriter) {
+                ((Spriter) rotatable).getSprite().draw(batch);
+            }
         }
         //PlayerCircle
         if (playerCircle != null) {
@@ -566,6 +575,7 @@ public class LevelStage extends Stage {
         texWallG.dispose();
         texMediumWall.dispose();
         texMediumWallW.dispose();
+        texTriangle.dispose();
         soTex.dispose();
         pcTex.dispose();
     }
