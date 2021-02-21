@@ -99,7 +99,7 @@
       { "type": "WHITE", "x": 2.8, "y": 2.4, "radius": 0.25, "angle": 80 },
       { "type": "WHITE", "x": 7, "y": 2.4, "radius": 0.17, "angle": 180 },
       { "type": "WHITE", "x": 4.8, "y": 4, "radius": 0.18, "angle": 90 },
-      { "type": "WHITE", "x": 4.6, "y": 1.5, "radius": 0.2, "angle": 0 },
+      { "type": "WHITE", "x": 4.6, "y": 1.4, "radius": 0.2, "angle": 0 },
       { "type": "WHITE", "x": 1, "y": 2.3, "radius": 0.16, "angle": 200 },
       { "type": "WHITE", "x": 8, "y": 2.2, "radius": 0.19, "angle": 20 }
     ],
@@ -123,7 +123,7 @@
       { "type": "NONE", "polygon": "TRIANGLE", "x": 4.8, "y": 2.4, "angle": 0, "vertices" : [ {"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 1, "y": 0} ] }
     ],
     "switches": [
-      { "x": 6.8, "y": 1.4, "width": 0.4, "height": 0.4, "angle": 0, "beams": [], "rotatables": [0], "switchType": "ACTIVATOR" }
+      { "x": 5.61, "y": 1.585, "width": 0.4, "height": 0.4, "angle": 0, "beams": [], "rotatables": [0], "switchType": "ACTIVATOR" }
     ]
   }
 ]
