@@ -128,12 +128,4 @@ Thumbs.db
 /core/assets/images/
 /core/assets/fonts/
 /out/artifacts/SaveMeCircles_jar/SaveMeCircles.jar
-/desktop/out/production/resources/fonts/bahnschrift.fnt
-/desktop/out/production/resources/fonts/bahnschrift.png
-/desktop/out/production/resources/images/continue.png
-/desktop/out/production/resources/images/DGLogo.jpg
-/desktop/out/production/resources/content/levels.json
-/desktop/out/production/resources/images/switch_over.png
-/desktop/out/production/resources/images/wall.png
-/desktop/out/production/resources/images/wallB.png
-/desktop/out/production/resources/images/wallG.png
+/desktop/out/
