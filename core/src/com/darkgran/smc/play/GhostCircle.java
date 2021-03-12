@@ -29,10 +29,14 @@ public class GhostCircle extends CircleSensor {
         } else if (allowed) {
             setMouseFollow(buttonDown);
             if (ghostTimer > spawnTime) {
-                if (couldBeSpawnedNow() && !buttonDown) {
-                    setMouseFollow(false);
-                    ghostTimer = 0;
-                    getLevelStage().spawnPlayerCircle(getLevelStage().getWorldScreen().getMouseInWorld2D().x, getLevelStage().getWorldScreen().getMouseInWorld2D().y);
+                if (!buttonDown) {
+                    if (couldBeSpawnedNow()) {
+                        setMouseFollow(false);
+                        ghostTimer = 0;
+                        getLevelStage().spawnPlayerCircle(getLevelStage().getWorldScreen().getMouseInWorld2D().x, getLevelStage().getWorldScreen().getMouseInWorld2D().y);
+                    } else {
+                        getLevelStage().removeGhost();
+                    }
                 }
             } else if (buttonDown) {
                 ghostTimer++;
