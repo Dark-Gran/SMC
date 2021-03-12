@@ -64,7 +64,6 @@ public class WorldScreen implements Screen {
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             if (levelStage != null) {
                 levelStage.setLastTouch(null);
-                levelStage.removeGhost();
             }
             return true;
         }

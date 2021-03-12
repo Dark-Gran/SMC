@@ -285,6 +285,7 @@ public class LevelStage extends Stage {
                     lastTouch = null;
                 }
             });
+            removeGhost();
         }
     }
 
