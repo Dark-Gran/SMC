@@ -1,6 +1,6 @@
 # SaveMeCircles  
   
-![main_preview](_screenshots/screen0.png)  
+![main_preview](_screenshots/preview.gif)  
   
 This is a FREE game prototype.  
   
@@ -17,6 +17,8 @@ Requires Java 8 to run. ([download java](https://www.java.com/en/download/))
   
 ## Screenshots
   
+![preview1](_screenshots/screen0.png)  
+---  
 ![preview2](_screenshots/screen2.png)  
 ---  
 ![preview3](_screenshots/screen1.png)  
