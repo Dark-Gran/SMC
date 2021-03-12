@@ -1,10 +1,10 @@
 [
   {
     "id": 0,
-    "intro": "Destinies Must Be Written.",
+    "intro": "Focus Hastens Destiny.",
     "circles": [
-      { "type": "WHITE", "x": 3.05, "y": 0.4, "radius": 0.15, "angle": 90 },
-      { "type": "WHITE", "x": 6.55, "y": 4.4, "radius": 0.15, "angle": 270 }
+      { "type": "WHITE", "x": 3.8, "y": 2.4, "radius": 0.4, "angle": 0 },
+      { "type": "WHITE", "x": 6, "y": 2.4, "radius": 0.4, "angle": 180 }
     ],
     "walls": [],
     "beams": [],
@@ -13,10 +13,10 @@
   },
   {
     "id": 1,
-    "intro": "Focus Hastens Destiny.",
+    "intro": "Destinies Must Be Written.",
     "circles": [
-      { "type": "WHITE", "x": 3.8, "y": 2.4, "radius": 0.4, "angle": 0 },
-      { "type": "WHITE", "x": 6, "y": 2.4, "radius": 0.4, "angle": 180 }
+      { "type": "WHITE", "x": 3.05, "y": 0.4, "radius": 0.15, "angle": 90 },
+      { "type": "WHITE", "x": 6.55, "y": 4.4, "radius": 0.15, "angle": 270 }
     ],
     "walls": [],
     "beams": [],
