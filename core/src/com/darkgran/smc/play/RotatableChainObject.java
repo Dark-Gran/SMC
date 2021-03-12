@@ -22,10 +22,8 @@ public abstract class RotatableChainObject extends ChainBodyObject implements Sw
     }
 
     public boolean closeEnough() {
-        boolean ce = false;
         double maxDif = WorldScreen.DEGREES_TO_RADIANS;
-        ce = getChainBody().getBody().getAngle() >= angle-maxDif && getChainBody().getBody().getAngle() <= angle+maxDif;
-        return ce;
+        return getChainBody().getBody().getAngle() >= angle-maxDif && getChainBody().getBody().getAngle() <= angle+maxDif;
     }
 
     @Override
