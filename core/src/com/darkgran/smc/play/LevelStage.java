@@ -424,7 +424,7 @@ public class LevelStage extends Stage {
         }
         //Play Input
         if (!completed) {
-            ghostCircle.update(Gdx.input.isButtonPressed(Input.Buttons.LEFT), playerCircle == null && lastTouch == null);
+            ghostCircle.update(Gdx.input.isButtonPressed(Input.Buttons.LEFT), playerCircle == null && lastTouch == null && currentLevel != 0);
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 if (lastTouch != null) {
                     if (lastTouch.isDisabled()) {
