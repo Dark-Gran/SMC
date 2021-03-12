@@ -189,7 +189,7 @@ public class WorldScreen implements Screen {
             levelStage.update();
             reapWorld();
             world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
-            if ((levelStage.getPlayerCircle() != null || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) && !levelStage.isCompleted()) {
+            if ((levelStage.getPlayerCircle() != null || levelStage.getGhostCircle().getGhostTimer() > 0) && !levelStage.isCompleted()) {
                 simulationManager.drawSimulation(shapeRenderer, collisionListener, world, levelStage.getPlayerCircle() == null, debugRenderer, camera);
             }
         }
