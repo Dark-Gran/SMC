@@ -4,7 +4,7 @@
   
 This is a FREE game prototype.  
   
-[RELEASE DOWNLOAD](https://github.com/Dark-Gran/SaveMeCircles/releases/tag/1.0)  
+[RELEASE DOWNLOAD](https://github.com/Dark-Gran/SaveMeCircles/releases/tag/0.2)  
   
 Requires Java 8 to run. ([download java](https://www.java.com/en/download/))  
   
