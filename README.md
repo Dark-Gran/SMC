@@ -16,9 +16,9 @@ Requires Java 8 to run. ([download java](https://www.java.com/en/download/))
   
 ## Screenshots
   
-![preview2](_screenshots/screen1.png)  
+![preview2](_screenshots/screen2.png)  
 ---  
-![preview3](_screenshots/screen2.png)  
+![preview3](_screenshots/screen1.png)  
 ---  
 ![preview4](_screenshots/screen4.png)  
 ---  
