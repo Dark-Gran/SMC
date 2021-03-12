@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -33,7 +32,6 @@ public class SimulationManager {
     }
 
     public void resetSimulation(CollisionListener collisionListener, World copyWorld) {
-        //if (worldSimulation != null) { worldSimulation.dispose(); }
         worldSimulation = new World(new Vector2(0, 0), false);;
         worldSimulation.setContactListener(collisionListener);
         Array<Body> bodies = new Array<>();
