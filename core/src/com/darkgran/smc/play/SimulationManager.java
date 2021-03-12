@@ -1,5 +1,6 @@
 package com.darkgran.smc.play;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
@@ -42,7 +43,7 @@ public class SimulationManager {
         }
     }
 
-    public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, Box2DDebugRenderer debugRenderer, Matrix4 matrix) {
+    public void drawSimulation(ShapeRenderer shapeRenderer, CollisionListener collisionListener, World copyWorld, boolean limitedDraw, Box2DDebugRenderer debugRenderer, Camera debugCamera) {
         resetSimulation(collisionListener, copyWorld);
         Array<Body> bodies;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -56,8 +57,7 @@ public class SimulationManager {
                     ColoredCircle circle = (ColoredCircle) body.getUserData();
                     if (!circle.isStuck()) {
                         applyCircleUpdate(circle, body);
-                        boolean bodyInsideRad = Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2);
-                        if (bodyInsideRad) {
+                        if (!limitedDraw || Math.pow((body.getPosition().x - worldScreen.getMouseInWorld2D().x), 2) + Math.pow((body.getPosition().y - worldScreen.getMouseInWorld2D().y), 2) < Math.pow(rad, 2)) {
                             if (i % 10 == 0 && !circle.isFreshShard() && !circle.isMergingAway() && !circle.isGone()) {
                                 shapeRenderer.setColor(circle.getColorType().getColor().r, circle.getColorType().getColor().g, circle.getColorType().getColor().b, 0.7f);
                                 shapeRenderer.circle(body.getPosition().x, body.getPosition().y, 0.01f, 10);
@@ -73,7 +73,7 @@ public class SimulationManager {
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.end();
         //debugRenderer.setDrawBodies(true);
-        //debugRenderer.render(worldSimulation, matrix);
+        //debugRenderer.render(worldSimulation, new Matrix4(debugCamera.combined));
     }
 
     private void markStuckCircles() {
