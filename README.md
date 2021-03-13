@@ -56,7 +56,7 @@ Most of these specific collisions are already being detected (and disabled for s
   
 Possible solutions (except for "simulate trajectories imperfectly"):  
 a) Detect and disable simulation of the remaining "performance heavy" collisions.  
-b) Find or write a different physics engine. (The circles basically act like massless particles, which means Box2D may not be the best choice for calculating these physics.)  
+b) Find or write a different physics engine. (The circles basically act like massless particles, which means Box2D, despite it's practicality, may not be the best choice for calculating these physics.)  
 _(yet to be decided)_
   
 ## Screenshots
