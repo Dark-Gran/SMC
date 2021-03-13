@@ -11,8 +11,8 @@ Requires Java 8 to run. ([download java](https://www.java.com/en/download/))
 **Controls:**
 - Game is played with Left Mouse Button / Touch only.
 - Extra controls are:  
-  - Left/Right Arrows switch between Levels.
-  - R restarts current Level.
+  - Left/Right Arrow to switch between Levels.
+  - R to restart the current Level.
   
   
 ## About Project  
