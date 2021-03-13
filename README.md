@@ -15,7 +15,7 @@ The original idea was to create a game concept that is "as simple as possible", 
 
 This led to **version 0.1**:  
 - In default, only circles floating around. ("relaxing screensaver", no "avatar")  
-- Goal is to merge all circles of one color.  
+- Goal is to merge all circles of the same color.  
 - The puzzle part comes from intrinsic values and relations between colors.  
 - The player may affect size and speed of the circles, however direct interaction must remain minimal. (1. to keep the feeling of a relaxing screensaver; 2. to keep the "puzzle-like" feel)  
 
