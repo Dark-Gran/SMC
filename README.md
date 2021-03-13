@@ -17,7 +17,7 @@ This led to **version 0.1**:
 - In default, only circles floating around. ("relaxing screensaver", no "avatar")  
 - Goal is to merge all circles of the same color.  
 - The puzzle part comes from intrinsic values and relations between colors.  
-- The player may affect the size and speed of the circles, however direct interaction must remain minimal. (1. to keep the feeling of a relaxing screensaver; 2. to keep the "puzzle-like" feel)  
+- The player may affect the size and speed of the circles, however direct interaction must remain minimal. (1. to keep the looks and feeling of a relaxing screensaver; 2. to keep the "puzzle-like" feel)  
 
 After some testing, the game was upgraded to the **current version (0.2)**:  
 - Speeds and sizes were changed drastically, as it became very clear that despite the controlled environment, the game becomes a "billiard" instead of a puzzle.
