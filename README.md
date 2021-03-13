@@ -41,7 +41,7 @@ The resolution of certain collisions using Box2D physics engine is performance-h
   
 **This becomes very noticable (the game staggers) when many of these collisions are being simulated to draw trajectories.**  
   
-Most of these specific collisions are already detected (and trajectory calculation is temporarily disabled for these), however some are still not (eg. corner collisions).  
+Most of these specific collisions are already being detected (and trajectory calculation is temporarily disabled for these), however some are still not (eg. corner collisions).  
   
 Possible solutions (except the "don't calculate trajectories with such perfection"):  
 a) Detect and disable simulation of the remaining "performance heavy" collisions.  
