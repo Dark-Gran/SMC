@@ -7,11 +7,20 @@ This is a FREE game prototype.
 [RELEASE DOWNLOAD](https://github.com/Dark-Gran/SaveMeCircles/releases/tag/0.2)  
   
 Requires Java 8 to run. ([download java](https://www.java.com/en/download/))  
+
+**Controls:**
+- Game is played with Left Mouse Button / Touch only.
+- Extra controls are:  
+  - LEFT/RIGHT switches between Levels
+  - R restarts current level
   
   
 ## About Project  
   
-The original idea was to create a game concept that is "as simple as possible", "relaxing", and "puzzle-like" (where player manipulates the environment/level instead of an avatar).  
+The original thought-exercise was to create a game concept that is:
+- "as primitive as possible"
+- relaxing (screensaver-based)
+- puzzle-like (where player manipulates the environment/level instead of an avatar).  
 
 This led to **version 0.1**:  
 - In default, only circles floating around. ("relaxing screensaver", no "avatar")  
@@ -20,9 +29,10 @@ This led to **version 0.1**:
 - The player may affect the size and speed of the circles, however direct interaction must remain minimal. (1. to keep the looks and feeling of a relaxing screensaver; 2. to keep the "puzzle-like" feel)  
 
 After some testing, the game was upgraded to the **current version (0.2)**:  
-- Speeds and sizes were changed drastically, as it became very clear that despite the controlled environment, the game becomes a "billiard" instead of a puzzle.
+- Speeds and sizes were changed drastically, as it became very clear that the game easily becomes a "billiard" instead of a puzzle.
 - To raise interactivity, the player is allowed to place his own "player-circle" to affect the environment directly. However this ability is (and must remain) limited (not to become an "avatar").
-- Level's containing obstacles...
+- Trajectory-projection was added because no matter the speeds and sizes (= difficulty), the game will always be about if, where, and when will two specific circles meet.
+- Basic obstacles were added to illustrate the main gameplay-concept in a combination with classic puzzle-game features (walls, doors and movable walls). The combination ensures that there will always be "new possible original levels" to create (= allows a business model based on adding levels).
   
   
 ## Known Issues  
