@@ -47,14 +47,14 @@ _Link to tester forums will be provided soon._
 ## Known Issues  
   
 #### Simulation Stagger
-
-The resolution of certain collisions using Box2D physics engine is performance-heavy. These collisions become even heavier because of the way the constant circle speed is being kept.  
   
-**This becomes very noticable (the game staggers) when many of these collisions are being simulated to draw trajectories.**  
+Certain collisions in Box2D engine are performance-heavy. These collisions become heavier because of the way the constant circle speed is being kept in the game.  
   
-Most of these specific collisions are already being detected (and trajectory calculation is temporarily disabled for these), however some are still not (eg. corner collisions).  
+**This may become very noticable (the game staggers) when many of these collisions are being simulated to draw trajectories.**  
   
-Possible solutions (except the "don't calculate trajectories with such perfection"):  
+Most of these specific collisions are already being detected (and disabled for simulation), however some are still not (eg. collisions in right-angle corners).  
+  
+Possible solutions (except for "simulate trajectories imperfectly"):  
 a) Detect and disable simulation of the remaining "performance heavy" collisions.  
 b) Find or write a different physics engine. (The circles basically act like massless particles, which means Box2D may not be the best choice for calculating these physics.)  
   
