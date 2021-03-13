@@ -34,6 +34,15 @@ After some testing, the game was upgraded to the **current version (0.2)** (week
 - Trajectory-projection was added because no matter the speeds and sizes (= difficulty), the game will always be about _if_, _where_, and _when_ will two specific circles meet (and what will be the result).
 - Basic obstacles were added to illustrate the main gameplay-concept in a combination with classic puzzle-game features (walls, doors and movable walls). The combination ensures that there will always be "new possible original levels" to create (= allows a business model based on adding levels).
   
+### What The Future Holds  
+  
+Current gameplay requires more testing: the game's difficulty changes drastically with speeds and sizes.  
+
+The game was meant to be a relaxing experience, playable by people of all ages, where the basic description would be _"there are floating circles, and you can easily touch them to make them smaller/bigger and faster/slower"_.  
+However the similarities with classic billiard are very obvious and it may be worth considering a change of direction (to a more "angle + timing" based game).
+
+_Link to tester forums will be provided soon._  
+  
   
 ## Known Issues  
   
