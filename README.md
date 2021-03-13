@@ -24,6 +24,12 @@ After some testing, the game was upgraded to the current version (**0.2**):
 - To raise interactivity, the player is allowed to place his own "player-circle" to affect the environment directly. However this ability is (and must remain) limited (not to become an "avatar").
 - Level's containing obstacles...
   
+  
+## Known Issues  
+  
+...  
+  
+  
 ## Screenshots
   
 ![preview1](_screenshots/screen0.png)  
@@ -37,6 +43,3 @@ After some testing, the game was upgraded to the current version (**0.2**):
 ![preview5](_screenshots/screen3.png)  
   
   
-## Known Issues
-  
-...  
