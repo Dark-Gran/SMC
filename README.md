@@ -17,7 +17,7 @@ Requires Java 8 to run. ([download java](https://www.java.com/en/download/))
   
 ## About Project  
   
-The original thought-exercise was to create a game concept that is:
+The original thought-exercise was to create a gameplay that is:
 - "as primitive as possible"
 - relaxing (screensaver-based)
 - puzzle-like (where player manipulates the environment/level instead of an avatar).  
