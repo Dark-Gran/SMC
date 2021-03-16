@@ -46,7 +46,7 @@ _Link to tester forums will be provided soon._
   
 ## Known Issues  
   
-#### Simulation Stagger
+#### Simulation Stagger  
   
 Certain collisions in Box2D engine are performance-heavy. These collisions become heavier because of the way the 'constant' circle speed is being kept in the game.  
   
