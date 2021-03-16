@@ -41,7 +41,7 @@ Current gameplay requires more testing: the game's difficulty changes drasticall
 The game was meant to be a relaxing experience, playable by people of all ages, where the basic description would be _"there are floating circles, and you can easily touch them to make them smaller/bigger and faster/slower"_.  
 However the similarities with classic billiard are very obvious and it may be worth considering a change of direction (to a more "angle + timing" based game).
 
-_Link to tester forums will be provided soon._  
+_Link to tester forums will be provided here._  
   
   
 ## Known Issues  
