@@ -37,12 +37,10 @@ After some testing, the game was upgraded to the **current version (0.2)** (week
   
 ### What The Future Holds  
   
-Current gameplay requires more testing: the game's difficulty changes drastically with speeds and sizes.  
+Current gameplay is being tested internally: the game's difficulty changes drastically with speeds and sizes.  
 
 The game was meant to be a relaxing experience, playable by people of all ages, where the basic description would be _"there are floating circles, and you can easily touch them to make them smaller/bigger and faster/slower"_.  
-However the similarities with classic billiard are very obvious and it may be worth considering a change of direction (to a more "angle + timing" based game).
-
-_Link to tester forums will be provided here._  
+~~However the similarities with classic billiard are very obvious and it may be worth considering a change of direction (to a more "angle + timing" based game).~~
   
   
 ## Known Issues  
