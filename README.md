@@ -6,7 +6,7 @@ This is a FREE game prototype.
   
 [RELEASE DOWNLOAD](https://github.com/Dark-Gran/SaveMeCircles/releases/tag/0.2)  
   
-Requires Java 8 to run. ([download java](https://www.java.com/en/download/))  
+Does not include JRE and therefore requires Java to run. ([download java](https://www.java.com/en/download/))  
 
 **Controls:**
 - Game is played with Left Mouse Button / Touch only.
