@@ -7,6 +7,7 @@ This is a FREE game prototype.
 [RELEASE DOWNLOAD](https://github.com/Dark-Gran/SaveMeCircles/releases/tag/0.2)  
   
 Does not include JRE and therefore requires Java to run. ([download java](https://www.java.com/en/download/))  
+If you'd like to give us feedback or see our other projects, [join us on Discord!](https://discord.com/invite/N4JxKsX3Q5)[![discord_icon](https://github.com/Dark-Gran/Farstar-2/blob/master/discord64flip.png)](https://discord.com/invite/N4JxKsX3Q5)
 
 **Controls:**
 - Game is played with Left Mouse Button / Touch only.
