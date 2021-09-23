@@ -48,7 +48,7 @@ The game was meant to be a relaxing experience, playable by people of all ages, 
   
 #### Simulation Stagger  
   
-Certain collisions in Box2D engine are performance-heavy. These collisions become heavier because of the way the 'constant' circle speed is being kept in the game (which they keep despite the collisions being resolved by a physics engine that is trying to make them act according to newtonian physics).  
+Certain collisions in Box2D engine are performance-heavy. These collisions become heavier because of the way the 'constant' circle speed is being kept in the game (which they keep despite the collisions being resolved by a physics engine that is trying to make them act accordingly to newtonian physics).  
   
 **This may become very noticable (the game staggers) when many of these collisions are being simulated to draw trajectories.**  
   
