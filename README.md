@@ -15,7 +15,8 @@ If you'd like to give me feedback or see my other projects, [join us on Discord!
   - Left/Right Arrow to switch between Levels.
   - R to restart the current Level.
   
-  
+**_[Check-out the work on next version!](https://github.com/Dark-Gran/SMC)_**
+
 ## About Project  
   
 The original thought-exercise was to create a gameplay that is:
@@ -30,19 +31,13 @@ This led to **version 0.1** (weekend#1):
 - The puzzle part comes from intrinsic values and relations between colors.  
 - The player may affect the size and speed of the circles, however direct interaction must remain minimal. (1. to keep the looks and feeling of a relaxing screensaver; 2. to keep the "puzzle-like" feel)  
 
+In other words, the game was meant to be a relaxing experience, playable by people of all ages, where the basic description would be _"there are floating circles, and you can easily touch them to make them smaller/bigger and faster/slower"_.  
+
 After some testing, the game was upgraded to the **current version (0.2)** (weekend#2):  
 - Speeds and sizes were changed drastically, as it became very clear that the game easily becomes a "billiard" instead of a puzzle.
 - To raise interactivity, the player is allowed to place his own "player-circle" to affect the environment directly. However this ability is (and must remain) limited (not to become an "avatar").
 - Trajectory-projection was added because no matter the speeds and sizes (= difficulty), the game will always be about _if_, _where_, and _when_ will two specific circles meet (and what will be the result).
 - Basic obstacles were added to illustrate the main gameplay-concept in a combination with classic puzzle-game features (walls, doors and movable walls). The combination ensures that there will always be "new possible original levels" to create (= allows publishing levels continuously).
-  
-### What The Future Holds  
-  
-Current gameplay is being tested internally: the game's difficulty changes drastically with speeds and sizes.  
-
-The game was meant to be a relaxing experience, playable by people of all ages, where the basic description would be _"there are floating circles, and you can easily touch them to make them smaller/bigger and faster/slower"_.  
-~~However the similarities with classic billiard are very obvious and it may be worth considering a change of direction (to a more "angle + timing" based game).~~
-  
   
 ## Known Issues  
   
@@ -56,8 +51,9 @@ Most of these specific collisions are already being detected (and disabled for s
   
 Possible solutions (except for "simulate trajectories imperfectly"):  
 a) Detect and disable simulation of the remaining "performance heavy" collisions.  
-b) Find or write a different physics engine. (The circles basically act like massless particles, which means Box2D, despite its practicality, is not be the best choice for calculating these physics.)  
-_(yet to be decided)_
+b) Find or write a different physics engine.
+
+Follow-up edit: The gameplay requires non-newtonian physics, therefore any used engine may be used only for detecting collisions etc. without letting the physics engine to resolve them at all (the resolutions must be custom-made). [See the next version for more.](https://github.com/Dark-Gran/SMC)
   
 ## Screenshots
   
