@@ -1,21 +1,23 @@
 # SaveMeCircles  
   
 ![main_preview](_screenshots/preview.gif)  
+
+
+**_[Check out the next version!](https://github.com/Dark-Gran/SMC)_**  
   
 This is a FREE game prototype.  
   
-[RELEASE DOWNLOAD](https://github.com/Dark-Gran/SaveMeCircles/releases/tag/0.2)  
   
 Does not include JRE and therefore requires Java to run. ([download java](https://www.java.com/en/download/))  
-
+  
 **Controls:**
 - Game is played with Left Mouse Button / Touch only.
 - Extra controls are:  
   - Left/Right Arrow to switch between Levels.
   - R to restart the current Level.
   
-**_[Check-out the work on next version!](https://github.com/Dark-Gran/SMC)_**
-
+[RELEASE DOWNLOAD](https://github.com/Dark-Gran/SaveMeCircles/releases/tag/0.2)  
+  
 ## About Project  
   
 The original thought-exercise was to create a gameplay that is:
