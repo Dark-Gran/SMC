@@ -1,4 +1,4 @@
-# SaveMeCircles  
+# SMC
   
 ![main_preview](_screenshots/preview.gif)  
 
